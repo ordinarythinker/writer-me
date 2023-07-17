@@ -10,6 +10,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import io.writerme.app.data.model.Component
+import io.writerme.app.data.model.ComponentType
+import io.writerme.app.ui.component.Checkbox
 import io.writerme.app.ui.theme.WriterMeTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,6 +44,15 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     WriterMeTheme {
-        Greeting("Android")
+        val component = Component()
+        component.apply {
+            content = "Complete writing post for Instagram"
+            isChecked = true
+            type = ComponentType.CheckBox
+        }
+
+        WriterMeTheme {
+            Checkbox(component)
+        }
     }
 }
