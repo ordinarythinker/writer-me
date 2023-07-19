@@ -32,7 +32,7 @@ fun Counter(initialValue: Int, range: Pair<Int, Int>, onChange: (Int) -> Unit) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clip(RoundedCornerShape(16  .dp)).background(Color.White)
+        modifier = Modifier.clip(RoundedCornerShape(16.dp)).background(Color.White)
     ) {
         Icon(
             imageVector = Icons.Default.ArrowLeft,

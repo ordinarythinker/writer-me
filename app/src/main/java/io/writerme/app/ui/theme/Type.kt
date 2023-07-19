@@ -1,7 +1,6 @@
 package io.writerme.app.ui.theme
 
 import androidx.compose.material.Typography
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -53,7 +52,7 @@ val Typography = Typography(
         fontSize = 14.sp
     ),
     body2 = TextStyle(
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Light,
         fontSize = 12.sp
     ),
     subtitle1 = TextStyle(

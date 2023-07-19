@@ -17,4 +17,5 @@
     <string name="copyright">© %1$d Writer.Me</string>
     <string name="increase">Increase value</string>
     <string name="decrease">Decrease value</string>
+    <string name="icon">Icon</string>
 </resources>
