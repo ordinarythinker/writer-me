@@ -19,11 +19,12 @@ import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.textLight
 
 @Composable
-fun SettingsSectionTitle(titleRes: Int, iconRes: Int) {
+fun SettingsSectionTitle(titleRes: Int, iconRes: Int? = null) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(dimensionResource(id = R.dimen.screen_padding)),
+            .padding(dimensionResource(id = R.dimen.screen_padding),
+                dimensionResource(id = R.dimen.screen_padding)),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -33,11 +34,13 @@ fun SettingsSectionTitle(titleRes: Int, iconRes: Int) {
             color = MaterialTheme.colors.textLight
         )
 
-        Icon(
-            painter = painterResource(id = iconRes),
-            contentDescription = stringResource(id = R.string.icon),
-            tint = MaterialTheme.colors.textLight
-        )
+        iconRes?.let {
+            Icon(
+                painter = painterResource(id = it),
+                contentDescription = stringResource(id = R.string.icon),
+                tint = MaterialTheme.colors.textLight
+            )
+        }
     }
 }
 

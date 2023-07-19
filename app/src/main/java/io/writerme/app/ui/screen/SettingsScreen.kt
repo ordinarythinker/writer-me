@@ -1,8 +1,11 @@
 package io.writerme.app.ui.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,9 +15,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
@@ -28,15 +34,13 @@ import androidx.compose.ui.unit.dp
 import io.writerme.app.R
 import io.writerme.app.ui.component.SettingsCounterRow
 import io.writerme.app.ui.component.SettingsSectionTitle
-import io.writerme.app.ui.theme.WriterMeTheme
-import io.writerme.app.ui.theme.cardBackground
-import io.writerme.app.ui.theme.divider
-import io.writerme.app.ui.theme.textLight
+import io.writerme.app.ui.state.SettingsState
+import io.writerme.app.ui.theme.*
 import io.writerme.app.utils.Const
 import java.util.Calendar
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(state: SettingsState) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -50,9 +54,9 @@ fun SettingsScreen() {
         val screenPadding = dimensionResource(id = R.dimen.screen_padding)
 
         Card(
-            modifier = Modifier.padding(screenPadding),
+            modifier = Modifier.padding(screenPadding, 8.dp),
             shape = RoundedCornerShape(25.dp),
-            elevation = 16.dp,
+            elevation = 20.dp,
             backgroundColor = MaterialTheme.colors.cardBackground
         ) {
             Column {
@@ -103,7 +107,105 @@ fun SettingsScreen() {
             }
         }
 
+        Card(
+            modifier = Modifier.padding(screenPadding, 8.dp),
+            shape = RoundedCornerShape(25.dp),
+            elevation = 16.dp,
+            backgroundColor = MaterialTheme.colors.cardBackground
+        ) {
+            Column {
+                SettingsSectionTitle(
+                    titleRes = R.string.appearance
+                )
 
+                Divider(
+                    modifier = Modifier.padding(screenPadding, 0.dp, screenPadding, screenPadding),
+                    color = MaterialTheme.colors.divider
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(screenPadding, 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.language),
+                        style = MaterialTheme.typography.body1,
+                        color = MaterialTheme.colors.textLight
+                    )
+
+                    // TODO("Add here the dropdown menu")
+                    // https://developer.android.com/reference/kotlin/androidx/compose/material/package-summary#dropdownmenu
+                    // https://semicolonspace.com/dropdown-menu-jetpack-compose/
+                }
+
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(screenPadding, 8.dp)
+                        .clickable {
+
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.dark_mode),
+                        style = MaterialTheme.typography.body1,
+                        color = MaterialTheme.colors.textLight
+                    )
+
+                    Switch(
+                        checked = state.isDarkMode,
+                        onCheckedChange = { state.onDarkModeChange(it) }
+                    )
+                }
+
+            }
+        }
+
+        Card(
+            modifier = Modifier.padding(screenPadding, 8.dp),
+            shape = RoundedCornerShape(25.dp),
+            elevation = 16.dp,
+            backgroundColor = MaterialTheme.colors.cardBackground
+        ) {
+            Column {
+                SettingsSectionTitle(
+                    titleRes = R.string.help,
+                    iconRes = R.drawable.ic_help
+                )
+
+                Divider(
+                    modifier = Modifier.padding(screenPadding, 0.dp, screenPadding, 0.dp),
+                    color = MaterialTheme.colors.divider
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(screenPadding)
+                        .clickable { state.onTermsClick() },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.terms),
+                        style = MaterialTheme.typography.body1,
+                        color = MaterialTheme.colors.textLight
+                    )
+                    
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_globe),
+                        contentDescription = stringResource(id = R.string.globe_icon),
+                        tint = MaterialTheme.colors.textLight
+                    )
+                }
+            }
+        }
 
 
         val text = stringResource(id = R.string.copyright)
@@ -124,7 +226,9 @@ fun SettingsScreen() {
 @Preview(showBackground = true)
 @Composable
 fun SettingsScreenPreview() {
+    val state = SettingsState(languages = listOf(), {}, {}, {})
+
     WriterMeTheme {
-        SettingsScreen()
+        SettingsScreen(state)
     }
 }

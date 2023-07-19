@@ -18,4 +18,5 @@
     <string name="increase">Increase value</string>
     <string name="decrease">Decrease value</string>
     <string name="icon">Icon</string>
+    <string name="globe_icon">Globe icon</string>
 </resources>
