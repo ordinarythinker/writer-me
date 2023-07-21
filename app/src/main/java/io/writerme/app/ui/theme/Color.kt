@@ -14,13 +14,10 @@ val DarkGrey = Color(0xA6292D32)
 val TextLight = Color(0xFFF5F5F5)
 val LightGrey50 = Color(0x808C8989)
 
-val Colors.transparent : Color
-    get() = Color(0x00FFFFFF)
-
 val Colors.cardBackground : Color
     get() = DarkGrey
 
-val Colors.textLight : Color
+val Colors.light : Color
     get() = TextLight
 
 val Colors.divider : Color

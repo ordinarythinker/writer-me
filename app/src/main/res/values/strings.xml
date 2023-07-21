@@ -19,4 +19,6 @@
     <string name="decrease">Decrease value</string>
     <string name="icon">Icon</string>
     <string name="globe_icon">Globe icon</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="edit_icon">Edit icon</string>
 </resources>

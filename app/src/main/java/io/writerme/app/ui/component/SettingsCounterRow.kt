@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.writerme.app.R
 import io.writerme.app.ui.theme.WriterMeTheme
-import io.writerme.app.ui.theme.textLight
+import io.writerme.app.ui.theme.light
 
 @Composable
 fun SettingsCounterRow(
@@ -34,7 +34,7 @@ fun SettingsCounterRow(
         Text(
             text = stringResource(id = stringId),
             style = MaterialTheme.typography.body1,
-            color = MaterialTheme.colors.textLight
+            color = MaterialTheme.colors.light
         )
 
         Counter(

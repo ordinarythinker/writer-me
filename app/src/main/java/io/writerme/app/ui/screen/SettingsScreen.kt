@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.writerme.app.R
+import io.writerme.app.ui.component.ProfileImage
 import io.writerme.app.ui.component.SettingsCounterRow
 import io.writerme.app.ui.component.SettingsSectionTitle
 import io.writerme.app.ui.state.SettingsState
@@ -52,6 +53,34 @@ fun SettingsScreen(state: SettingsState) {
             )
     ) {
         val screenPadding = dimensionResource(id = R.dimen.screen_padding)
+
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(screenPadding),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProfileImage(url = state.profilePictureUrl)
+
+            Column(
+                modifier = Modifier
+                    .weight(0.6f)
+                    .padding(screenPadding, 0.dp)
+            ) {
+                Text(
+                    text = state.fullName,
+                    style = MaterialTheme.typography.h1,
+                    color = MaterialTheme.colors.light
+                )
+
+                Text(
+                    text = state.email,
+                    style = MaterialTheme.typography.body1,
+                    color = MaterialTheme.colors.light,
+                    modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+                )
+            }
+        }
 
         Card(
             modifier = Modifier.padding(screenPadding, 8.dp),
@@ -76,7 +105,7 @@ fun SettingsScreen(state: SettingsState) {
                         .fillMaxWidth()
                         .padding(screenPadding, 8.dp, screenPadding, 20.dp),
                     style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.textLight
+                    color = MaterialTheme.colors.light
                 )
 
                 SettingsCounterRow(
@@ -133,7 +162,7 @@ fun SettingsScreen(state: SettingsState) {
                     Text(
                         text = stringResource(id = R.string.language),
                         style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.textLight
+                        color = MaterialTheme.colors.light
                     )
 
                     // TODO("Add here the dropdown menu")
@@ -155,7 +184,7 @@ fun SettingsScreen(state: SettingsState) {
                     Text(
                         text = stringResource(id = R.string.dark_mode),
                         style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.textLight
+                        color = MaterialTheme.colors.light
                     )
 
                     Switch(
@@ -195,13 +224,13 @@ fun SettingsScreen(state: SettingsState) {
                     Text(
                         text = stringResource(id = R.string.terms),
                         style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.textLight
+                        color = MaterialTheme.colors.light
                     )
                     
                     Icon(
                         painter = painterResource(id = R.drawable.ic_globe),
                         contentDescription = stringResource(id = R.string.globe_icon),
-                        tint = MaterialTheme.colors.textLight
+                        tint = MaterialTheme.colors.light
                     )
                 }
             }
@@ -227,6 +256,10 @@ fun SettingsScreen(state: SettingsState) {
 @Composable
 fun SettingsScreenPreview() {
     val state = SettingsState(languages = listOf(), {}, {}, {})
+    state.apply {
+        fullName = "Florian Hermes"
+        email = "florian.hermes@email.com"
+    }
 
     WriterMeTheme {
         SettingsScreen(state)

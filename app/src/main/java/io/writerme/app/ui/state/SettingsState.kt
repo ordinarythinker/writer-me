@@ -7,5 +7,7 @@ class SettingsState(
     val onDarkModeChange: (Boolean) -> Unit
 ) {
     var isDarkMode: Boolean = false
-
+    val profilePictureUrl = ""
+    var fullName = ""
+    var email = ""
 }

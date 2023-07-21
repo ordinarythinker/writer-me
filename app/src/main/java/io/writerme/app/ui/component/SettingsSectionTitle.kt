@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import io.writerme.app.R
 import io.writerme.app.ui.theme.WriterMeTheme
-import io.writerme.app.ui.theme.textLight
+import io.writerme.app.ui.theme.light
 
 @Composable
 fun SettingsSectionTitle(titleRes: Int, iconRes: Int? = null) {
@@ -31,14 +31,14 @@ fun SettingsSectionTitle(titleRes: Int, iconRes: Int? = null) {
         Text(
             text = stringResource(id = titleRes),
             style = MaterialTheme.typography.h4,
-            color = MaterialTheme.colors.textLight
+            color = MaterialTheme.colors.light
         )
 
         iconRes?.let {
             Icon(
                 painter = painterResource(id = it),
                 contentDescription = stringResource(id = R.string.icon),
-                tint = MaterialTheme.colors.textLight
+                tint = MaterialTheme.colors.light
             )
         }
     }
