@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WriterMe</string>
+    <string name="app_name">Writer.Me</string>
     <string name="checkbox_name">Checkbox</string>
 
     <string name="changes_history">Changes History</string>
