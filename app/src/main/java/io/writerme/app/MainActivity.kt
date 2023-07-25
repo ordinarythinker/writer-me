@@ -13,7 +13,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.ui.component.Checkbox
+import io.writerme.app.ui.screen.SettingsScreen
+import io.writerme.app.ui.state.SettingsState
 import io.writerme.app.ui.theme.WriterMeTheme
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +31,20 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    val state = SettingsState(
+                        currentLanguage = "English",
+                        languages = listOf("English", "Deutsch", "Українська"),
+                        onLanguageChange = {},
+                        onDarkModeChange = {},
+                        onTermsClick = {},
+                        onCounterChange = { _, _ ->}
+                    )
+                    state.apply {
+                        fullName = "Florian Hermes"
+                        email = "florian.hermes@email.com"
+                    }
+
+                    SettingsScreen(MutableStateFlow(state))
                 }
             }
         }
