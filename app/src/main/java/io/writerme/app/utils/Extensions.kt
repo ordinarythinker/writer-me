@@ -1,7 +1,6 @@
 package io.writerme.app.utils
 
-import io.realm.RealmList
-import io.writerme.app.data.model.Component
+import io.realm.kotlin.types.RealmList
 import io.writerme.app.data.model.ComponentType
 
 fun <T> RealmList<T>.getLast(): T? {
@@ -10,10 +9,6 @@ fun <T> RealmList<T>.getLast(): T? {
             this[size-1]
         } else this[0]
     } else null
-}
-
-fun <T> realmListOf(vararg items: T): RealmList<T> {
-    return if (items.isNotEmpty()) RealmList<T>(*items) else RealmList()
 }
 
 /**
