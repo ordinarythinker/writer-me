@@ -105,5 +105,5 @@ open class Component(): RealmObject {
 enum class ComponentType(val value: String) {
     Text("text"), CheckBox("checkbox"),
     Voice("voice"), Task("task"),
-    Link("link"), Media("media")
+    Link("link"), Video("video"), Image("image")
 }

@@ -47,7 +47,7 @@ fun Link(link: Component, modifier: Modifier, onClick: () -> Unit) {
                 painter = painterResource(id = R.drawable.travel),
                 contentDescription = "",
                 modifier = Modifier
-                    .fillMaxWidth().clip(shape),
+                    .fillMaxWidth(),
                 contentScale = ContentScale.Crop
             )
 
@@ -55,8 +55,7 @@ fun Link(link: Component, modifier: Modifier, onClick: () -> Unit) {
                model = link.imageUrl,
                contentDescription = link.content,
                modifier = Modifier
-                   .fillMaxWidth()
-                   .clip(RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))),
+                   .fillMaxWidth(),
                contentScale = ContentScale.Crop
            )*/
 

@@ -1,4 +1,5 @@
 package io.writerme.app.ui.state
 
-class ScrollableMediaState {
-}
+import io.writerme.app.data.model.Component
+
+class ScrollableMediaState(val mediaComponent: Component)

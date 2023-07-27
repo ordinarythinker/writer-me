@@ -2,18 +2,17 @@ package io.writerme.app.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,14 +24,13 @@ import io.writerme.app.data.model.ComponentType
 import io.writerme.app.ui.theme.WriterMeTheme
 
 @Composable
-fun Checkbox(component: Component) {
-//    if (component.type == ComponentType.CheckBox) {
-//
-//    }
+fun Checkbox(component: Component, modifier: Modifier) {
+    if (component.type == ComponentType.CheckBox) {
+
+    }
+
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Blue)
+        modifier = modifier.fillMaxWidth().background(Color.Blue)
     ) {
         Icon(
             modifier = Modifier
@@ -48,10 +46,11 @@ fun Checkbox(component: Component) {
             style = MaterialTheme.typography.body1
         )
     }
+
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 fun CheckboxPreview() {
     val component = Component()
     component.apply {
@@ -60,12 +59,9 @@ fun CheckboxPreview() {
         type = ComponentType.CheckBox
     }
 
+    val modifier = Modifier.padding(dimensionResource(id = R.dimen.screen_padding))
+
     WriterMeTheme {
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colors.background
-        ) {
-            Checkbox(component)
-        }
+        Checkbox(component, modifier)
     }
 }

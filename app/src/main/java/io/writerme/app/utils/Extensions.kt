@@ -20,7 +20,7 @@ fun <T> RealmList<T>.push(t: T, type: ComponentType): T? {
         ComponentType.Text -> Const.TEXT_CHANGES_HISTORY
         ComponentType.CheckBox -> Const.TEXT_CHANGES_HISTORY
         ComponentType.Link -> Const.LINK_CHANGES_HISTORY
-        ComponentType.Media -> Const.MEDIA_CHANGES_HISTORY
+        ComponentType.Image, ComponentType.Video -> Const.MEDIA_CHANGES_HISTORY
         ComponentType.Voice -> Const.VOICE_CHANGES_HISTORY
         ComponentType.Task -> Const.TASK_CHANGES_HISTORY
     }

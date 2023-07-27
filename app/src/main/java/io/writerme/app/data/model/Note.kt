@@ -35,6 +35,6 @@ open class Note: RealmObject {
 
         changeTime = component.changeTime
 
-        return cover!!.push(component, ComponentType.Media)
+        return cover!!.push(component, ComponentType.Image)
     }
 }
