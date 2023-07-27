@@ -62,11 +62,10 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     WriterMeTheme {
-        val component = Component()
-        component.apply {
+        val component = Component().apply {
+            type = ComponentType.CheckBox
             content = "Complete writing post for Instagram"
             isChecked = true
-            type = ComponentType.CheckBox
         }
 
         val modifier = Modifier.padding(dimensionResource(id = R.dimen.screen_padding))
