@@ -8,12 +8,11 @@ import io.realm.kotlin.types.annotations.Index
 import io.realm.kotlin.types.annotations.PrimaryKey
 import io.writerme.app.utils.push
 
-open class History(
+open class History: RealmObject {
     @Index
     @PrimaryKey
-    var id: Long = System.currentTimeMillis(),
+    var id: Long = System.currentTimeMillis()
     var changes: RealmList<Component> = realmListOf()
-) : RealmObject {
 
     fun push(component: Component, type: ComponentType): Component? {
         return changes.push(component, type)

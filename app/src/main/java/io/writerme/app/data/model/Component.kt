@@ -27,11 +27,16 @@ open class Component(): RealmObject {
 
     var url: String = ""
 
-    var title: String? = null
+    var title: String = ""
 
     var imageUrl: String? = null
 
-    var time: Date? = null
+    private var _time: Long = 0
+    var time: Date
+        get() = Date(_time)
+        set(value) {
+            _time = value.time
+        }
 
     var isImage: Boolean = true
 

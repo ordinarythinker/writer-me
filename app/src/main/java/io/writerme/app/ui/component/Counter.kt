@@ -36,7 +36,7 @@ fun Counter(initialValue: Int, range: Pair<Int, Int>, onChange: (Int) -> Unit) {
         modifier = Modifier
             .clip(
                 RoundedCornerShape(
-                    dimensionResource(id = R.dimen.settings_field_radius)
+                    dimensionResource(id = R.dimen.big_radius)
                 )
             )
             .background(Color.White)

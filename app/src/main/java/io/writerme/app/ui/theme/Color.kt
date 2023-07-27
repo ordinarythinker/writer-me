@@ -13,6 +13,7 @@ val Teal200 = Color(0xFF03DAC5)
 val DarkGrey = Color(0xA6292D32)
 val TextLight = Color(0xFFF5F5F5)
 val LightGrey50 = Color(0x808C8989)
+val LightGray40 = Color(0xA6D9D9D9)
 
 val Colors.cardBackground : Color
     get() = DarkGrey
@@ -22,3 +23,6 @@ val Colors.light : Color
 
 val Colors.divider : Color
     get() = LightGrey50
+
+val Colors.linkTitle : Color
+    get() = LightGray40

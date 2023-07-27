@@ -19,7 +19,12 @@ open class Note: RealmObject {
 
     var content: RealmList<History> = realmListOf()
 
-    var created: Date = Date()
+    private var _created: Long = 0
+    var created: Date
+        get() = Date(_created)
+        set(value) {
+            _created = value.time
+        }
 
     var changeTime: Long = System.currentTimeMillis()
 

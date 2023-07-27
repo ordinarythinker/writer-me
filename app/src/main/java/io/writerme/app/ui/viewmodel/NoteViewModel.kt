@@ -1,8 +1,7 @@
 package io.writerme.app.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import io.realm.Realm
+import io.realm.kotlin.Realm
 import io.writerme.app.data.model.Component
 
 class NoteViewModel : ViewModel() {
@@ -13,11 +12,12 @@ class NoteViewModel : ViewModel() {
         val c = execute()
 
         c?.let { component ->
-            realm.executeTransactionAsync(Realm.Transaction {
-                component.deleteFromRealm()
-            }, Realm.Transaction.OnError {
-                Log.e(TAG, "Cannot delete object from Realm", it)
-            })
+
+//            realm.executeTransactionAsync(Realm.Transaction {
+//                component.deleteFromRealm()
+//            }, Realm.Transaction.OnError {
+//                Log.e(TAG, "Cannot delete object from Realm", it)
+//            })
         }
     }
 

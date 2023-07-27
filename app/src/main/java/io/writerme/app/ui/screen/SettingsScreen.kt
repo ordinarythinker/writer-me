@@ -202,7 +202,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
                             .width(150.dp)
                             .height(48.dp)
                     ) {
-                        val radius = dimensionResource(id = R.dimen.settings_field_radius)
+                        val radius = dimensionResource(id = R.dimen.big_radius)
                         TextField(
                             value = state.value.currentLanguage,
                             onValueChange = state.value.onLanguageChange,
