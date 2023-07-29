@@ -67,7 +67,7 @@ open class Component(): RealmObject {
                 isChecked: Boolean) : this() {
         this.noteId = note.id
         this.content = content
-        this.type = ComponentType.CheckBox
+        this.type = ComponentType.Checkbox
     }
 
     constructor(note: Note,
@@ -103,7 +103,7 @@ open class Component(): RealmObject {
 }
 
 enum class ComponentType(val value: String) {
-    Text("text"), CheckBox("checkbox"),
-    Voice("voice"), Task("task"),
-    Link("link"), Video("video"), Image("image")
+    Text("Text"), Checkbox("Checkbox"),
+    Voice("Voice"), Task("Task"),
+    Link("Link"), Video("Video"), Image("Image")
 }

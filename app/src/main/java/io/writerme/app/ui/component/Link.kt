@@ -36,52 +36,54 @@ import io.writerme.app.ui.theme.linkTitle
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Link(link: Component, modifier: Modifier, onClick: () -> Unit) {
-    val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
-    Card(
-        shape = shape,
-        modifier = modifier.wrapContentHeight().shadow(15.dp, shape),
-        backgroundColor = Color.White,
-        onClick = onClick
-    ) {
-        Box(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
-            /*Image(
-                painter = painterResource(id = R.drawable.travel),
-                contentDescription = "",
-                modifier = Modifier
-                    .fillMaxWidth(),
-                contentScale = ContentScale.Crop
-            )*/
-
-            AsyncImage(
-               model = link.imageUrl,
-               contentDescription = link.content,
-               modifier = Modifier
-                   .fillMaxWidth(),
-               contentScale = ContentScale.Crop
-           )
-
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp)
-                .align(Alignment.BottomStart)
-                .padding(12.dp, 0.dp, 12.dp, 12.dp)
-                .clip(RoundedCornerShape(dimensionResource(id = R.dimen.big_radius)))
-            ) {
-                Box(
+    if (link.type == ComponentType.Link) {
+        val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
+        Card(
+            shape = shape,
+            modifier = modifier.wrapContentHeight().shadow(15.dp, shape),
+            backgroundColor = Color.White,
+            onClick = onClick
+        ) {
+            Box(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
+                /*Image(
+                    painter = painterResource(id = R.drawable.travel),
+                    contentDescription = "",
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colors.linkTitle)
-                        .blur(60.dp)
+                        .fillMaxWidth(),
+                    contentScale = ContentScale.Crop
+                )*/
+
+                AsyncImage(
+                    model = link.imageUrl,
+                    contentDescription = link.content,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    contentScale = ContentScale.Crop
                 )
 
-                Text(
-                    text = link.title,
-                    style = MaterialTheme.typography.body1,
-                    modifier = Modifier.align(Alignment.CenterStart)
-                        .padding(8.dp, 0.dp),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+                    .align(Alignment.BottomStart)
+                    .padding(12.dp, 0.dp, 12.dp, 12.dp)
+                    .clip(RoundedCornerShape(dimensionResource(id = R.dimen.big_radius)))
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colors.linkTitle)
+                            .blur(60.dp)
+                    )
+
+                    Text(
+                        text = link.title,
+                        style = MaterialTheme.typography.body1,
+                        modifier = Modifier.align(Alignment.CenterStart)
+                            .padding(8.dp, 0.dp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }

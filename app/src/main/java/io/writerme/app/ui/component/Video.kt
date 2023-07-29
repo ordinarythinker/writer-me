@@ -8,7 +8,7 @@ import io.writerme.app.ui.state.ScrollableMediaState
 
 @Composable
 fun Video(videoState: ScrollableMediaState) {
-
+    // Implementation pending
 }
 
 @Composable

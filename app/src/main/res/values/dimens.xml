@@ -2,4 +2,8 @@
 <resources>
     <dimen name="screen_padding">16dp</dimen>
     <dimen name="big_radius">24dp</dimen>
+    <dimen name="shadow">15dp</dimen>
+    <dimen name="blur_radius">20dp</dimen>
+    <dimen name="small_radius">16dp</dimen>
+    <dimen name="field_border_width">1dp</dimen>
 </resources>

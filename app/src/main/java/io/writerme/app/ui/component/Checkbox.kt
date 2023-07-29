@@ -22,22 +22,24 @@ import io.writerme.app.ui.theme.WriterMeTheme
 
 @Composable
 fun Checkbox(component: Component, modifier: Modifier) {
-    Row(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        Icon(
-            modifier = Modifier
-                .width(20.dp)
-                .height(20.dp).padding(0.dp, 3.dp, 0.dp, 0.dp),
-            painter = if (component.isChecked) painterResource(id = R.drawable.ic_checked)
-            else painterResource(id = R.drawable.ic_unchecked),
-            contentDescription = stringResource(id = R.string.checkbox_name)
-        )
-        Text(
-            text = component.content,
-            modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp),
-            style = MaterialTheme.typography.body1
-        )
+    if (component.type == ComponentType.Checkbox) {
+        Row(
+            modifier = modifier.fillMaxWidth()
+        ) {
+            Icon(
+                modifier = Modifier
+                    .width(20.dp)
+                    .height(20.dp).padding(0.dp, 3.dp, 0.dp, 0.dp),
+                painter = if (component.isChecked) painterResource(id = R.drawable.ic_checked)
+                else painterResource(id = R.drawable.ic_unchecked),
+                contentDescription = stringResource(id = R.string.checkbox_name)
+            )
+            Text(
+                text = component.content,
+                modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp),
+                style = MaterialTheme.typography.body1
+            )
+        }
     }
 }
 
@@ -45,7 +47,7 @@ fun Checkbox(component: Component, modifier: Modifier) {
 @Preview(showBackground = true, showSystemUi = true)
 fun CheckboxPreview() {
     val component = Component().apply {
-        type = ComponentType.CheckBox
+        type = ComponentType.Checkbox
         content = "Complete writing post for Instagram, Complete writing post for Instagram, Complete writing post for Instagram"
         isChecked = false
     }

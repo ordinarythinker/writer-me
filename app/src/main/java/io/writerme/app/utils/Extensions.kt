@@ -18,7 +18,7 @@ fun <T> RealmList<T>.getLast(): T? {
 fun <T> RealmList<T>.push(t: T, type: ComponentType): T? {
     val number = when (type) {
         ComponentType.Text -> Const.TEXT_CHANGES_HISTORY
-        ComponentType.CheckBox -> Const.TEXT_CHANGES_HISTORY
+        ComponentType.Checkbox -> Const.TEXT_CHANGES_HISTORY
         ComponentType.Link -> Const.LINK_CHANGES_HISTORY
         ComponentType.Image, ComponentType.Video -> Const.MEDIA_CHANGES_HISTORY
         ComponentType.Voice -> Const.VOICE_CHANGES_HISTORY

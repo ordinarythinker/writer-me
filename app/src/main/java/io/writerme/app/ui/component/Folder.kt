@@ -25,7 +25,7 @@ fun Folder(folder: BookmarksFolder, modifier: Modifier = Modifier) {
     ) {
         androidx.compose.foundation.Image(
             painter = painterResource(id = R.drawable.ic_folder),
-            contentDescription = stringResource(id = R.string.folder),
+            contentDescription = stringResource(id = R.string.folder_icon),
             modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp)
         )
 

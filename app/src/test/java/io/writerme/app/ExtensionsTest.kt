@@ -1,8 +1,9 @@
 package io.writerme.app
 
+import io.realm.kotlin.ext.realmListOf
+import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.utils.push
-import io.writerme.app.utils.realmListOf
 import org.junit.Test
 import org.junit.Assert.*
 
@@ -32,7 +33,7 @@ class ExtensionsTest {
     @Test
     fun testPush_MediaType() {
         val list = realmListOf(1,2,3,4,5)
-        list.push(6, ComponentType.Media)
+        list.push(6, ComponentType.Image)
         assertEquals(3, list.size)
     }
 
@@ -48,5 +49,13 @@ class ExtensionsTest {
         val list = realmListOf(1,2,3,4,5)
         list.push(6, ComponentType.Link)
         assertEquals(3, list.size)
+    }
+
+    @Test
+    fun testComponentType() {
+        val component = Component()
+        component.type = ComponentType.Checkbox
+
+        assertEquals(ComponentType.Checkbox, component.type)
     }
 }

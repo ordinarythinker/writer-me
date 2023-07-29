@@ -114,7 +114,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
 
                 Divider(
                     modifier = Modifier.padding(screenPadding, 0.dp, screenPadding, screenPadding),
-                    color = MaterialTheme.colors.divider
+                    color = MaterialTheme.colors.strokeLight
                 )
 
                 Text(
@@ -175,7 +175,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
 
                 Divider(
                     modifier = Modifier.padding(screenPadding, 0.dp, screenPadding, screenPadding),
-                    color = MaterialTheme.colors.divider
+                    color = MaterialTheme.colors.strokeLight
                 )
 
                 Row(
@@ -296,7 +296,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
 
                 Divider(
                     modifier = Modifier.padding(screenPadding, 0.dp, screenPadding, 0.dp),
-                    color = MaterialTheme.colors.divider
+                    color = MaterialTheme.colors.strokeLight
                 )
 
                 Row(

@@ -21,5 +21,7 @@
     <string name="globe_icon">Globe icon</string>
     <string name="profile_picture">Profile picture</string>
     <string name="edit_icon">Edit icon</string>
-    <string name="folder">Folder</string>
+    <string name="folder_icon">Folder icon</string>
+    <string name="create">create</string>
+    <string name="create_bookmark_title">Create Bookmark</string>
 </resources>

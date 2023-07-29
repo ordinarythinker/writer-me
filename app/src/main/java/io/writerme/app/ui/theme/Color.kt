@@ -14,6 +14,8 @@ val DarkGrey = Color(0xA6292D32)
 val TextLight = Color(0xFFF5F5F5)
 val LightGrey50 = Color(0x808C8989)
 val LightGray40 = Color(0xA6D9D9D9)
+val DialogGrey85 = Color(0xD9292D32)
+val DarkBlack25 = Color(0x40000000)
 
 val Colors.cardBackground : Color
     get() = DarkGrey
@@ -21,8 +23,14 @@ val Colors.cardBackground : Color
 val Colors.light : Color
     get() = TextLight
 
-val Colors.divider : Color
+val Colors.strokeLight : Color
     get() = LightGrey50
 
 val Colors.linkTitle : Color
     get() = LightGray40
+
+val Colors.dialogBackground : Color
+    get() = DialogGrey85
+
+val Colors.fieldDark : Color
+    get() = DarkBlack25
