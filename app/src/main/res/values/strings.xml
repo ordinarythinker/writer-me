@@ -28,4 +28,6 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="back_button">Back button</string>
     <string name="more">Additional menu</string>
+    <string name="background_image">Background image</string>
+    <string name="settings">Settings</string>
 </resources>
