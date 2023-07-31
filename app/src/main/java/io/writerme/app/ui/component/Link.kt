@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import io.realm.kotlin.internal.interop.Link
 import io.writerme.app.R
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
@@ -35,31 +36,33 @@ import io.writerme.app.ui.theme.linkTitle
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Link(link: Component, modifier: Modifier, onClick: () -> Unit) {
+fun Link(link: Component, modifier: Modifier, onClick: (Component) -> Unit) {
     if (link.type == ComponentType.Link) {
         val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
         Card(
             shape = shape,
             modifier = modifier.wrapContentHeight().shadow(15.dp, shape),
             backgroundColor = Color.White,
-            onClick = onClick
+            onClick = {
+                onClick(link)
+            }
         ) {
             Box(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
-                /*Image(
+                Image(
                     painter = painterResource(id = R.drawable.travel),
                     contentDescription = "",
                     modifier = Modifier
                         .fillMaxWidth(),
                     contentScale = ContentScale.Crop
-                )*/
+                )
 
-                AsyncImage(
+                /*AsyncImage(
                     model = link.imageUrl,
                     contentDescription = link.content,
                     modifier = Modifier
                         .fillMaxWidth(),
                     contentScale = ContentScale.Crop
-                )
+                )*/
 
                 Box(modifier = Modifier
                     .fillMaxWidth()

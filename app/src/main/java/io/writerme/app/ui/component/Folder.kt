@@ -10,12 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.writerme.app.R
 import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.ui.theme.WriterMeTheme
+import io.writerme.app.ui.theme.light
 
 @Composable
 fun Folder(folder: BookmarksFolder, modifier: Modifier = Modifier) {
@@ -25,16 +27,17 @@ fun Folder(folder: BookmarksFolder, modifier: Modifier = Modifier) {
     ) {
         androidx.compose.foundation.Image(
             painter = painterResource(id = R.drawable.ic_folder),
-            contentDescription = stringResource(id = R.string.folder_icon),
-            modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp)
+            contentDescription = stringResource(id = R.string.folder_icon)
         )
 
         Text(
             text = folder.name,
             style = MaterialTheme.typography.body1,
             maxLines = 1,
-            modifier = Modifier.width(120.dp).padding(0.dp, 8.dp),
-            overflow = TextOverflow.Ellipsis
+            modifier = Modifier.width(100.dp).padding(0.dp, 8.dp),
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colors.light
         )
     }
 }
@@ -43,7 +46,7 @@ fun Folder(folder: BookmarksFolder, modifier: Modifier = Modifier) {
 @Composable
 fun FolderPreview() {
     val folder = BookmarksFolder().apply {
-        name = "Long title for a folder"
+        name = "Long"
     }
 
     val modifier = Modifier.padding(16.dp)

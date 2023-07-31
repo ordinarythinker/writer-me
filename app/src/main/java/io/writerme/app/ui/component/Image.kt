@@ -32,19 +32,19 @@ fun Image(component: Component, modifier: Modifier) {
                 .shadow(dimensionResource(id = R.dimen.shadow), shape),
             backgroundColor = Color.White
         ) {
-            /*androidx.compose.foundation.Image(
+            androidx.compose.foundation.Image(
                 painter = painterResource(id = R.drawable.travel),
                 contentDescription = "",
                 modifier = Modifier.fillMaxWidth(),
                 contentScale = ContentScale.Crop
-            )*/
+            )
 
-            AsyncImage(
+            /*AsyncImage(
                 model = component.imageUrl,
                 contentDescription = component.content,
                 modifier = Modifier.fillMaxWidth(),
                 contentScale = ContentScale.Crop
-            )
+            )*/
         }
     }
 }

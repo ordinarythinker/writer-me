@@ -24,4 +24,8 @@
     <string name="folder_icon">Folder icon</string>
     <string name="create">create</string>
     <string name="create_bookmark_title">Create Bookmark</string>
+    <string name="add_folder_button">Add folder button</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="back_button">Back button</string>
+    <string name="more">Additional menu</string>
 </resources>

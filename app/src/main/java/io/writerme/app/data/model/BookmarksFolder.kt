@@ -13,4 +13,6 @@ open class BookmarksFolder : RealmObject {
     var name: String = ""
     var folders: RealmList<BookmarksFolder> = realmListOf()
     var bookmarks: RealmList<Component> = realmListOf()
+
+
 }
