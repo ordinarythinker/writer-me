@@ -11,8 +11,9 @@ open class BookmarksFolder : RealmObject {
     @PrimaryKey
     var id: Long = System.currentTimeMillis()
     var name: String = ""
+
     var folders: RealmList<BookmarksFolder> = realmListOf()
     var bookmarks: RealmList<Component> = realmListOf()
 
-
+    var parent: BookmarksFolder? = null
 }
