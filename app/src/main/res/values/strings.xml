@@ -31,4 +31,7 @@
     <string name="background_image">Background image</string>
     <string name="settings">Settings</string>
     <string name="choose_folder">Choose Folder</string>
+    <string name="choose">choose</string>
+    <string name="link">Link</string>
+    <string name="title">Title</string>
 </resources>

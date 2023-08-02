@@ -53,19 +53,19 @@ import io.writerme.app.ui.theme.strokeLight
 
 @Composable
 fun CreateFolderDialog(
-    addFolder: (BookmarksFolder) -> Unit,
-    folder: BookmarksFolder,
+    createFolder: (url: String, title: String, parent: BookmarksFolder) -> Unit,
+    bookmarksFolder: BookmarksFolder,
     modifier: Modifier = Modifier,
 ) {
     val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
     val padding = dimensionResource(id = R.dimen.screen_padding)
 
     var url by remember {
-        mutableStateOf("Link")
+        mutableStateOf("")
     }
 
     var title by remember {
-        mutableStateOf("Title")
+        mutableStateOf("")
     }
 
     var path by remember {
@@ -73,7 +73,11 @@ fun CreateFolderDialog(
     }
 
     var isFolderChoosingMode by remember {
-        mutableStateOf(true)
+        mutableStateOf(false)
+    }
+
+    var folder by remember {
+        mutableStateOf(bookmarksFolder)
     }
 
     Card(
@@ -148,14 +152,22 @@ fun CreateFolderDialog(
                         BasicTextField(
                             value = url,
                             maxLines = 1,
-                            onValueChange = {},
+                            onValueChange = { url = it },
                             modifier = backgroundModifier.fillMaxWidth(),
+                            singleLine = true,
                             textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
                             decorationBox = { innerTextField ->
                                 Row(verticalAlignment = Alignment.CenterVertically) {
+                                    if (url.isEmpty()) {
+                                        Text(
+                                            text = stringResource(id = R.string.link),
+                                            style = MaterialTheme.typography.body1,
+                                            color = MaterialTheme.colors.light
+                                        )
+                                    }
                                     innerTextField()
                                 }
-                            }
+                            },
                         )
 
                         Spacer(modifier = Modifier.height(padding))
@@ -163,11 +175,19 @@ fun CreateFolderDialog(
                         BasicTextField(
                             value = title,
                             maxLines = 1,
-                            onValueChange = {},
+                            onValueChange = { title = it },
+                            singleLine = true,
                             modifier = backgroundModifier.fillMaxWidth(),
                             textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
                             decorationBox = { innerTextField ->
                                 Row(verticalAlignment = Alignment.CenterVertically) {
+                                    if (url.isEmpty()) {
+                                        Text(
+                                            text = stringResource(id = R.string.title),
+                                            style = MaterialTheme.typography.body1,
+                                            color = MaterialTheme.colors.light
+                                        )
+                                    }
                                     innerTextField()
                                 }
                             }
@@ -179,7 +199,7 @@ fun CreateFolderDialog(
                             modifier = backgroundModifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    if (folder.folders.isNotEmpty()) {
+                                    if (bookmarksFolder.folders.isNotEmpty()) {
                                         isFolderChoosingMode = true
                                     }
                                 },
@@ -191,7 +211,7 @@ fun CreateFolderDialog(
                                 color = MaterialTheme.colors.light,
                                 style = MaterialTheme.typography.body1
                             )
-                            if (folder.folders.isNotEmpty()) {
+                            if (bookmarksFolder.folders.isNotEmpty()) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_folder),
                                     contentDescription = stringResource(id = R.string.folder_icon),
@@ -210,7 +230,7 @@ fun CreateFolderDialog(
                                 .padding(20.dp, 0.dp)
                                 .align(Alignment.CenterHorizontally)
                                 .clickable {
-
+                                    createFolder(url, title, folder)
                                 },
                             color = MaterialTheme.colors.light
                         )
@@ -218,38 +238,59 @@ fun CreateFolderDialog(
                 }
 
                 AnimatedVisibility(visible = isFolderChoosingMode) {
-                    LazyColumn(
-                        modifier = Modifier
-                            .clip(fieldShape)
-                            .border(
-                                dimensionResource(id = R.dimen.field_border_width),
-                                MaterialTheme.colors.strokeLight,
-                                fieldShape
-                            )
-                            .background(MaterialTheme.colors.fieldDark)
-                            .heightIn(0.dp, 300.dp)
-                            .padding(16.dp, 8.dp)
-                            .fillMaxWidth()
-                    ) {
-                        item {
-                            FolderPickerRow(
-                                folder = BookmarksFolder().apply {
-                                    name = ".."
-                                },
-                                modifier = Modifier.clickable {
+                    Column {
+                        LazyColumn(
+                            modifier = Modifier
+                                .clip(fieldShape)
+                                .border(
+                                    dimensionResource(id = R.dimen.field_border_width),
+                                    MaterialTheme.colors.strokeLight,
+                                    fieldShape
+                                )
+                                .background(MaterialTheme.colors.fieldDark)
+                                .heightIn(0.dp, 300.dp)
+                                .padding(16.dp, 8.dp)
+                                .fillMaxWidth()
+                        ) {
+                            if (folder.hasParentFolder) {
+                                item {
+                                    FolderPickerRow(
+                                        folder = BookmarksFolder().apply {
+                                            name = ".."
+                                        },
+                                        modifier = Modifier.clickable {
+                                            folder = folder.parent!!
+                                        }
+                                    )
+                                }
+                            }
 
+                            items(
+                                items = bookmarksFolder.folders,
+                                itemContent = { item ->
+                                    FolderPickerRow(
+                                        folder = item,
+                                        modifier = Modifier.clickable {
+                                            folder = item
+                                        }
+                                    )
                                 }
                             )
                         }
 
-                        items(
-                            items = folder.folders,
-                            itemContent = { item ->
-                                FolderPickerRow(
-                                    folder = item,
-                                    modifier = Modifier.clickable {}
-                                )
-                            }
+                        Spacer(modifier = Modifier.height(padding))
+                        
+                        Text(
+                            text = stringResource(id = R.string.choose),
+                            modifier = backgroundModifier
+                                .wrapContentHeight()
+                                .padding(20.dp, 0.dp)
+                                .align(Alignment.CenterHorizontally)
+                                .clickable {
+                                    isFolderChoosingMode = false
+                                    path = folder.path
+                                },
+                            color = MaterialTheme.colors.light
                         )
                     }
                 }
@@ -263,11 +304,21 @@ fun CreateFolderDialog(
 @Composable
 fun CreateFolderDialogPreview() {
     val mainFolder = BookmarksFolder()
+
     mainFolder.apply {
         this.folders = realmListOf(
-            BookmarksFolder().apply { name = "Job" },
-            BookmarksFolder().apply { name = "Programming" },
-            BookmarksFolder().apply { name = "Films" }
+            BookmarksFolder().apply {
+                name = "Job"
+                parent = mainFolder
+            },
+            BookmarksFolder().apply {
+                name = "Programming"
+                parent = mainFolder
+            },
+            BookmarksFolder().apply {
+                name = "Films"
+                parent = mainFolder
+            }
         )
 
         this.bookmarks = realmListOf(
@@ -283,6 +334,6 @@ fun CreateFolderDialogPreview() {
     }
 
     WriterMeTheme {
-        CreateFolderDialog(addFolder = {}, folder = mainFolder)
+        CreateFolderDialog(createFolder = { _, _, _ -> }, bookmarksFolder = mainFolder)
     }
 }
