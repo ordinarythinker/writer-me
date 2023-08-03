@@ -57,7 +57,8 @@ val Typography = Typography(
     ),
     subtitle1 = TextStyle(
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        lineHeight = 23.sp
     ),
     caption = TextStyle(
         fontWeight = FontWeight.Normal,
