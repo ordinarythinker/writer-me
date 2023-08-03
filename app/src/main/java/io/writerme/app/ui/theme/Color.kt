@@ -13,7 +13,8 @@ val Teal200 = Color(0xFF4E688D)
 val DarkGrey = Color(0xA6292D32)
 val TextLight = Color(0xFFF5F5F5)
 val LightGrey50 = Color(0x808C8989)
-val LightGray40 = Color(0xA6D9D9D9)
+val LightGrey65 = Color(0xA6D9D9D9)
+val DarkGrey65 = Color(0xA66B6A6A)
 val DialogGrey85 = Color(0xD9292D32)
 val DarkBlack25 = Color(0x40000000)
 
@@ -27,10 +28,13 @@ val Colors.strokeLight : Color
     get() = LightGrey50
 
 val Colors.linkTitle : Color
-    get() = LightGray40
+    get() = LightGrey65
 
 val Colors.dialogBackground : Color
     get() = DialogGrey85
 
 val Colors.fieldDark : Color
     get() = DarkBlack25
+
+val Colors.backgroundGrey : Color
+    get() = DarkGrey65
