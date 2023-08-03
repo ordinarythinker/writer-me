@@ -1,18 +1,21 @@
 package io.writerme.app.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -26,38 +29,54 @@ import io.writerme.app.ui.theme.backgroundGrey
 import io.writerme.app.ui.theme.light
 import io.writerme.app.utils.toDateDescription
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Task(task: Component, modifier: Modifier = Modifier) {
+fun Task(task: Component, onClick: () -> Unit, modifier: Modifier = Modifier) {
     if (task.type == ComponentType.Task) {
         val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
 
-        Row(
+        Card(
+            shape = shape,
             modifier = modifier
-                .wrapContentHeight()
                 .fillMaxWidth()
-                .clip(shape)
-                .background(MaterialTheme.colors.backgroundGrey)
                 .padding(8.dp)
+                .wrapContentHeight()
                 .shadow(dimensionResource(id = R.dimen.shadow), shape),
+            onClick = onClick
         ) {
-            Column(
-                modifier = Modifier.weight(0.8f)
-            ) {
-                Text(
-                    text = toDateDescription(task.time),
-                    style = MaterialTheme.typography.h5,
-                    color = MaterialTheme.colors.light
+            Box(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
+                Box(modifier = Modifier
+                    .matchParentSize()
+                    .background(MaterialTheme.colors.backgroundGrey)
                 )
-                Text(
-                    text = task.content,
-                    style = MaterialTheme.typography.h3,
-                    color = MaterialTheme.colors.light
-                )
+
+                Row(
+                    modifier = modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier.weight(0.8f)
+                    ) {
+                        Text(
+                            text = toDateDescription(task.time),
+                            style = MaterialTheme.typography.h5,
+                            color = MaterialTheme.colors.light
+                        )
+                        Text(
+                            text = task.content,
+                            style = MaterialTheme.typography.h3,
+                            color = MaterialTheme.colors.light
+                        )
+                    }
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proceed),
+                        contentDescription = null,
+                        tint = MaterialTheme.colors.light
+                    )
+                }
             }
-            Icon(
-                painter = painterResource(id = R.drawable.ic_proceed),
-                contentDescription = null
-            )
         }
     }
 }
@@ -71,6 +90,6 @@ fun TaskPreview() {
     }
 
     WriterMeTheme {
-        Task(component, Modifier.padding(16.dp))
+        Task(component, {}, Modifier.padding(16.dp))
     }
 }
