@@ -1,7 +1,11 @@
 package io.writerme.app.utils
 
+import android.content.Context
+import android.os.Build
 import io.realm.kotlin.types.RealmList
 import io.writerme.app.data.model.ComponentType
+import java.util.Locale
+
 
 fun <T> RealmList<T>.getLast(): T? {
     return if (this.size > 0) {
@@ -34,4 +38,12 @@ fun <T> RealmList<T>.push(t: T, type: ComponentType): T? {
     this.add(t)
 
     return deleted
+}
+
+fun Context.getCurrentLocale(): Locale {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        this.resources.configuration.locales[0]
+    } else {
+        this.resources.configuration.locale
+    }
 }

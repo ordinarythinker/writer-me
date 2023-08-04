@@ -1,12 +1,15 @@
 package io.writerme.app.utils
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import io.writerme.app.R
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 
 @Composable
 fun toDateDescription(date: Date): String {
-    var result = "Today at 2:40 PM"
     val now = Calendar.getInstance()
     val given = Calendar.getInstance()
     given.time = date
@@ -17,22 +20,29 @@ fun toDateDescription(date: Date): String {
     val tomorrow = Calendar.getInstance()
     tomorrow.add(Calendar.DAY_OF_YEAR, 1)
 
-    if (given.get(Calendar.YEAR) == now.get(Calendar.YEAR) &&
+    val currentLocale = LocalContext.current.getCurrentLocale()
+
+    var _when = if (given.get(Calendar.YEAR) == now.get(Calendar.YEAR) &&
         given.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR)
     ) {
-        // today
+        stringResource(id = R.string.today)
     } else if (given.get(Calendar.YEAR) == yesterday[Calendar.YEAR] &&
         given.get(Calendar.DAY_OF_YEAR) == yesterday[Calendar.DAY_OF_YEAR]
     ) {
-        println("The date was yesterday!")
+        stringResource(id = R.string.yesterday)
     } else if (given.get(Calendar.YEAR) == tomorrow[Calendar.YEAR] &&
         given.get(Calendar.DAY_OF_YEAR) == tomorrow[Calendar.DAY_OF_YEAR]
     ) {
-        println("The date is tomorrow!")
+        stringResource(id = R.string.tomorrow)
     } else {
-        println("The date is not yesterday or tomorrow!")
+        val format = SimpleDateFormat("EEEE, d MMMM yy", currentLocale)
+        format.format(date)
     }
 
+    val at = stringResource(id = R.string.at)
 
-    return result
+    val format = SimpleDateFormat("hh:mm a", currentLocale)
+    val time = format.format(date)
+
+    return "$_when $at $time"
 }
