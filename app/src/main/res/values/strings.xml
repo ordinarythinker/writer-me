@@ -38,4 +38,5 @@
     <string name="yesterday">Yesterday</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="at">at</string>
+    <string name="edit">Edit</string>
 </resources>
