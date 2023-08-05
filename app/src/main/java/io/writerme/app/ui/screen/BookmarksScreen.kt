@@ -11,12 +11,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberScaffoldState
@@ -43,17 +46,24 @@ import io.writerme.app.ui.theme.light
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun BookmarksScreen(
     bookmarksState: StateFlow<BookmarksState>,
-    onLinkClicked: (Component) -> Unit
+    onFolderClicked: (BookmarksFolder) -> Unit,
+    onLinkClicked: (Component) -> Unit,
+    showCreateFolderDialog: () -> Unit,
+    dismissCreateFolderDialog: () -> Unit,
+    createFolder: (String, String, BookmarksFolder) -> Unit
 ) {
     val state = bookmarksState.collectAsStateWithLifecycle()
     val scaffoldState = rememberScaffoldState()
     val padding = dimensionResource(id = R.dimen.screen_padding)
 
-    Box {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
         Image(
             painter = painterResource(id = R.drawable.background_main),
             contentDescription = "",
@@ -64,13 +74,16 @@ fun BookmarksScreen(
         Scaffold(
             scaffoldState = scaffoldState,
             backgroundColor = Color.Transparent,
+            modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(
                     backgroundColor = Color.Transparent,
                     elevation = 0.dp,
                     title = {
                         Text(
-                            text = stringResource(id = R.string.bookmarks),
+                            text = state.value.currentFolder.name.ifEmpty {
+                                stringResource(id = R.string.bookmarks)
+                            },
                             style = MaterialTheme.typography.h2,
                             color = MaterialTheme.colors.light
                         )
@@ -97,9 +110,7 @@ fun BookmarksScreen(
             },
             floatingActionButtonPosition = FabPosition.End,
             floatingActionButton = {
-                FloatingActionButton(onClick = {
-
-                }) {
+                FloatingActionButton(onClick = showCreateFolderDialog) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_add),
                         contentDescription = stringResource(id = R.string.add_folder_button)
@@ -108,20 +119,38 @@ fun BookmarksScreen(
             },
             content = {
                 Column {
+                    if (state.value.isCreateDialogDisplayed) {
+                        CreateFolderDialog(
+                            createFolder = createFolder,
+                            bookmarksFolder = state.value.currentFolder,
+                            onDismiss = dismissCreateFolderDialog
+                        )
+                    }
+
+
                     Row {
                         LazyVerticalGrid(
                             columns = GridCells.Adaptive(120.dp),
                             contentPadding = PaddingValues(padding),
                             content = {
-                                val list = state.value.mainFolder.folders
-                                items(list.size) { index ->
-                                    Folder(
-                                        folder = list[index],
-                                        modifier = Modifier
-                                            .width(110.dp)
-                                            .padding(8.dp)
-                                    )
-                                }
+
+                                items(
+                                    items = state.value.currentFolder.folders,
+                                    itemContent = { item ->
+                                        Surface(
+                                            onClick = { onFolderClicked(item) },
+                                            color = Color.Transparent
+                                        ) {
+                                            Folder(
+                                                folder = item,
+                                                modifier = Modifier
+                                                    .width(110.dp)
+                                                    .padding(8.dp)
+                                            )
+                                        }
+                                    }
+                                )
+
                             }
                         )
                     }
@@ -131,7 +160,7 @@ fun BookmarksScreen(
                             columns = GridCells.Adaptive(150.dp),
                             contentPadding = PaddingValues(padding),
                             content = {
-                                val links = state.value.mainFolder.bookmarks
+                                val links = state.value.currentFolder.bookmarks
 
                                 items(links.size) { i ->
                                     Link(
@@ -172,9 +201,16 @@ fun BookmarksScreenPreview() {
         )
     }
 
-    val state = BookmarksState(mainFolder)
+    val state = BookmarksState(mainFolder, true)
 
     WriterMeTheme {
-        BookmarksScreen(bookmarksState = MutableStateFlow(state)) {}
+        BookmarksScreen(
+            bookmarksState = MutableStateFlow(state),
+            onFolderClicked = {},
+            onLinkClicked = {},
+            showCreateFolderDialog = {},
+            dismissCreateFolderDialog = {},
+            createFolder = { _, _, _ ->}
+        )
     }
 }

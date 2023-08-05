@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import io.realm.kotlin.ext.realmListOf
 import io.writerme.app.R
 import io.writerme.app.data.model.BookmarksFolder
@@ -54,6 +55,7 @@ import io.writerme.app.ui.theme.strokeLight
 fun CreateFolderDialog(
     createFolder: (url: String, title: String, parent: BookmarksFolder) -> Unit,
     bookmarksFolder: BookmarksFolder,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
@@ -79,221 +81,225 @@ fun CreateFolderDialog(
         mutableStateOf(bookmarksFolder)
     }
 
-    Card(
-        shape = shape,
-        modifier = modifier
-            .wrapContentHeight()
-            .shadow(dimensionResource(id = R.dimen.shadow), shape)
+    Dialog(
+        onDismissRequest = onDismiss
     ) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()) {
-            Box(
-                modifier = Modifier
-                    .matchParentSize()
-                    .background(MaterialTheme.colors.dialogBackground)
-                    .blur(dimensionResource(id = R.dimen.blur_radius))
-            )
-
-            Column(
-                modifier = Modifier.padding(padding)
-            ) {
-                Row(
-                    modifier = Modifier.padding(0.dp, 8.dp, 0.dp, padding),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    AnimatedVisibility(visible = isFolderChoosingMode) {
-                        Icon(
-                            painterResource(id = R.drawable.ic_back),
-                            contentDescription = stringResource(id = R.string.back_button),
-                            modifier = Modifier
-                                .size(30.dp)
-                                .padding(0.dp, 0.dp, 16.dp, 0.dp)
-                                .clickable { isFolderChoosingMode = false },
-                            tint = MaterialTheme.colors.light
-                        )
-                    }
-
-                    Text(
-                        text = if (isFolderChoosingMode) {
-                            stringResource(id = R.string.choose_folder)
-                        } else {
-                            stringResource(id = R.string.create_bookmark_title)
-                        },
-                        style = MaterialTheme.typography.h4,
-                        color = MaterialTheme.colors.light
-                    )
-                }
-
-                Divider(
-                    thickness = 1.dp,
-                    color = MaterialTheme.colors.strokeLight
+        Card(
+            shape = shape,
+            modifier = modifier
+                .wrapContentHeight()
+                .shadow(dimensionResource(id = R.dimen.shadow), shape)
+        ) {
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()) {
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(MaterialTheme.colors.dialogBackground)
+                        .blur(dimensionResource(id = R.dimen.blur_radius))
                 )
 
-                Spacer(modifier = Modifier.height(padding))
+                Column(
+                    modifier = Modifier.padding(padding)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(0.dp, 8.dp, 0.dp, padding),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AnimatedVisibility(visible = isFolderChoosingMode) {
+                            Icon(
+                                painterResource(id = R.drawable.ic_back),
+                                contentDescription = stringResource(id = R.string.back_button),
+                                modifier = Modifier
+                                    .size(30.dp)
+                                    .padding(0.dp, 0.dp, 16.dp, 0.dp)
+                                    .clickable { isFolderChoosingMode = false },
+                                tint = MaterialTheme.colors.light
+                            )
+                        }
 
-                val fieldShape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
-
-                val backgroundModifier = Modifier
-                    .clip(fieldShape)
-                    .border(
-                        dimensionResource(id = R.dimen.field_border_width),
-                        MaterialTheme.colors.strokeLight,
-                        fieldShape
-                    )
-                    .background(MaterialTheme.colors.fieldDark)
-                    .padding(padding, 0.dp)
-                    .height(40.dp)
-
-                AnimatedVisibility(visible = !isFolderChoosingMode) {
-                    Column {
-                        BasicTextField(
-                            value = url,
-                            maxLines = 1,
-                            onValueChange = { url = it },
-                            modifier = backgroundModifier.fillMaxWidth(),
-                            singleLine = true,
-                            textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
-                            decorationBox = { innerTextField ->
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    if (url.isEmpty()) {
-                                        Text(
-                                            text = stringResource(id = R.string.link),
-                                            style = MaterialTheme.typography.body1,
-                                            color = MaterialTheme.colors.light
-                                        )
-                                    }
-                                    innerTextField()
-                                }
+                        Text(
+                            text = if (isFolderChoosingMode) {
+                                stringResource(id = R.string.choose_folder)
+                            } else {
+                                stringResource(id = R.string.create_bookmark_title)
                             },
+                            style = MaterialTheme.typography.h4,
+                            color = MaterialTheme.colors.light
                         )
+                    }
 
-                        Spacer(modifier = Modifier.height(padding))
+                    Divider(
+                        thickness = 1.dp,
+                        color = MaterialTheme.colors.strokeLight
+                    )
 
-                        BasicTextField(
-                            value = title,
-                            maxLines = 1,
-                            onValueChange = { title = it },
-                            singleLine = true,
-                            modifier = backgroundModifier.fillMaxWidth(),
-                            textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
-                            decorationBox = { innerTextField ->
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    if (url.isEmpty()) {
-                                        Text(
-                                            text = stringResource(id = R.string.title),
-                                            style = MaterialTheme.typography.body1,
-                                            color = MaterialTheme.colors.light
+                    Spacer(modifier = Modifier.height(padding))
+
+                    val fieldShape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
+
+                    val backgroundModifier = Modifier
+                        .clip(fieldShape)
+                        .border(
+                            dimensionResource(id = R.dimen.field_border_width),
+                            MaterialTheme.colors.strokeLight,
+                            fieldShape
+                        )
+                        .background(MaterialTheme.colors.fieldDark)
+                        .padding(padding, 0.dp)
+                        .height(40.dp)
+
+                    AnimatedVisibility(visible = !isFolderChoosingMode) {
+                        Column {
+                            BasicTextField(
+                                value = url,
+                                maxLines = 1,
+                                onValueChange = { url = it },
+                                modifier = backgroundModifier.fillMaxWidth(),
+                                singleLine = true,
+                                textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
+                                decorationBox = { innerTextField ->
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        if (url.isEmpty()) {
+                                            Text(
+                                                text = stringResource(id = R.string.link),
+                                                style = MaterialTheme.typography.body1,
+                                                color = MaterialTheme.colors.light
+                                            )
+                                        }
+                                        innerTextField()
+                                    }
+                                },
+                            )
+
+                            Spacer(modifier = Modifier.height(padding))
+
+                            BasicTextField(
+                                value = title,
+                                maxLines = 1,
+                                onValueChange = { title = it },
+                                singleLine = true,
+                                modifier = backgroundModifier.fillMaxWidth(),
+                                textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
+                                decorationBox = { innerTextField ->
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        if (url.isEmpty()) {
+                                            Text(
+                                                text = stringResource(id = R.string.title),
+                                                style = MaterialTheme.typography.body1,
+                                                color = MaterialTheme.colors.light
+                                            )
+                                        }
+                                        innerTextField()
+                                    }
+                                }
+                            )
+
+                            Spacer(modifier = Modifier.height(padding))
+
+                            Row (
+                                modifier = backgroundModifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        if (bookmarksFolder.folders.isNotEmpty()) {
+                                            isFolderChoosingMode = true
+                                        }
+                                    },
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = path,
+                                    modifier = Modifier.weight(0.8f),
+                                    color = MaterialTheme.colors.light,
+                                    style = MaterialTheme.typography.body1
+                                )
+                                if (bookmarksFolder.folders.isNotEmpty()) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_folder),
+                                        contentDescription = stringResource(id = R.string.folder_icon),
+                                        modifier = Modifier.size(20.dp),
+                                        tint = MaterialTheme.colors.light
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(padding))
+
+                            Text(
+                                text = stringResource(id = R.string.create),
+                                modifier = backgroundModifier
+                                    .wrapContentHeight()
+                                    .padding(20.dp, 0.dp)
+                                    .align(Alignment.CenterHorizontally)
+                                    .clickable {
+                                        createFolder(url, title, folder)
+                                    },
+                                color = MaterialTheme.colors.light
+                            )
+                        }
+                    }
+
+                    AnimatedVisibility(visible = isFolderChoosingMode) {
+                        Column {
+                            LazyColumn(
+                                modifier = Modifier
+                                    .clip(fieldShape)
+                                    .border(
+                                        dimensionResource(id = R.dimen.field_border_width),
+                                        MaterialTheme.colors.strokeLight,
+                                        fieldShape
+                                    )
+                                    .background(MaterialTheme.colors.fieldDark)
+                                    .heightIn(0.dp, 300.dp)
+                                    .padding(16.dp, 8.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                if (folder.hasParentFolder) {
+                                    item {
+                                        FolderPickerRow(
+                                            folder = BookmarksFolder().apply {
+                                                name = ".."
+                                            },
+                                            modifier = Modifier.clickable {
+                                                folder = folder.parent!!
+                                            }
                                         )
                                     }
-                                    innerTextField()
                                 }
-                            }
-                        )
 
-                        Spacer(modifier = Modifier.height(padding))
-
-                        Row (
-                            modifier = backgroundModifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    if (bookmarksFolder.folders.isNotEmpty()) {
-                                        isFolderChoosingMode = true
+                                items(
+                                    items = bookmarksFolder.folders,
+                                    itemContent = { item ->
+                                        FolderPickerRow(
+                                            folder = item,
+                                            modifier = Modifier.clickable {
+                                                folder = item
+                                            }
+                                        )
                                     }
-                                },
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(padding))
+
                             Text(
-                                text = path,
-                                modifier = Modifier.weight(0.8f),
-                                color = MaterialTheme.colors.light,
-                                style = MaterialTheme.typography.body1
+                                text = stringResource(id = R.string.choose),
+                                modifier = backgroundModifier
+                                    .wrapContentHeight()
+                                    .padding(20.dp, 0.dp)
+                                    .align(Alignment.CenterHorizontally)
+                                    .clickable {
+                                        isFolderChoosingMode = false
+                                        path = folder.path
+                                    },
+                                color = MaterialTheme.colors.light
                             )
-                            if (bookmarksFolder.folders.isNotEmpty()) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_folder),
-                                    contentDescription = stringResource(id = R.string.folder_icon),
-                                    modifier = Modifier.size(20.dp),
-                                    tint = MaterialTheme.colors.light
-                                )
-                            }
                         }
-
-                        Spacer(modifier = Modifier.height(padding))
-
-                        Text(
-                            text = stringResource(id = R.string.create),
-                            modifier = backgroundModifier
-                                .wrapContentHeight()
-                                .padding(20.dp, 0.dp)
-                                .align(Alignment.CenterHorizontally)
-                                .clickable {
-                                    createFolder(url, title, folder)
-                                },
-                            color = MaterialTheme.colors.light
-                        )
                     }
                 }
 
-                AnimatedVisibility(visible = isFolderChoosingMode) {
-                    Column {
-                        LazyColumn(
-                            modifier = Modifier
-                                .clip(fieldShape)
-                                .border(
-                                    dimensionResource(id = R.dimen.field_border_width),
-                                    MaterialTheme.colors.strokeLight,
-                                    fieldShape
-                                )
-                                .background(MaterialTheme.colors.fieldDark)
-                                .heightIn(0.dp, 300.dp)
-                                .padding(16.dp, 8.dp)
-                                .fillMaxWidth()
-                        ) {
-                            if (folder.hasParentFolder) {
-                                item {
-                                    FolderPickerRow(
-                                        folder = BookmarksFolder().apply {
-                                            name = ".."
-                                        },
-                                        modifier = Modifier.clickable {
-                                            folder = folder.parent!!
-                                        }
-                                    )
-                                }
-                            }
-
-                            items(
-                                items = bookmarksFolder.folders,
-                                itemContent = { item ->
-                                    FolderPickerRow(
-                                        folder = item,
-                                        modifier = Modifier.clickable {
-                                            folder = item
-                                        }
-                                    )
-                                }
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(padding))
-                        
-                        Text(
-                            text = stringResource(id = R.string.choose),
-                            modifier = backgroundModifier
-                                .wrapContentHeight()
-                                .padding(20.dp, 0.dp)
-                                .align(Alignment.CenterHorizontally)
-                                .clickable {
-                                    isFolderChoosingMode = false
-                                    path = folder.path
-                                },
-                            color = MaterialTheme.colors.light
-                        )
-                    }
-                }
             }
-
         }
     }
 }
@@ -332,6 +338,6 @@ fun CreateFolderDialogPreview() {
     }
 
     WriterMeTheme {
-        CreateFolderDialog(createFolder = { _, _, _ -> }, bookmarksFolder = mainFolder)
+        CreateFolderDialog(createFolder = { _, _, _ -> }, onDismiss = {}, bookmarksFolder = mainFolder)
     }
 }
