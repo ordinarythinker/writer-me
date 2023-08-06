@@ -39,4 +39,13 @@
     <string name="tomorrow">Tomorrow</string>
     <string name="at">at</string>
     <string name="edit">Edit</string>
+    <string name="bold_icon">Set the text bold icon</string>
+    <string name="italic_icon">Set the text italic icon</string>
+    <string name="underline_icon">Set the text underlined icon</string>
+    <string name="spacing_icon">Add spacing button</string>
+    <string name="add_hashtag_button">Add hashtag button</string>
+    <string name="add_link_button">Add link button</string>
+    <string name="add_voice_note_button">Add voice note button</string>
+    <string name="add_tast_button">Add task button</string>
+    <string name="add_media_button">Button to add image or video from the gallery</string>
 </resources>
