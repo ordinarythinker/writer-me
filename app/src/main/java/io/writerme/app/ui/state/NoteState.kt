@@ -1,5 +1,5 @@
 package io.writerme.app.ui.state
 
-class NoteState {
-
-}
+class NoteState(
+    val isAddModeBottomBar: Boolean = false
+)

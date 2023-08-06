@@ -20,12 +20,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.writerme.app.R
+import io.writerme.app.ui.state.NoteState
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.light
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun NoteScreen() {
+fun NoteScreen(noteState: StateFlow<NoteState>) {
     val scaffoldState = rememberScaffoldState()
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -83,7 +86,10 @@ fun NoteScreen() {
 @Preview
 @Composable
 fun NoteScreenPreview() {
+    val noteState = NoteState()
+    val state = MutableStateFlow(noteState)
+
     WriterMeTheme {
-        NoteScreen()
+        NoteScreen(noteState = state)
     }
 }

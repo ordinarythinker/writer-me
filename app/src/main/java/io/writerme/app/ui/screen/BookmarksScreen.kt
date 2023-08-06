@@ -1,6 +1,7 @@
 package io.writerme.app.ui.screen
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,11 +56,14 @@ fun BookmarksScreen(
     onLinkClicked: (Component) -> Unit,
     showCreateFolderDialog: () -> Unit,
     dismissCreateFolderDialog: () -> Unit,
-    createFolder: (String, String, BookmarksFolder) -> Unit
+    createFolder: (String, String, BookmarksFolder) -> Unit,
+    onBackPressed: () -> Unit
 ) {
     val state = bookmarksState.collectAsStateWithLifecycle()
     val scaffoldState = rememberScaffoldState()
     val padding = dimensionResource(id = R.dimen.screen_padding)
+
+    BackHandler(onBack = onBackPressed, enabled = true)
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -182,11 +186,21 @@ fun BookmarksScreen(
 @Composable
 fun BookmarksScreenPreview() {
     val mainFolder = BookmarksFolder()
+    val job = BookmarksFolder().apply {
+        name = "Job"
+        parent = mainFolder
+    }
     mainFolder.apply {
         this.folders = realmListOf(
-            BookmarksFolder().apply { name = "Job" },
-            BookmarksFolder().apply { name = "Programming" },
-            BookmarksFolder().apply { name = "Films" }
+            job,
+            BookmarksFolder().apply {
+                name = "Programming"
+                parent = mainFolder
+            },
+            BookmarksFolder().apply {
+                name = "Films"
+                parent = mainFolder
+            }
         )
 
         this.bookmarks = realmListOf(
@@ -201,7 +215,7 @@ fun BookmarksScreenPreview() {
         )
     }
 
-    val state = BookmarksState(mainFolder, true)
+    val state = BookmarksState(mainFolder, false)
 
     WriterMeTheme {
         BookmarksScreen(
@@ -210,7 +224,8 @@ fun BookmarksScreenPreview() {
             onLinkClicked = {},
             showCreateFolderDialog = {},
             dismissCreateFolderDialog = {},
-            createFolder = { _, _, _ ->}
+            createFolder = { _, _, _ ->},
+            onBackPressed = {}
         )
     }
 }
