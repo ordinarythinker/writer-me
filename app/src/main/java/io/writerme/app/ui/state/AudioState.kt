@@ -1,4 +1,5 @@
 package io.writerme.app.ui.state
 
-class AudioState {
-}
+import io.writerme.app.data.model.Component
+
+class AudioState(val audio: Component)
