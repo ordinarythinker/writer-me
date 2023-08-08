@@ -19,6 +19,7 @@ import io.writerme.app.R
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.ui.theme.WriterMeTheme
+import io.writerme.app.ui.theme.light
 
 @Composable
 fun Checkbox(component: Component, modifier: Modifier = Modifier) {
@@ -31,13 +32,15 @@ fun Checkbox(component: Component, modifier: Modifier = Modifier) {
                     .width(20.dp)
                     .height(20.dp).padding(0.dp, 3.dp, 0.dp, 0.dp),
                 painter = if (component.isChecked) painterResource(id = R.drawable.ic_checked)
-                else painterResource(id = R.drawable.ic_unchecked),
-                contentDescription = stringResource(id = R.string.checkbox_name)
+                            else painterResource(id = R.drawable.ic_unchecked),
+                contentDescription = stringResource(id = R.string.checkbox_name),
+                tint = MaterialTheme.colors.light
             )
             Text(
                 text = component.content,
                 modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp),
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.light
             )
         }
     }

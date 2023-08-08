@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -245,7 +247,8 @@ fun NoteScreen(
                         val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
 
                         Row (
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(bottom = padding)
                         ) {
                             IconButton(
                                 modifier = Modifier
@@ -287,11 +290,16 @@ fun NoteScreen(
                                         component = it,
                                         isHistoryMode = false,
                                         onValueChange = { /*TODO*/ },
-                                        onMoreClicked = { /*TODO*/ }
+                                        onMoreClicked = { /*TODO*/ },
                                     )
+
+
                                 }
                                 ComponentType.Checkbox -> {
-                                    Checkbox(component = it)
+                                    Checkbox(
+                                        component = it,
+                                        modifier = Modifier.padding(start = padding)
+                                    )
                                     // TODO: possible problem since Checkbox is not editable
                                     // TODO: make it editable, onValueChange
                                 }
@@ -305,7 +313,7 @@ fun NoteScreen(
                                 ComponentType.Link -> {
                                     Link(
                                         link = it,
-                                        onClick = {}
+                                        onClick = {},
                                     )
                                     // TODO: link is not editable, though it should be
                                 }
@@ -318,6 +326,8 @@ fun NoteScreen(
                                     )
                                 }
                             }
+
+                            Spacer(modifier = Modifier.height(padding))
                         }
                     }
                 )
@@ -348,6 +358,17 @@ fun NoteScreenPreview() {
         type = ComponentType.Task
     }
 
+    val image = Component().apply {
+        type = ComponentType.Image
+        imageUrl = ""
+    }
+
+    val link = Component().apply {
+        type = ComponentType.Link
+        title = "Best resort in Italy you ever dreamed about"
+        url = ""
+    }
+
     note.apply {
         title.push(
             component = Component().apply {
@@ -365,7 +386,8 @@ fun NoteScreenPreview() {
 
         content.addAll(
             listOf(
-                History(text), History(checkbox), History(task)
+                History(text), History(checkbox), History(task),
+                History(image), History(link)
             )
         )
 

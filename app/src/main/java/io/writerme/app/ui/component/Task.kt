@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,12 +41,14 @@ fun Task(task: Component, onClick: () -> Unit, modifier: Modifier = Modifier) {
             shape = shape,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(8.dp)
                 .wrapContentHeight()
+                .background(Color.Transparent)
                 .shadow(dimensionResource(id = R.dimen.shadow), shape),
             onClick = onClick
         ) {
-            Box(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
+            Box(
+                modifier = Modifier.fillMaxWidth().wrapContentHeight()
+            ) {
                 Box(modifier = Modifier
                     .matchParentSize()
                     .background(MaterialTheme.colors.backgroundGrey)
@@ -54,7 +57,8 @@ fun Task(task: Component, onClick: () -> Unit, modifier: Modifier = Modifier) {
                 Row(
                     modifier = modifier
                         .wrapContentHeight()
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(
@@ -92,6 +96,6 @@ fun TaskPreview() {
     }
 
     WriterMeTheme {
-        Task(component, {}, Modifier.padding(16.dp))
+        Task(component, {})
     }
 }
