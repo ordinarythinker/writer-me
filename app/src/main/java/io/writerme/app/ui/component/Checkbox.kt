@@ -21,7 +21,7 @@ import io.writerme.app.data.model.ComponentType
 import io.writerme.app.ui.theme.WriterMeTheme
 
 @Composable
-fun Checkbox(component: Component, modifier: Modifier) {
+fun Checkbox(component: Component, modifier: Modifier = Modifier) {
     if (component.type == ComponentType.Checkbox) {
         Row(
             modifier = modifier.fillMaxWidth()

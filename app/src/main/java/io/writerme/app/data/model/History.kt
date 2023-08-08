@@ -6,6 +6,7 @@ import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.Index
 import io.realm.kotlin.types.annotations.PrimaryKey
+import io.writerme.app.utils.getLast
 import io.writerme.app.utils.push
 
 open class History: RealmObject {
@@ -14,7 +15,17 @@ open class History: RealmObject {
     var id: Long = System.currentTimeMillis()
     var changes: RealmList<Component> = realmListOf()
 
-    fun push(component: Component, type: ComponentType): Component? {
-        return changes.push(component, type)
+    constructor() {}
+
+    constructor(component: Component): this () {
+        changes.add(component)
     }
+
+    fun push(component: Component): Component? {
+        return changes.push(component)
+    }
+
+    fun newest(): Component? = changes.getLast()
+
+    fun isNotEmpty(): Boolean = changes.isNotEmpty()
 }

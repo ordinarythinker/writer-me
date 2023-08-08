@@ -2,13 +2,19 @@ package io.writerme.app.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -22,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -32,17 +39,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.writerme.app.R
+import io.writerme.app.data.model.Component
+import io.writerme.app.data.model.ComponentType
+import io.writerme.app.data.model.History
+import io.writerme.app.data.model.Note
+import io.writerme.app.ui.component.Checkbox
+import io.writerme.app.ui.component.Link
+import io.writerme.app.ui.component.NoteText
+import io.writerme.app.ui.component.Task
 import io.writerme.app.ui.state.NoteState
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.backgroundGrey
 import io.writerme.app.ui.theme.light
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.util.Date
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NoteScreen(
     noteState: StateFlow<NoteState>,
+    onTitleChange: (String) -> Unit,
     showHashtagBar: (Boolean) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -92,9 +109,6 @@ fun NoteScreen(
                         }
                     }
                 )
-            },
-            content = {
-
             },
             bottomBar = {
                 BottomAppBar(
@@ -191,17 +205,177 @@ fun NoteScreen(
                     }
                 }
             }
-        )
+        ) {
+            val note = state.value.note
+            val padding = dimensionResource(id = R.dimen.screen_padding)
+
+            LazyColumn(
+                modifier = Modifier.padding(padding)
+            ) {
+                item {
+                    val title = note.title.newest()
+
+                    if (note.cover.isNotEmpty()) {
+                        val image = note.cover.newest()
+
+                        Column(
+                            modifier = Modifier.padding(bottom = padding)
+                        ) {
+                            image?.let {
+                                io.writerme.app.ui.component.Image(
+                                    component = it,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = padding)
+                                )
+                            }
+
+                            title?.let {
+                                BasicTextField(
+                                    value = title.title,
+                                    onValueChange = onTitleChange,
+                                    textStyle = MaterialTheme.typography.h1.copy(color = MaterialTheme.colors.light),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = dimensionResource(id = R.dimen.screen_padding_big))
+                                )
+                            }
+                        }
+                    } else {
+                        val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
+
+                        Row (
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            IconButton(
+                                modifier = Modifier
+                                    .clip(shape)
+                                    .background(MaterialTheme.colors.backgroundGrey)
+                                    .padding(4.dp, 12.dp)
+                                    .shadow(dimensionResource(id = R.dimen.shadow), shape),
+                                onClick = { /*TODO*/ }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_camera),
+                                    contentDescription = stringResource(id = R.string.add_cover_image_button),
+                                    modifier = Modifier.size(40.dp),
+                                    tint = MaterialTheme.colors.light
+                                )
+                            }
+
+                            BasicTextField(
+                                value = title!!.title,
+                                onValueChange = onTitleChange,
+                                textStyle = MaterialTheme.typography.h1.copy(color = MaterialTheme.colors.light),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = padding)
+                            )
+                        }
+                    }
+                }
+
+                items(
+                    items = note.content,
+                    itemContent = { item ->
+                        val newest = item.newest()
+
+                        newest?.let {
+                            when (it.type) {
+                                ComponentType.Text -> {
+                                    NoteText(
+                                        component = it,
+                                        isHistoryMode = false,
+                                        onValueChange = { /*TODO*/ },
+                                        onMoreClicked = { /*TODO*/ }
+                                    )
+                                }
+                                ComponentType.Checkbox -> {
+                                    Checkbox(component = it)
+                                    // TODO: possible problem since Checkbox is not editable
+                                    // TODO: make it editable, onValueChange
+                                }
+                                ComponentType.Voice -> {}
+                                ComponentType.Task -> {
+                                    Task(
+                                        task = it,
+                                        onClick = { /*TODO*/ }
+                                    )
+                                }
+                                ComponentType.Link -> {
+                                    Link(
+                                        link = it,
+                                        onClick = {}
+                                    )
+                                    // TODO: link is not editable, though it should be
+                                }
+                                ComponentType.Video -> {
+                                    // TODO: pending feature
+                                }
+                                ComponentType.Image -> {
+                                    io.writerme.app.ui.component.Image(
+                                        component = it
+                                    )
+                                }
+                            }
+                        }
+                    }
+                )
+            }
+        }
     }
 }
 
 @Preview
 @Composable
 fun NoteScreenPreview() {
-    val noteState = NoteState()
+    val note = Note()
+
+    val text = Component().apply {
+        type = ComponentType.Text
+        content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry..."
+    }
+
+    val checkbox = Component().apply {
+        type = ComponentType.Checkbox
+        content = "Complete writing post for Instagram"
+        isChecked = true
+    }
+
+    val task = Component().apply {
+        content = "Meeting with Anna"
+        time = Date()
+        type = ComponentType.Task
+    }
+
+    note.apply {
+        title.push(
+            component = Component().apply {
+                title = "Instagram Content Plan for Beginner"
+                type = ComponentType.Text
+            }
+        )
+
+        /*cover.push(
+            component = Component().apply {
+                imageUrl = "some url..."
+                type = ComponentType.Image
+            }
+        )*/
+
+        content.addAll(
+            listOf(
+                History(text), History(checkbox), History(task)
+            )
+        )
+
+        tags.addAll(listOf("stories", "work"))
+    }
+
+    val noteState = NoteState(note = note)
     val state = MutableStateFlow(noteState)
 
     WriterMeTheme {
-        NoteScreen(noteState = state, {})
+        NoteScreen(noteState = state, {}, {})
     }
 }

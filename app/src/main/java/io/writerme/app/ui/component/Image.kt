@@ -21,7 +21,7 @@ import io.writerme.app.data.model.ComponentType
 import io.writerme.app.ui.theme.WriterMeTheme
 
 @Composable
-fun Image(component: Component, modifier: Modifier) {
+fun Image(component: Component, modifier: Modifier = Modifier) {
     if (component.type == ComponentType.Image) {
         val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
 

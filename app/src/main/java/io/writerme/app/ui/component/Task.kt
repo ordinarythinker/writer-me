@@ -28,6 +28,7 @@ import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.backgroundGrey
 import io.writerme.app.ui.theme.light
 import io.writerme.app.utils.toDateDescription
+import java.util.Date
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -86,6 +87,7 @@ fun Task(task: Component, onClick: () -> Unit, modifier: Modifier = Modifier) {
 fun TaskPreview() {
     val component = Component().apply {
         content = "Meeting with Anna"
+        time = Date()
         type = ComponentType.Task
     }
 

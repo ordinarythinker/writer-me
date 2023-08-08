@@ -3,6 +3,7 @@ package io.writerme.app.utils
 import android.content.Context
 import android.os.Build
 import io.realm.kotlin.types.RealmList
+import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import java.util.Locale
 
@@ -19,8 +20,8 @@ fun <T> RealmList<T>.getLast(): T? {
  * IMPORTANT: objects are not deleted from Realm but should be
  * TODO: consider revision
  */
-fun <T> RealmList<T>.push(t: T, type: ComponentType): T? {
-    val number = when (type) {
+fun RealmList<Component>.push(t: Component): Component? {
+    val number = when (t.type) {
         ComponentType.Text -> Const.TEXT_CHANGES_HISTORY
         ComponentType.Checkbox -> Const.TEXT_CHANGES_HISTORY
         ComponentType.Link -> Const.LINK_CHANGES_HISTORY

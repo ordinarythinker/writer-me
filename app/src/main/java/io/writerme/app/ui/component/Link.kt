@@ -36,7 +36,7 @@ import io.writerme.app.ui.theme.linkTitle
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Link(link: Component, modifier: Modifier, onClick: (Component) -> Unit) {
+fun Link(link: Component, onClick: (Component) -> Unit, modifier: Modifier = Modifier) {
     if (link.type == ComponentType.Link) {
         val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
         Card(
@@ -107,6 +107,6 @@ fun LinkPreview() {
         .padding(dimensionResource(id = R.dimen.screen_padding))
 
     WriterMeTheme {
-        Link(link = link, modifier = modifier) {}
+        Link(link = link, {}, modifier = modifier)
     }
 }

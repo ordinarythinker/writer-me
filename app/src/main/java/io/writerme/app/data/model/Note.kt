@@ -13,9 +13,9 @@ open class Note: RealmObject {
     @PrimaryKey
     var id: Long = System.currentTimeMillis()
 
-    var title: String = ""
+    var title: History = History()
 
-    var cover: History? = null
+    var cover: History = History()
 
     var content: RealmList<History> = realmListOf()
 
@@ -30,11 +30,9 @@ open class Note: RealmObject {
 
     var tags: RealmList<String> = realmListOf()
 
-    fun setCover(component: Component): Component? {
-        if (cover == null) cover = History()
+    fun setCover(imageComponent: Component): Component? {
+        changeTime = imageComponent.changeTime
 
-        changeTime = component.changeTime
-
-        return cover!!.push(component, ComponentType.Image)
+        return cover.push(imageComponent)
     }
 }
