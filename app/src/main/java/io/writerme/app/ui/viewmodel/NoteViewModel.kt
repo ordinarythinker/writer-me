@@ -1,12 +1,11 @@
 package io.writerme.app.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import io.realm.kotlin.Realm
 import io.writerme.app.data.model.Component
 
 class NoteViewModel : ViewModel() {
 
-    lateinit var realm: Realm
+
 
     fun dealHistory(execute: () -> Component?) {
         val c = execute()
@@ -19,11 +18,6 @@ class NoteViewModel : ViewModel() {
 //                Log.e(TAG, "Cannot delete object from Realm", it)
 //            })
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        realm.close()
     }
 
     companion object {
