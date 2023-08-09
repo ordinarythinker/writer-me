@@ -1,7 +1,6 @@
 package io.writerme.app.data.repository
 
-import io.realm.kotlin.Realm
-import io.writerme.app.utils.getDefaultInstance
+import io.realm.Realm
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

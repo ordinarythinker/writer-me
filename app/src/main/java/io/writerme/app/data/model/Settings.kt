@@ -1,11 +1,11 @@
 package io.writerme.app.data.model
 
-import io.realm.kotlin.types.RealmObject
-import io.realm.kotlin.types.annotations.Index
-import io.realm.kotlin.types.annotations.PrimaryKey
+import io.realm.RealmObject
+import io.realm.annotations.Index
+import io.realm.annotations.PrimaryKey
 import io.writerme.app.utils.Const
 
-open class Settings: RealmObject {
+open class Settings: RealmObject() {
     @Index
     @PrimaryKey
     var id = 0

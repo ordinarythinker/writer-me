@@ -215,10 +215,10 @@ fun NoteScreen(
                 modifier = Modifier.padding(padding)
             ) {
                 item {
-                    val title = note.title.newest()
+                    val title = note.title?.newest()
 
-                    if (note.cover.isNotEmpty()) {
-                        val image = note.cover.newest()
+                    if (note.cover!= null && note.cover!!.isNotEmpty()) {
+                        val image = note.cover!!.newest()
 
                         Column(
                             modifier = Modifier.padding(bottom = padding)
@@ -266,8 +266,9 @@ fun NoteScreen(
                                 )
                             }
 
+                            val text = title?.title ?: ""
                             BasicTextField(
-                                value = title!!.title,
+                                value = text,
                                 onValueChange = onTitleChange,
                                 textStyle = MaterialTheme.typography.h1.copy(color = MaterialTheme.colors.light),
                                 modifier = Modifier
@@ -370,7 +371,8 @@ fun NoteScreenPreview() {
     }
 
     note.apply {
-        title.push(
+        title = History()
+        title!!.push(
             component = Component().apply {
                 title = "Instagram Content Plan for Beginner"
                 type = ComponentType.Text

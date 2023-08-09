@@ -2,14 +2,10 @@ package io.writerme.app.utils
 
 import android.content.Context
 import android.os.Build
-import io.realm.kotlin.Realm
-import io.realm.kotlin.RealmConfiguration
-import io.realm.kotlin.types.RealmList
-import io.writerme.app.data.model.BookmarksFolder
+import io.realm.RealmList
+import io.realm.RealmObject
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
-import io.writerme.app.data.model.History
-import io.writerme.app.data.model.Note
 import java.util.Locale
 
 fun <T> RealmList<T>.getLast(): T? {
@@ -18,6 +14,10 @@ fun <T> RealmList<T>.getLast(): T? {
             this[size-1]
         } else this[0]
     } else null
+}
+
+fun <T: RealmObject> realmsOf(vararg values: T): RealmList<T> {
+    return RealmList<T>(*values)
 }
 
 /**
@@ -53,12 +53,3 @@ fun Context.getCurrentLocale(): Locale {
     }
 }
 
-fun RealmConfiguration.Companion.default(): RealmConfiguration {
-    return create(
-        schema = setOf(BookmarksFolder::class, Component::class, History::class, Note::class)
-    )
-}
-
-fun Realm.Companion.getDefaultInstance(): Realm {
-    return open(RealmConfiguration.default())
-}
