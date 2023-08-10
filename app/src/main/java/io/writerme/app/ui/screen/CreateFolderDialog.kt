@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import io.realm.kotlin.ext.realmListOf
 import io.writerme.app.R
 import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.data.model.Component
@@ -49,7 +50,6 @@ import io.writerme.app.ui.theme.dialogBackground
 import io.writerme.app.ui.theme.fieldDark
 import io.writerme.app.ui.theme.light
 import io.writerme.app.ui.theme.strokeLight
-import io.writerme.app.utils.realmsOf
 
 @Composable
 fun CreateFolderDialog(
@@ -310,7 +310,7 @@ fun CreateFolderDialogPreview() {
     val mainFolder = BookmarksFolder()
 
     mainFolder.apply {
-        this.folders = realmsOf(
+        this.folders = realmListOf(
             BookmarksFolder().apply {
                 name = "Job"
                 parent = mainFolder
@@ -325,7 +325,7 @@ fun CreateFolderDialogPreview() {
             }
         )
 
-        this.bookmarks = realmsOf(
+        this.bookmarks = realmListOf(
             Component().apply {
                 type = ComponentType.Link
                 title = "Top Travel Guide"

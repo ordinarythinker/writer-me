@@ -3,14 +3,14 @@ package io.writerme.app.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.R
 import io.writerme.app.WriterMe
 import io.writerme.app.data.model.Settings
 import io.writerme.app.data.repository.SettingsRepository
 import io.writerme.app.ui.state.SettingsState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,14 +22,16 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     private val _settingsState: MutableStateFlow<SettingsState> = MutableStateFlow(SettingsState.empty())
     val settingsState: StateFlow<SettingsState> = _settingsState
 
-    private val _settingsSource =
-        settingsRepository
-            .getSettings()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { s ->
-                s?.let { toState(it) }
-            }
+    private lateinit var _settingsSource: Flow<ObjectChange<Settings>>
+
+    init {
+        addCloseable(settingsRepository)
+
+        viewModelScope.launch {
+            _settingsSource = settingsRepository.getSettings()
+        }
+    }
+
 
     private fun toState(settings: Settings) {
         viewModelScope.launch(Dispatchers.Main) {
@@ -66,9 +68,5 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     fun onCounterChange(key: String, value: Int) {
 
-    }
-
-    override fun onCleared() {
-        _settingsSource.dispose()
     }
 }

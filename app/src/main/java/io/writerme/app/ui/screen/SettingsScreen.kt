@@ -66,7 +66,13 @@ import java.util.Calendar
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SettingsScreen(uiState: StateFlow<SettingsState>) {
+fun SettingsScreen(
+    uiState: StateFlow<SettingsState>,
+    onLanguageChange: (String) -> Unit,
+    onDarkModeChange: (Boolean) -> Unit,
+    onTermsClick: () -> Unit,
+    onCounterChange: (String, Int) -> Unit
+) {
     val scrollState = rememberScrollState()
     val scaffoldState = rememberScaffoldState()
     val state = uiState.collectAsStateWithLifecycle()
@@ -175,7 +181,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
                             range = 1 to Const.TEXT_CHANGES_HISTORY,
                             initialValue = Const.TEXT_CHANGES_HISTORY,
                             onChange = {
-                                state.value.onCounterChange(it, Const.TEXT_CHANGES_HISTORY_KEY)
+                                onCounterChange(Const.TEXT_CHANGES_HISTORY_KEY, it)
                             })
 
                         SettingsCounterRow(
@@ -183,7 +189,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
                             range = 1 to Const.VOICE_CHANGES_HISTORY,
                             initialValue = Const.VOICE_CHANGES_HISTORY,
                             onChange = {
-                                state.value.onCounterChange(it, Const.VOICE_CHANGES_HISTORY_KEY)
+                                onCounterChange(Const.VOICE_CHANGES_HISTORY_KEY, it)
                             })
 
                         SettingsCounterRow(
@@ -191,7 +197,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
                             range = 1 to Const.TASK_CHANGES_HISTORY,
                             initialValue = Const.TASK_CHANGES_HISTORY,
                             onChange = {
-                                state.value.onCounterChange(it, Const.TASK_CHANGES_HISTORY_KEY)
+                                onCounterChange(Const.TASK_CHANGES_HISTORY_KEY, it)
                             })
 
                         SettingsCounterRow(
@@ -199,7 +205,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
                             range = 1 to Const.MEDIA_CHANGES_HISTORY,
                             initialValue = Const.MEDIA_CHANGES_HISTORY,
                             onChange = {
-                                state.value.onCounterChange(it, Const.MEDIA_CHANGES_HISTORY_KEY)
+                                onCounterChange(Const.MEDIA_CHANGES_HISTORY_KEY, it)
                             })
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -260,7 +266,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
                                     val radius = dimensionResource(id = R.dimen.big_radius)
                                     TextField(
                                         value = state.value.currentLanguage,
-                                        onValueChange = state.value.onLanguageChange,
+                                        onValueChange = onLanguageChange,
                                         readOnly = true,
                                         trailingIcon = {
                                             ExposedDropdownMenuDefaults.TrailingIcon(
@@ -293,7 +299,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
                                         ) {
                                             state.value.languages.forEach { selectedOption ->
                                                 DropdownMenuItem(onClick = {
-                                                    state.value.onLanguageChange(selectedOption)
+                                                    onLanguageChange(selectedOption)
                                                     isLanguagesListExpanded = false
                                                 }) {
                                                     Text(
@@ -326,7 +332,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
 
                                 Switch(
                                     checked = state.value.isDarkMode,
-                                    onCheckedChange = { state.value.onDarkModeChange(it) }
+                                    onCheckedChange = { onDarkModeChange(it) }
                                 )
                             }
 
@@ -355,7 +361,7 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(screenPadding)
-                                .clickable { state.value.onTermsClick() },
+                                .clickable { onTermsClick() },
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
@@ -397,18 +403,17 @@ fun SettingsScreen(uiState: StateFlow<SettingsState>) {
 fun SettingsScreenPreview() {
     val state = SettingsState(
         currentLanguage = "English",
+        fullName = "Florian Hermes",
+        email = "florian.hermes@email.com",
+        profilePictureUrl = "",
         languages = listOf("English", "Deutsch", "Українська"),
-        onLanguageChange = {},
-        onDarkModeChange = {},
-        onTermsClick = {},
-        onCounterChange = { _, _ ->}
     )
-    state.apply {
-        fullName = "Florian Hermes"
-        email = "florian.hermes@email.com"
-    }
+
 
     WriterMeTheme {
-        SettingsScreen(MutableStateFlow(state))
+        SettingsScreen(
+            MutableStateFlow(state),
+            {}, {}, {}, {_, _, ->}
+        )
     }
 }

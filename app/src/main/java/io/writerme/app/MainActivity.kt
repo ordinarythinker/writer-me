@@ -33,19 +33,17 @@ class MainActivity : AppCompatActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val state = SettingsState(
+                        fullName = "Florian Hermes",
+                        email = "florian.hermes@email.com",
+                        profilePictureUrl = "",
                         currentLanguage = "English",
                         languages = listOf("English", "Deutsch", "Українська"),
-                        onLanguageChange = {},
-                        onDarkModeChange = {},
-                        onTermsClick = {},
-                        onCounterChange = { _, _ ->}
                     )
-                    state.apply {
-                        fullName = "Florian Hermes"
-                        email = "florian.hermes@email.com"
-                    }
 
-                    SettingsScreen(MutableStateFlow(state))
+                    SettingsScreen(
+                        MutableStateFlow(state),
+                        {}, {}, {}, {_, _, ->}
+                    )
                 }
             }
         }
