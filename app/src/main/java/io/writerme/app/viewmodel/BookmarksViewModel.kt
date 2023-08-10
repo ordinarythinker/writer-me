@@ -1,4 +1,4 @@
-package io.writerme.app.ui.viewmodel
+package io.writerme.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

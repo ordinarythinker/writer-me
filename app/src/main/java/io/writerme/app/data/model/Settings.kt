@@ -3,6 +3,7 @@ package io.writerme.app.data.model
 import io.realm.RealmObject
 import io.realm.annotations.Index
 import io.realm.annotations.PrimaryKey
+import io.writerme.app.ui.state.SettingsState
 import io.writerme.app.utils.Const
 
 open class Settings: RealmObject() {
@@ -14,11 +15,17 @@ open class Settings: RealmObject() {
 
     var email: String = ""
 
+    var profilePictureUrl: String = ""
+
     var mediaChanges: Int = Const.MEDIA_CHANGES_HISTORY
     var voiceChanges: Int = Const.VOICE_CHANGES_HISTORY
     var textChanges: Int = Const.TEXT_CHANGES_HISTORY
     var taskChanges: Int = Const.TASK_CHANGES_HISTORY
     var linkChanges: Int = Const.LINK_CHANGES_HISTORY
+
+    var currentLanguage: String = ""
+
+    var isDarkMode: Boolean = true
 
     fun setHistory(key: String, value: Int) {
         when (key) {
@@ -29,4 +36,17 @@ open class Settings: RealmObject() {
             Const.LINK_CHANGES_HISTORY_KEY -> this.linkChanges = value
         }
     }
+
+    fun toState(): SettingsState = SettingsState(
+        fullName = fullName,
+        email = email,
+        profilePictureUrl = profilePictureUrl,
+        currentLanguage = currentLanguage,
+        isDarkMode = isDarkMode,
+        mediaChanges = mediaChanges,
+        voiceChanges = voiceChanges,
+        textChanges = textChanges,
+        taskChanges = taskChanges,
+        linkChanges = linkChanges
+    )
 }

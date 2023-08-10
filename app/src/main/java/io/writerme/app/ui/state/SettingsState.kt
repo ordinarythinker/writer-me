@@ -1,15 +1,25 @@
 package io.writerme.app.ui.state
 
 class SettingsState(
+    val fullName: String,
+    val email: String,
+    val profilePictureUrl: String,
     val currentLanguage: String,
-    val languages: List<String>,
-    val onLanguageChange: (String) -> Unit,
-    val onDarkModeChange: (Boolean) -> Unit,
-    val onTermsClick: () -> Unit,
-    val onCounterChange: (Int, String) -> Unit,
+    var languages: List<String> = listOf(),
+    val isDarkMode: Boolean = true,
+    var mediaChanges: Int = 0,
+    var voiceChanges: Int = 0,
+    var textChanges: Int = 0,
+    var taskChanges: Int = 0,
+    var linkChanges: Int = 0
 ) {
-    var isDarkMode: Boolean = true
-    val profilePictureUrl = ""
-    var fullName = ""
-    var email = ""
+
+    companion object {
+        fun empty(): SettingsState =SettingsState(
+            fullName = "",
+            email = "",
+            profilePictureUrl = "",
+            currentLanguage = ""
+        )
+    }
 }

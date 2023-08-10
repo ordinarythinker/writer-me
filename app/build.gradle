@@ -63,14 +63,15 @@ dependencies {
 
     implementation "androidx.compose.runtime:runtime-livedata:$compose_ui_version"
 
-    // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    // ViewModel utilities for Compose
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-    // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    // Lifecycle utilities for Compose
     implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version"
+
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.7.1")
 
     // Saved state module for ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
