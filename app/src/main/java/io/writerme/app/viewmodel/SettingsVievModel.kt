@@ -1,21 +1,19 @@
 package io.writerme.app.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.realm.kotlin.notifications.ObjectChange
-import io.writerme.app.R
-import io.writerme.app.WriterMe
 import io.writerme.app.data.model.Settings
 import io.writerme.app.data.repository.SettingsRepository
 import io.writerme.app.ui.state.SettingsState
+import io.writerme.app.utils.Const
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(application: Application) : AndroidViewModel(application) {
+class SettingsViewModel : ViewModel() {
 
     private val settingsRepository = SettingsRepository(viewModelScope)
 
@@ -37,18 +35,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch(Dispatchers.Main) {
             val state = settings.toState()
 
-            val resources = this@SettingsViewModel.getApplication<WriterMe>().resources
-
-            val languages = listOf(
-                resources.getString(R.string.lang_1),
-                resources.getString(R.string.lang_2),
-                resources.getString(R.string.lang_3),
-                resources.getString(R.string.lang_4),
-                resources.getString(R.string.lang_5),
-                resources.getString(R.string.lang_6)
-            )
-
-            state.languages = languages
+            state.languages = Const.SUPPORTED_LANGUAGES
 
             _settingsState.emit(state)
         }

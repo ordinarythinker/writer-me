@@ -49,12 +49,4 @@
     <string name="add_tast_button">Add task button</string>
     <string name="add_media_button">Button to add image or video from the gallery</string>
     <string name="add_cover_image_button">Add cover image button</string>
-
-    <string name="lang_1">English</string>
-    <string name="lang_2">Українська</string>
-    <string name="lang_3">Deutsch</string>
-    <string name="lang_4">Español</string>
-    <string name="lang_5">Française</string>
-    <string name="lang_6">Русский</string>
-
 </resources>

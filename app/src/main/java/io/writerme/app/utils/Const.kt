@@ -17,4 +17,5 @@ object Const {
     const val LINK_CHANGES_HISTORY_KEY = "link_changes"
 
     const val DB_NAME: String = "writer.db"
+    val SUPPORTED_LANGUAGES = listOf("English", "Українська", "Deutsch", "Español", "Française", "Русский")
 }
