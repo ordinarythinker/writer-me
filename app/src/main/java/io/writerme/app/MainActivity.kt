@@ -1,5 +1,7 @@
 package io.writerme.app
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +19,17 @@ import io.writerme.app.ui.component.Checkbox
 import io.writerme.app.ui.screen.SettingsScreen
 import io.writerme.app.ui.state.SettingsState
 import io.writerme.app.ui.theme.WriterMeTheme
+import io.writerme.app.utils.Const
 import kotlinx.coroutines.flow.MutableStateFlow
 
+
 class MainActivity : AppCompatActivity() {
+
+    private fun onTermsClicked() {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(Const.TERMS_LINK))
+        startActivity(browserIntent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
                     SettingsScreen(
                         MutableStateFlow(state),
-                        {}, {}, {}, {_, _, ->}
+                        {}, {}, {}, { _, _ ->}
                     )
                 }
             }

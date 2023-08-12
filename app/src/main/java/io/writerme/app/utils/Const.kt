@@ -17,5 +17,8 @@ object Const {
     const val LINK_CHANGES_HISTORY_KEY = "link_changes"
 
     const val DB_NAME: String = "writer.db"
+
+    const val TERMS_LINK = "https://writerme.io/terms"
+
     val SUPPORTED_LANGUAGES = listOf("English", "Українська", "Deutsch", "Español", "Française", "Русский")
 }

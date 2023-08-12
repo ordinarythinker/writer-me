@@ -42,18 +42,22 @@ class SettingsViewModel : ViewModel() {
     }
 
     fun onLanguageChange(language: String) {
-
+        if (language in Const.SUPPORTED_LANGUAGES) {
+            viewModelScope.launch {
+                settingsRepository.setLanguage(language)
+            }
+        }
     }
 
     fun onDarkModeChange(isDarkMode: Boolean) {
-
-    }
-
-    fun onTermsClick() {
-        // Open the website in the browser
+        viewModelScope.launch {
+            settingsRepository.setDarkMode(isDarkMode)
+        }
     }
 
     fun onCounterChange(key: String, value: Int) {
-
+        viewModelScope.launch {
+            settingsRepository.setCounter(key, value)
+        }
     }
 }
