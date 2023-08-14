@@ -1,4 +1,4 @@
-Writer.Me - Extended Notes app & Bookmarks Manager using Jetpack Compose and Realm
+Writer.Me is an extended notes app and bookmarks manager developed using [Jetpack Compose](https://developer.android.com/jetpack/compose) and @realm
 
 Here is how the app looks like:
 
