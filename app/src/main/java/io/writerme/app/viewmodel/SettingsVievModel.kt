@@ -8,25 +8,36 @@ import io.writerme.app.data.repository.SettingsRepository
 import io.writerme.app.ui.state.SettingsState
 import io.writerme.app.utils.Const
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class SettingsViewModel : ViewModel() {
 
     private val settingsRepository = SettingsRepository(viewModelScope)
 
+    private lateinit var _settingsSource: Flow<ObjectChange<Settings>>
+
     private val _settingsState: MutableStateFlow<SettingsState> = MutableStateFlow(SettingsState.empty())
     val settingsState: StateFlow<SettingsState> = _settingsState
 
-    private lateinit var _settingsSource: Flow<ObjectChange<Settings>>
 
     init {
         addCloseable(settingsRepository)
 
         viewModelScope.launch {
             _settingsSource = settingsRepository.getSettings()
+
+            _settingsSource.mapLatest {
+                it.obj?.let {  settings ->
+                    toState(settings)
+                }
+            }.stateIn(viewModelScope)
         }
     }
 

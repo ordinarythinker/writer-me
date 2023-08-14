@@ -126,6 +126,7 @@ fun BookmarksScreen(
             floatingActionButtonPosition = FabPosition.End,
             floatingActionButton = {
                 // TODO: wrong approach !!!!!!!!!!!!!!!!
+                // TODO: add here the options to chose whether to create a folder or a bookmark
                 FloatingActionButton(onClick = showCreateBookmarkDialog) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_add),

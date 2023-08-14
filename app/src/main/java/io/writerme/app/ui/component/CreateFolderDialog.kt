@@ -142,7 +142,7 @@ fun CreateFolderDialog(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showSystemUi = true)
 @Composable
 fun CreateFolderDialogPreview() {
     WriterMeTheme {
