@@ -4,5 +4,6 @@ import io.writerme.app.data.model.BookmarksFolder
 
 class BookmarksState(
     val currentFolder: BookmarksFolder,
-    val isCreateDialogDisplayed: Boolean = false
+    val isBookmarkDialogDisplayed: Boolean = false,
+    val isFolderDialogDisplayed: Boolean = false
 )

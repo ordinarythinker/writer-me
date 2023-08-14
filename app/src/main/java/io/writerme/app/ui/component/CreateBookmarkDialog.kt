@@ -1,4 +1,4 @@
-package io.writerme.app.ui.screen
+package io.writerme.app.ui.component
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -44,7 +44,6 @@ import io.writerme.app.R
 import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
-import io.writerme.app.ui.component.FolderPickerRow
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.dialogBackground
 import io.writerme.app.ui.theme.fieldDark
@@ -52,8 +51,8 @@ import io.writerme.app.ui.theme.light
 import io.writerme.app.ui.theme.strokeLight
 
 @Composable
-fun CreateFolderDialog(
-    createFolder: (url: String, title: String, parent: BookmarksFolder) -> Unit,
+fun CreateBookmarkDialog(
+    createBookmark: (url: String, title: String, parent: BookmarksFolder) -> Unit,
     bookmarksFolder: BookmarksFolder,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
@@ -233,7 +232,7 @@ fun CreateFolderDialog(
                                     .padding(20.dp, 0.dp)
                                     .align(Alignment.CenterHorizontally)
                                     .clickable {
-                                        createFolder(url, title, folder)
+                                        createBookmark(url, title, folder)
                                     },
                                 color = MaterialTheme.colors.light
                             )
@@ -304,9 +303,9 @@ fun CreateFolderDialog(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
-fun CreateFolderDialogPreview() {
+fun CreateBookmarkDialogPreview() {
     val mainFolder = BookmarksFolder()
 
     mainFolder.apply {
@@ -338,6 +337,6 @@ fun CreateFolderDialogPreview() {
     }
 
     WriterMeTheme {
-        CreateFolderDialog(createFolder = { _, _, _ -> }, onDismiss = {}, bookmarksFolder = mainFolder)
+        CreateBookmarkDialog(createBookmark = { _, _, _ -> }, onDismiss = {}, bookmarksFolder = mainFolder)
     }
 }

@@ -49,4 +49,6 @@
     <string name="add_tast_button">Add task button</string>
     <string name="add_media_button">Button to add image or video from the gallery</string>
     <string name="add_cover_image_button">Add cover image button</string>
+    <string name="create_folder">Create Folder</string>
+    <string name="folder_name">Folder name</string>
 </resources>

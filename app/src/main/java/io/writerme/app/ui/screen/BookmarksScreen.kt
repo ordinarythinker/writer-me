@@ -39,6 +39,8 @@ import io.writerme.app.R
 import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
+import io.writerme.app.ui.component.CreateBookmarkDialog
+import io.writerme.app.ui.component.CreateFolderDialog
 import io.writerme.app.ui.component.Folder
 import io.writerme.app.ui.component.Link
 import io.writerme.app.ui.state.BookmarksState
@@ -56,14 +58,23 @@ fun BookmarksScreen(
     onLinkClicked: (Component) -> Unit,
     showCreateFolderDialog: () -> Unit,
     dismissCreateFolderDialog: () -> Unit,
-    createFolder: (String, String, BookmarksFolder) -> Unit,
-    onBackPressed: () -> Unit
+    showCreateBookmarkDialog: () -> Unit,
+    dismissCreateBookmarkDialog: () -> Unit,
+    createBookmark: (String, String, BookmarksFolder) -> Unit,
+    createFolder: (String) -> Unit
 ) {
     val state = bookmarksState.collectAsStateWithLifecycle()
     val scaffoldState = rememberScaffoldState()
     val padding = dimensionResource(id = R.dimen.screen_padding)
 
-    BackHandler(onBack = onBackPressed, enabled = true)
+    BackHandler(
+        onBack = {
+            if (state.value.isBookmarkDialogDisplayed) {
+                dismissCreateBookmarkDialog()
+            }
+        },
+        enabled = true
+    )
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -114,7 +125,8 @@ fun BookmarksScreen(
             },
             floatingActionButtonPosition = FabPosition.End,
             floatingActionButton = {
-                FloatingActionButton(onClick = showCreateFolderDialog) {
+                // TODO: wrong approach !!!!!!!!!!!!!!!!
+                FloatingActionButton(onClick = showCreateBookmarkDialog) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_add),
                         contentDescription = stringResource(id = R.string.add_folder_button)
@@ -123,10 +135,17 @@ fun BookmarksScreen(
             },
             content = {
                 Column {
-                    if (state.value.isCreateDialogDisplayed) {
+                    if (state.value.isBookmarkDialogDisplayed) {
+                        CreateBookmarkDialog(
+                            createBookmark = createBookmark,
+                            bookmarksFolder = state.value.currentFolder,
+                            onDismiss = dismissCreateBookmarkDialog
+                        )
+                    }
+
+                    if (state.value.isFolderDialogDisplayed) {
                         CreateFolderDialog(
                             createFolder = createFolder,
-                            bookmarksFolder = state.value.currentFolder,
                             onDismiss = dismissCreateFolderDialog
                         )
                     }
@@ -227,8 +246,10 @@ fun BookmarksScreenPreview() {
             onLinkClicked = {},
             showCreateFolderDialog = {},
             dismissCreateFolderDialog = {},
-            createFolder = { _, _, _ ->},
-            onBackPressed = {}
+            showCreateBookmarkDialog = {},
+            dismissCreateBookmarkDialog = {},
+            createBookmark = { _, _, _ ->},
+            createFolder = {}
         )
     }
 }
