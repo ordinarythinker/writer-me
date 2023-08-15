@@ -6,15 +6,15 @@ class BookmarksState(
     val currentFolder: BookmarksFolder,
     val isBookmarkDialogDisplayed: Boolean = false,
     val isFolderDialogDisplayed: Boolean = false,
-    val isCreatingFloatingMenuShown: Boolean = false
+    val isFloatingDialogShown: Boolean = false
 ) {
 
     fun copy(
         folder: BookmarksFolder = this.currentFolder,
         isBookmarkDialogDisplayed: Boolean = this.isBookmarkDialogDisplayed,
         isFolderDialogDisplayed: Boolean = this.isFolderDialogDisplayed,
-        isCreatingFloatingMenuShown: Boolean = this.isCreatingFloatingMenuShown
+        isFloatingDialogShown: Boolean = this.isFloatingDialogShown
     ): BookmarksState {
-        return BookmarksState(folder, isBookmarkDialogDisplayed, isFolderDialogDisplayed, isCreatingFloatingMenuShown)
+        return BookmarksState(folder, isBookmarkDialogDisplayed, isFolderDialogDisplayed, isFloatingDialogShown)
     }
 }

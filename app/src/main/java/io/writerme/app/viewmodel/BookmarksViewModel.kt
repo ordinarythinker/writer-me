@@ -15,10 +15,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class BookmarksViewModel: ViewModel() {
+class BookmarksViewModel @Inject constructor(): ViewModel() {
 
     private val bookmarksRepository: BookmarksRepository = BookmarksRepository(viewModelScope)
 
@@ -75,6 +76,21 @@ class BookmarksViewModel: ViewModel() {
         viewModelScope.launch {
             _bookmarksStateFlow.emit(_bookmarksStateFlow.value.copy(
                 isBookmarkDialogDisplayed = false
+            ))
+        }
+    }
+
+    fun showFloatingDialog() {
+        viewModelScope.launch {
+            _bookmarksStateFlow.emit(_bookmarksStateFlow.value.copy(
+                isFloatingDialogShown = true
+            ))
+        }
+    }
+    fun dismissFloatingDialog() {
+        viewModelScope.launch {
+            _bookmarksStateFlow.emit(_bookmarksStateFlow.value.copy(
+                isFloatingDialogShown = false
             ))
         }
     }

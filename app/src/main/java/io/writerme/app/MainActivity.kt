@@ -79,6 +79,8 @@ fun WriterMeApp() {
                         dismissCreateFolderDialog = bookmarksViewModel::dismissCreateFolderDialog,
                         showCreateBookmarkDialog = bookmarksViewModel::showCreateBookmarkDialog,
                         dismissCreateBookmarkDialog = bookmarksViewModel::dismissCreateBookmarkDialog,
+                        showFloatingDialog = bookmarksViewModel::showFloatingDialog,
+                        dismissFloatingDialog = bookmarksViewModel::dismissFloatingDialog,
                         createBookmark = bookmarksViewModel::createBookmark,
                         createFolder = bookmarksViewModel::createFolder
                     )

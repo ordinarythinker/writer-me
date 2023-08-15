@@ -2,17 +2,32 @@ package io.writerme.app.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
@@ -25,12 +40,20 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -45,7 +68,10 @@ import io.writerme.app.ui.component.Folder
 import io.writerme.app.ui.component.Link
 import io.writerme.app.ui.state.BookmarksState
 import io.writerme.app.ui.theme.WriterMeTheme
+import io.writerme.app.ui.theme.dialogBackground
+import io.writerme.app.ui.theme.fieldDark
 import io.writerme.app.ui.theme.light
+import io.writerme.app.ui.theme.strokeLight
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -60,6 +86,8 @@ fun BookmarksScreen(
     dismissCreateFolderDialog: () -> Unit,
     showCreateBookmarkDialog: () -> Unit,
     dismissCreateBookmarkDialog: () -> Unit,
+    showFloatingDialog: () -> Unit,
+    dismissFloatingDialog: () -> Unit,
     createBookmark: (String, String, BookmarksFolder) -> Unit,
     createFolder: (String) -> Unit
 ) {
@@ -67,13 +95,24 @@ fun BookmarksScreen(
     val scaffoldState = rememberScaffoldState()
     val padding = dimensionResource(id = R.dimen.screen_padding)
 
+    var isFloatingDialogShown by remember {
+        mutableStateOf(false)
+    }
+
     BackHandler(
         onBack = {
             if (state.value.isBookmarkDialogDisplayed) {
                 dismissCreateBookmarkDialog()
             }
+            if (state.value.isFolderDialogDisplayed) {
+                dismissCreateFolderDialog()
+            }
+            if (state.value.isFloatingDialogShown) {
+                dismissFloatingDialog()
+            }
         },
-        enabled = true
+        enabled = state.value.isBookmarkDialogDisplayed
+                    || state.value.isFloatingDialogShown || state.value.isFolderDialogDisplayed
     )
 
     Box(
@@ -125,13 +164,94 @@ fun BookmarksScreen(
             },
             floatingActionButtonPosition = FabPosition.End,
             floatingActionButton = {
-                // TODO: wrong approach !!!!!!!!!!!!!!!!
-                // TODO: add here the options to chose whether to create a folder or a bookmark
-                FloatingActionButton(onClick = showCreateBookmarkDialog) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_add),
-                        contentDescription = stringResource(id = R.string.add_folder_button)
-                    )
+                Box(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .matchParentSize()
+                            .padding(end = 70.dp),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        AnimatedVisibility(
+                            visible = state.value.isFloatingDialogShown,
+                            enter = slideInHorizontally(initialOffsetX = { it/2 }) + fadeIn(),
+                            exit = slideOutHorizontally(targetOffsetX = { it/2 }) + fadeOut()
+                        ) {
+                            val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
+
+                            Card(
+                                shape = shape,
+                                modifier = Modifier
+                                    .wrapContentHeight()
+                                    .shadow(dimensionResource(id = R.dimen.shadow), shape),
+                                backgroundColor = Color.Transparent
+                            ) {
+                                Row (
+                                    modifier = Modifier.clip(shape)
+                                        .background(MaterialTheme.colors.dialogBackground)
+                                        .padding(8.dp)
+                                        .shadow(dimensionResource(id = R.dimen.shadow), shape),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = stringResource(id = R.string.bookmark),
+                                        modifier = Modifier
+                                            .clip(shape)
+                                            .background(MaterialTheme.colors.fieldDark)
+                                            .border(
+                                                dimensionResource(id = R.dimen.field_border_width),
+                                                MaterialTheme.colors.strokeLight,
+                                                shape
+                                            )
+                                            .clickable {
+                                                showCreateBookmarkDialog()
+                                            }
+                                            .padding(padding, 12.dp)
+                                            .height(40.dp),
+                                        color = MaterialTheme.colors.light,
+                                        textAlign = TextAlign.Center
+                                    )
+
+                                    Spacer(modifier = Modifier.width(8.dp))
+
+                                    Text(
+                                        text = stringResource(id = R.string.folder),
+                                        modifier = Modifier
+                                            .clip(shape)
+                                            .background(MaterialTheme.colors.fieldDark)
+                                            .border(
+                                                dimensionResource(id = R.dimen.field_border_width),
+                                                MaterialTheme.colors.strokeLight,
+                                                shape
+                                            )
+                                            .clickable {
+                                                showCreateFolderDialog()
+                                            }
+                                            .padding(padding, 12.dp)
+                                            .height(40.dp),
+                                        color = MaterialTheme.colors.light,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    FloatingActionButton(
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        onClick = {
+                            showFloatingDialog()
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_add),
+                            contentDescription = stringResource(id = R.string.add_folder_button)
+                        )
+                    }
                 }
             },
             content = {
@@ -249,6 +369,8 @@ fun BookmarksScreenPreview() {
             dismissCreateFolderDialog = {},
             showCreateBookmarkDialog = {},
             dismissCreateBookmarkDialog = {},
+            showFloatingDialog = {},
+            dismissFloatingDialog = {},
             createBookmark = { _, _, _ ->},
             createFolder = {}
         )

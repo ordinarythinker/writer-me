@@ -51,4 +51,6 @@
     <string name="add_cover_image_button">Add cover image button</string>
     <string name="create_folder">Create Folder</string>
     <string name="folder_name">Folder name</string>
+    <string name="folder">folder</string>
+    <string name="bookmark">bookmark</string>
 </resources>
