@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'io.realm.kotlin'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -76,6 +77,11 @@ dependencies {
     // Annotation processor
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+
     implementation("io.coil-kt:coil-compose:2.4.0")
 
     implementation("io.realm.kotlin:library-base:1.10.0")
@@ -88,4 +94,8 @@ dependencies {
 
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+}
+
+kapt {
+    correctErrorTypes true
 }

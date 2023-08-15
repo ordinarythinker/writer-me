@@ -2,6 +2,7 @@ package io.writerme.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.asFlow
 import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.BookmarksFolder
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@HiltViewModel
 class BookmarksViewModel: ViewModel() {
 
     private val bookmarksRepository: BookmarksRepository = BookmarksRepository(viewModelScope)
