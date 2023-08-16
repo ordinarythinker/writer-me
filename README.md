@@ -4,7 +4,7 @@ The note is developed in the Jupiter Notebook style, where each block can be edi
 It allows to keep the history of changes made to each block of the note.
 
 The list of the supported features:
-- Making notes, which include:
+- Making notes, which might include:
     - cover images
     - text
     - voice and audio files
@@ -13,9 +13,9 @@ The list of the supported features:
     - links
     - tasks
 - Changes history support: number of changes stored for each type of block can be set or adjusted in Settings.
-- Bookmarks Manager: allows to store and manage bookmarks and organize them into separate folders
+- Bookmarks Manager: allows to store and manage bookmarks and organize them into separate folders.
 
-Here is how the app looks like:
+Some screenshots of the app interface: 
 
 ![Note editing screen](./screenshots/node_editing_screen.jpg)
 
