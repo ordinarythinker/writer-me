@@ -4,8 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -28,7 +28,7 @@ import io.writerme.app.viewmodel.BookmarksViewModel
 import io.writerme.app.viewmodel.SettingsViewModel
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     private val tag = "MainActivity"
 
     private fun onLinkClicked(url: String) {
@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //setTheme(R.style.Theme_WriterMe)
 
         setContent {
             val navController = rememberNavController()
@@ -77,6 +78,7 @@ class MainActivity : AppCompatActivity() {
                                 dismissCreateBookmarkDialog = bookmarksViewModel::dismissCreateBookmarkDialog,
                                 showFloatingDialog = bookmarksViewModel::showFloatingDialog,
                                 dismissFloatingDialog = bookmarksViewModel::dismissFloatingDialog,
+                                navigateToParentFolder = bookmarksViewModel::navigateToParentFolder,
                                 createBookmark = bookmarksViewModel::createBookmark,
                                 createFolder = bookmarksViewModel::createFolder
                             )

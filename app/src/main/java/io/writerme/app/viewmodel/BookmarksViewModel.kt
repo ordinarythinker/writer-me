@@ -103,6 +103,17 @@ class BookmarksViewModel @Inject constructor(): ViewModel() {
         }
     }
 
+    fun navigateToParentFolder() {
+        viewModelScope.launch {
+            val value = _bookmarksStateFlow.value
+            value.currentFolder.parent?.let { folder ->
+                _bookmarksStateFlow.emit(
+                    value.copy(folder = folder)
+                )
+            }
+        }
+    }
+
     fun createFolder(name: String, parent: BookmarksFolder? = null) {
         viewModelScope.launch {
             bookmarksRepository.createFolder(name, parent)

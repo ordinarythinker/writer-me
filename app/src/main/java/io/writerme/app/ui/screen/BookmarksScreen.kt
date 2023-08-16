@@ -40,10 +40,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -88,6 +84,7 @@ fun BookmarksScreen(
     dismissCreateBookmarkDialog: () -> Unit,
     showFloatingDialog: () -> Unit,
     dismissFloatingDialog: () -> Unit,
+    navigateToParentFolder: () -> Unit,
     createBookmark: (String, String, BookmarksFolder) -> Unit,
     createFolder: (String) -> Unit
 ) {
@@ -95,24 +92,22 @@ fun BookmarksScreen(
     val scaffoldState = rememberScaffoldState()
     val padding = dimensionResource(id = R.dimen.screen_padding)
 
-    var isFloatingDialogShown by remember {
-        mutableStateOf(false)
-    }
-
     BackHandler(
         onBack = {
             if (state.value.isBookmarkDialogDisplayed) {
                 dismissCreateBookmarkDialog()
-            }
-            if (state.value.isFolderDialogDisplayed) {
+            } else if (state.value.isFolderDialogDisplayed) {
                 dismissCreateFolderDialog()
-            }
-            if (state.value.isFloatingDialogShown) {
+            } else if (state.value.isFloatingDialogShown) {
                 dismissFloatingDialog()
+            } else if (state.value.currentFolder.hasParentFolder) {
+                navigateToParentFolder()
             }
         },
         enabled = state.value.isBookmarkDialogDisplayed
-                    || state.value.isFloatingDialogShown || state.value.isFolderDialogDisplayed
+                    || state.value.isFloatingDialogShown
+                    || state.value.isFolderDialogDisplayed
+                    || state.value.currentFolder.hasParentFolder
     )
 
     Box(
@@ -143,7 +138,13 @@ fun BookmarksScreen(
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = {
+                            if (state.value.currentFolder.hasParentFolder) {
+                                navigateToParentFolder()
+                            } else {
+                                // TODO: get navController instance and step back
+                            }
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_back),
                                 contentDescription = stringResource(id = R.string.back_button),
@@ -152,7 +153,9 @@ fun BookmarksScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = {
+                            // TODO
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_more),
                                 contentDescription = stringResource(id = R.string.more),
@@ -358,7 +361,7 @@ fun BookmarksScreenPreview() {
         )
     }
 
-    val state = BookmarksState(mainFolder, false)
+    val state = BookmarksState(job, false)
 
     WriterMeTheme {
         BookmarksScreen(
@@ -371,6 +374,7 @@ fun BookmarksScreenPreview() {
             dismissCreateBookmarkDialog = {},
             showFloatingDialog = {},
             dismissFloatingDialog = {},
+            navigateToParentFolder = {},
             createBookmark = { _, _, _ ->},
             createFolder = {}
         )
