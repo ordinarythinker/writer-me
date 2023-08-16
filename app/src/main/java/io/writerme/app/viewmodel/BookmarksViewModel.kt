@@ -48,6 +48,14 @@ class BookmarksViewModel @Inject constructor(): ViewModel() {
         }
     }
 
+    fun onFolderClicked(folder: BookmarksFolder) {
+        viewModelScope.launch {
+            _bookmarksStateFlow.emit(
+                _bookmarksStateFlow.value.copy(folder = folder)
+            )
+        }
+    }
+
     fun showCreateFolderDialog() {
         viewModelScope.launch {
             _bookmarksStateFlow.emit(_bookmarksStateFlow.value.copy(
