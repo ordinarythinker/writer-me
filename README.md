@@ -17,8 +17,8 @@ The list of the supported features:
 
 Some screenshots of the app interface: 
 
-![Main screen](./screenshots/main_screen.jpg) ![Note editing screen](./screenshots/node_editing_screen.jpg)
+![Main screen](./screenshots/main_screen.jpg) ![Bookmarks screen](./screenshots/bookmarks_screen.jpg)
 
-![Bookmarks screen](./screenshots/bookmarks_screen.jpg)  ![Settings screen](./screenshots/settings_screen.jpg)
+![Note editing screen](./screenshots/node_editing_screen.jpg) ![Settings screen](./screenshots/settings_screen.jpg)
 
 © 2023 Andrii Dubovyk
