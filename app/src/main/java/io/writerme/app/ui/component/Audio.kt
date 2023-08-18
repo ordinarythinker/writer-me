@@ -62,6 +62,8 @@ fun Audio(
                         .padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+
+
                     Column(
                         modifier = Modifier.weight(0.8f)
                     ) {

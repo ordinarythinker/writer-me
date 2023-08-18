@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Chip
+import androidx.compose.material.ChipDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -36,17 +37,19 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.writerme.app.R
 import io.writerme.app.ui.theme.WriterMeTheme
+import io.writerme.app.ui.theme.backgroundGrey
 import io.writerme.app.ui.theme.light
 import io.writerme.app.ui.theme.strokeLight
 
 @OptIn(
     ExperimentalLayoutApi::class,
-    ExperimentalComposeUiApi::class,
-    ExperimentalMaterialApi::class
+    ExperimentalMaterialApi::class,
+    ExperimentalComposeUiApi::class
 )
 @Composable
 fun TagsBar(
@@ -65,6 +68,7 @@ fun TagsBar(
         modifier = modifier
             .fillMaxWidth()
             .background(Color.Gray)
+            .padding(bottom = padding)
     ) {
         Divider(
             modifier = Modifier.fillMaxWidth(),
@@ -74,16 +78,16 @@ fun TagsBar(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Row {
+        Row(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = stringResource(id = R.string.tags),
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.light,
-                modifier = Modifier.padding(end = padding)
+                modifier = Modifier.padding(top = padding, end = padding)
             )
 
             FlowRow(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.fillMaxWidth()
             ) {
                 for (tag in tags) {
                     Chip(
@@ -97,7 +101,8 @@ fun TagsBar(
                                 tint = MaterialTheme.colors.light,
                                 modifier = Modifier.clickable { deleteTag(tag) }
                             )
-                        }
+                        },
+                        colors = ChipDefaults.chipColors(backgroundColor = MaterialTheme.colors.backgroundGrey)
                     ) {
                         Text(
                             text = "#$tag",
@@ -109,15 +114,16 @@ fun TagsBar(
                     Spacer(modifier = Modifier.width(padding))
                 }
 
-
-                // TODO: add here the spacing modifier
                 BasicTextField(
-                    modifier = Modifier.onKeyEvent {
-                        if (it.type == KeyEventType.KeyDown || it.key == Key.Enter) {
-                            addNewTag(text)
-                            true
-                        } else false
-                    },
+                    modifier = Modifier
+                        .padding(top = padding)
+                        .width(150.dp)
+                        .onKeyEvent {
+                            if (it.type == KeyEventType.KeyDown || it.key == Key.Enter) {
+                                addNewTag(text)
+                                true
+                            } else false
+                        },
                     value = text,
                     onValueChange = {
                         text = it
@@ -128,7 +134,9 @@ fun TagsBar(
                                 Text(
                                     text = stringResource(id = R.string.add_hashtags),
                                     style = MaterialTheme.typography.body1,
-                                    color = MaterialTheme.colors.light
+                                    color = MaterialTheme.colors.light,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                             innerTextField()

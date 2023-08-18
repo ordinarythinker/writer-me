@@ -53,6 +53,6 @@
     <string name="folder_name">Folder name</string>
     <string name="folder">folder</string>
     <string name="bookmark">bookmark</string>
-    <string name="add_hashtags">Hashtags...</string>
+    <string name="add_hashtags">Type your hashtags here</string>
     <string name="tags">Tags:</string>
 </resources>
