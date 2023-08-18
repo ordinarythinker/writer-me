@@ -48,6 +48,7 @@ import io.writerme.app.data.model.Note
 import io.writerme.app.ui.component.Checkbox
 import io.writerme.app.ui.component.Link
 import io.writerme.app.ui.component.NoteText
+import io.writerme.app.ui.component.TagsBar
 import io.writerme.app.ui.component.Task
 import io.writerme.app.ui.state.NoteState
 import io.writerme.app.ui.theme.WriterMeTheme
@@ -332,6 +333,11 @@ fun NoteScreen(
                         }
                     }
                 )
+
+                item {
+                    // TODO: update the params later
+                    TagsBar(tags = listOf("traveling", "outdoors"), addNewTag = {}, deleteTag = {})
+                }
             }
         }
     }
@@ -389,7 +395,7 @@ fun NoteScreenPreview() {
         content.addAll(
             listOf(
                 History(text), History(checkbox), History(task),
-                History(image), History(link)
+                History(image)
             )
         )
 

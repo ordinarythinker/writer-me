@@ -78,9 +78,9 @@ fun TagsBar(
         Row(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = stringResource(id = R.string.tags),
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.h4,
                 color = MaterialTheme.colors.light,
-                modifier = Modifier.padding(top = padding, end = padding)
+                modifier = Modifier.padding(top = 13.dp, end = padding)
             )
 
             FlowRow(
