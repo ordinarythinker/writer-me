@@ -1,6 +1,5 @@
 package io.writerme.app.ui.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -29,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -67,7 +65,6 @@ fun TagsBar(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(Color.Gray)
             .padding(bottom = padding)
     ) {
         Divider(
@@ -91,23 +88,24 @@ fun TagsBar(
             ) {
                 for (tag in tags) {
                     Chip(
-                        onClick = {  },
+                        onClick = { },
                         shape = RoundedCornerShape(padding),
                         enabled = true,
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = null,
-                                tint = MaterialTheme.colors.light,
-                                modifier = Modifier.clickable { deleteTag(tag) }
-                            )
-                        },
                         colors = ChipDefaults.chipColors(backgroundColor = MaterialTheme.colors.backgroundGrey)
                     ) {
                         Text(
                             text = "#$tag",
                             style = MaterialTheme.typography.body1,
                             color = MaterialTheme.colors.light
+                        )
+
+                        Spacer(modifier = Modifier.width(5.dp))
+
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = null,
+                            tint = MaterialTheme.colors.light,
+                            modifier = Modifier.clickable { deleteTag(tag) }
                         )
                     }
 
