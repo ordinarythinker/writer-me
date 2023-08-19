@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -213,7 +214,10 @@ fun NoteScreen(
             val padding = dimensionResource(id = R.dimen.screen_padding)
 
             LazyColumn(
-                modifier = Modifier.padding(padding)
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(start = padding, top = padding, end = padding, bottom = 70.dp)
+                    .background(Color.Blue)
             ) {
                 item {
                     val title = note.title?.newest()
@@ -336,7 +340,11 @@ fun NoteScreen(
 
                 item {
                     // TODO: update the params later
-                    TagsBar(tags = listOf("traveling", "outdoors"), addNewTag = {}, deleteTag = {})
+                    TagsBar(
+                        tags = listOf("traveling", "outdoors"),
+                        addNewTag = {},
+                        deleteTag = {}
+                    )
                 }
             }
         }
