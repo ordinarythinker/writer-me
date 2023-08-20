@@ -55,4 +55,6 @@
     <string name="bookmark">bookmark</string>
     <string name="add_hashtags">Type your hashtags...</string>
     <string name="tags">Tags:</string>
+    <string name="play_button">Play button</string>
+    <string name="pause_button">Pause button</string>
 </resources>

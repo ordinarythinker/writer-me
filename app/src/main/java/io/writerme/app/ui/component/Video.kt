@@ -4,10 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
-import io.writerme.app.ui.state.ScrollableMediaState
+import io.writerme.app.ui.state.MediaState
+import io.writerme.app.ui.theme.WriterMeTheme
 
 @Composable
-fun Video(videoState: ScrollableMediaState) {
+fun Video() {
     // Implementation pending
 }
 
@@ -17,7 +18,7 @@ fun MediaPreview() {
     val component = Component().apply {
         type = ComponentType.Video
     }
-    val videoState = ScrollableMediaState(component)
-
-    Video(videoState)
+    WriterMeTheme {
+        Video()
+    }
 }

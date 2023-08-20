@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,7 +38,7 @@ fun Audio(
 ) {
     val state = audioState.collectAsStateWithLifecycle()
 
-    if (state.value.audio.type == ComponentType.Voice) {
+    if (state.value.media.type == ComponentType.Voice) {
         val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
 
         Card(
@@ -62,10 +66,20 @@ fun Audio(
                         .padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
+                    IconButton(onClick = { /*TODO*/ }) {
+                        val isPaused = state.value.isPaused()
+                        Icon(
+                            painter = if (isPaused) {
+                                painterResource(id = R.drawable.ic_play)
+                            } else painterResource(id = R.drawable.ic_pause),
+                            contentDescription = if (isPaused) {
+                                stringResource(id = R.string.play_button)
+                            } else stringResource(id = R.string.pause_button)
+                        )
+                    }
 
                     Column(
-                        modifier = Modifier.weight(0.8f)
+                        modifier = Modifier.fillMaxWidth()
                     ) {
 
                     }
