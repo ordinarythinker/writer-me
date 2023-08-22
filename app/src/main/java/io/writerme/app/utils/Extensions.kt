@@ -20,6 +20,47 @@ fun <T> RealmList<T>.getLast(): T? {
     } else null
 }
 
+fun Long.toTime(): String {
+    var result = ""
+    var quotient = this
+    var remainder = 0L
+
+    val seconds = 60
+    val minutes = seconds
+    val hours = 24
+    val days = 365
+
+    var i = 1
+
+    do {
+        val divider = when (i) {
+            1 -> seconds
+            2 -> minutes
+            3 -> hours
+            else -> days
+        }
+
+        remainder = quotient % divider
+        quotient /= divider
+
+        result = if (i > 1) {
+            "$remainder:$result"
+        } else {
+            val rem = if (remainder < 10) {
+                "0$remainder"
+            } else remainder.toString()
+
+            if (quotient > 0) {
+                rem
+            } else "0:$rem"
+        }
+
+        i++
+    } while (quotient > 0)
+
+    return result
+}
+
 /**
  * IMPORTANT: objects are not deleted from Realm but should be
  * TODO: consider revision
