@@ -28,6 +28,7 @@ import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.ui.state.AudioState
 import io.writerme.app.ui.theme.backgroundGrey
+import io.writerme.app.ui.theme.light
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -72,9 +73,12 @@ fun Audio(
                             painter = if (isPaused) {
                                 painterResource(id = R.drawable.ic_play)
                             } else painterResource(id = R.drawable.ic_pause),
+
                             contentDescription = if (isPaused) {
                                 stringResource(id = R.string.play_button)
-                            } else stringResource(id = R.string.pause_button)
+                            } else stringResource(id = R.string.pause_button),
+
+                            tint = MaterialTheme.colors.light
                         )
                     }
 
