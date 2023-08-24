@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenuItem
@@ -71,13 +70,15 @@ fun SettingsScreen(
     onLanguageChange: (String) -> Unit,
     onDarkModeChange: (Boolean) -> Unit,
     onTermsClick: () -> Unit,
-    onCounterChange: (String, Int) -> Unit
+    onCounterChange: (String, Boolean) -> Unit
 ) {
     val scrollState = rememberScrollState()
     val scaffoldState = rememberScaffoldState()
     val state = uiState.collectAsStateWithLifecycle()
 
-    Box {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
         Image(
             painter = painterResource(id = R.drawable.background_main),
             contentScale = ContentScale.Crop,
@@ -88,6 +89,7 @@ fun SettingsScreen(
         Scaffold(
             scaffoldState = scaffoldState,
             backgroundColor = Color.Transparent,
+            modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(
                     backgroundColor = Color.Transparent,
@@ -116,7 +118,7 @@ fun SettingsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .scrollable(scrollState, Orientation.Vertical)
+                    .verticalScroll(scrollState)
             ) {
                 val screenPadding = dimensionResource(id = R.dimen.screen_padding)
 
@@ -178,34 +180,37 @@ fun SettingsScreen(
 
                         SettingsCounterRow(
                             stringId = R.string.number_of_text_changes,
-                            range = 1 to Const.TEXT_CHANGES_HISTORY,
-                            initialValue = Const.TEXT_CHANGES_HISTORY,
+                            value = state.value.textChanges,
                             onChange = {
                                 onCounterChange(Const.TEXT_CHANGES_HISTORY_KEY, it)
                             })
 
                         SettingsCounterRow(
                             stringId = R.string.number_of_voice_changes,
-                            range = 1 to Const.VOICE_CHANGES_HISTORY,
-                            initialValue = Const.VOICE_CHANGES_HISTORY,
+                            value = state.value.voiceChanges,
                             onChange = {
                                 onCounterChange(Const.VOICE_CHANGES_HISTORY_KEY, it)
                             })
 
                         SettingsCounterRow(
                             stringId = R.string.number_of_tasks_changes,
-                            range = 1 to Const.TASK_CHANGES_HISTORY,
-                            initialValue = Const.TASK_CHANGES_HISTORY,
+                            value = state.value.taskChanges,
                             onChange = {
                                 onCounterChange(Const.TASK_CHANGES_HISTORY_KEY, it)
                             })
 
                         SettingsCounterRow(
                             stringId = R.string.number_of_media_changes,
-                            range = 1 to Const.MEDIA_CHANGES_HISTORY,
-                            initialValue = Const.MEDIA_CHANGES_HISTORY,
+                            value = state.value.mediaChanges,
                             onChange = {
                                 onCounterChange(Const.MEDIA_CHANGES_HISTORY_KEY, it)
+                            })
+
+                        SettingsCounterRow(
+                            stringId = R.string.number_of_link_changes,
+                            value = state.value.linkChanges,
+                            onChange = {
+                                onCounterChange(Const.LINK_CHANGES_HISTORY_KEY, it)
                             })
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -291,9 +296,6 @@ fun SettingsScreen(
                                         shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(radius))
                                     ) {
                                         ExposedDropdownMenu(
-                                            /*modifier = Modifier.background(
-                                                MaterialTheme.colors.light, RoundedCornerShape(0.dp, 0.dp, radius, radius)
-                                            ),*/
                                             expanded = isLanguagesListExpanded,
                                             onDismissRequest = { isLanguagesListExpanded = false }
                                         ) {

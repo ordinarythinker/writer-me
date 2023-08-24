@@ -6,20 +6,11 @@ import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.Settings
 import io.writerme.app.utils.Const
 import io.writerme.app.utils.getDefaultInstance
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import java.io.Closeable
 
-class SettingsRepository(private val scope: CoroutineScope) : Closeable {
-    private lateinit var realm: Realm
-
-    init {
-        scope.launch(Dispatchers.Main) {
-            realm = Realm.getDefaultInstance()
-        }
-    }
+class SettingsRepository : Closeable {
+    private val realm: Realm = Realm.getDefaultInstance()
 
     private suspend fun _getSettings(): Settings {
         val result = realm.query(Settings::class, "id = $0", 0).first().find()
@@ -27,6 +18,11 @@ class SettingsRepository(private val scope: CoroutineScope) : Closeable {
         return result
             ?: realm.write {
                 val s = Settings()
+                // TODO: remove in production
+                s.apply {
+                    fullName = "Florian Hermes"
+                    email = "florian.hermes@email.com"
+                }
                 copyToRealm(s)
             }
     }
@@ -36,32 +32,33 @@ class SettingsRepository(private val scope: CoroutineScope) : Closeable {
     }
 
     suspend fun setCounter(key: String, value: Int) {
-        val settings = _getSettings()
 
         realm.write {
+            val settings = this.query(Settings::class, "id = $0", 0).first().find()
+
             when(key) {
-                Const.MEDIA_CHANGES_HISTORY_KEY -> settings.mediaChanges = value
-                Const.VOICE_CHANGES_HISTORY_KEY -> settings.voiceChanges = value
-                Const.TEXT_CHANGES_HISTORY_KEY -> settings.textChanges = value
-                Const.TASK_CHANGES_HISTORY_KEY -> settings.taskChanges = value
-                Const.LINK_CHANGES_HISTORY_KEY -> settings.linkChanges = value
+                Const.MEDIA_CHANGES_HISTORY_KEY -> settings?.mediaChanges = value
+                Const.VOICE_CHANGES_HISTORY_KEY -> settings?.voiceChanges = value
+                Const.TEXT_CHANGES_HISTORY_KEY -> settings?.textChanges = value
+                Const.TASK_CHANGES_HISTORY_KEY -> settings?.taskChanges = value
+                Const.LINK_CHANGES_HISTORY_KEY -> settings?.linkChanges = value
             }
         }
     }
 
     suspend fun setDarkMode(isDarkMode: Boolean) {
-        val settings = _getSettings()
-
         realm.write {
-            settings.isDarkMode = isDarkMode
+            val settings = this.query(Settings::class, "id = $0", 0).first().find()
+
+            settings?.isDarkMode = isDarkMode
         }
     }
 
     suspend fun setLanguage(language: String) {
-        val settings = _getSettings()
-
         realm.write {
-            settings.currentLanguage = language
+            val settings = this.query(Settings::class, "id = $0", 0).first().find()
+
+            settings?.currentLanguage = language
         }
     }
 

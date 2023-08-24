@@ -8,6 +8,7 @@ import io.realm.kotlin.types.RealmList
 import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
+import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
 import io.writerme.app.data.model.Settings
 import java.util.Locale
@@ -96,7 +97,7 @@ fun Context.getCurrentLocale(): Locale {
 
 fun RealmConfiguration.Companion.default(): RealmConfiguration {
     return RealmConfiguration.Builder(
-        schema = setOf(BookmarksFolder::class, Component::class, Note::class, Settings::class)
+        schema = setOf(BookmarksFolder::class, Component::class, History::class, Note::class, Settings::class)
     )
         .name(Const.DB_NAME)
         .schemaVersion(Const.DB_SCHEMA_VERSION)

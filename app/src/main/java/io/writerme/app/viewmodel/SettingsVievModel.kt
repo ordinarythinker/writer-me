@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class)
 class SettingsViewModel : ViewModel() {
 
-    private val settingsRepository = SettingsRepository(viewModelScope)
+    private val settingsRepository = SettingsRepository()
 
     private lateinit var _settingsSource: Flow<ObjectChange<Settings>>
 
@@ -66,8 +66,78 @@ class SettingsViewModel : ViewModel() {
         }
     }
 
-    fun onCounterChange(key: String, value: Int) {
+    fun onCounterChange(key: String, increase: Boolean) {
         viewModelScope.launch {
+            var value = 1
+
+            when(key) {
+                Const.TEXT_CHANGES_HISTORY_KEY -> {
+                    val current = _settingsState.value.textChanges
+
+                    if (increase) {
+                        if (current < Const.TEXT_CHANGES_HISTORY) {
+                            value = current + 1
+                        }
+                    } else {
+                        if (current > 1) {
+                            value = current - 1
+                        }
+                    }
+                }
+                Const.MEDIA_CHANGES_HISTORY_KEY -> {
+                    val current = _settingsState.value.mediaChanges
+
+                    if (increase) {
+                        if (current < Const.MEDIA_CHANGES_HISTORY) {
+                            value = current + 1
+                        }
+                    } else {
+                        if (current > 1) {
+                            value = current - 1
+                        }
+                    }
+                }
+                Const.VOICE_CHANGES_HISTORY_KEY -> {
+                    val current = _settingsState.value.voiceChanges
+
+                    if (increase) {
+                        if (current < Const.VOICE_CHANGES_HISTORY) {
+                            value = current + 1
+                        }
+                    } else {
+                        if (current > 1) {
+                            value = current - 1
+                        }
+                    }
+                }
+                Const.TASK_CHANGES_HISTORY_KEY -> {
+                    val current = _settingsState.value.taskChanges
+
+                    if (increase) {
+                        if (current < Const.TASK_CHANGES_HISTORY) {
+                            value = current + 1
+                        }
+                    } else {
+                        if (current > 1) {
+                            value = current - 1
+                        }
+                    }
+                }
+                Const.LINK_CHANGES_HISTORY_KEY -> {
+                    val current = _settingsState.value.linkChanges
+
+                    if (increase) {
+                        if (current < Const.LINK_CHANGES_HISTORY) {
+                            value = current + 1
+                        }
+                    } else {
+                        if (current > 1) {
+                            value = current - 1
+                        }
+                    }
+                }
+            }
+
             settingsRepository.setCounter(key, value)
         }
     }

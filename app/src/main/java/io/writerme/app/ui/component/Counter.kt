@@ -12,10 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,8 +24,7 @@ import io.writerme.app.R
 import io.writerme.app.ui.theme.WriterMeTheme
 
 @Composable
-fun Counter(initialValue: Int, range: Pair<Int, Int>, onChange: (Int) -> Unit) {
-    var currentValue by remember { mutableStateOf(initialValue) }
+fun Counter(value: Int, onChange: (increase: Boolean) -> Unit) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -44,16 +39,15 @@ fun Counter(initialValue: Int, range: Pair<Int, Int>, onChange: (Int) -> Unit) {
         Icon(
             imageVector = Icons.Default.ArrowLeft,
             contentDescription = stringResource(id = R.string.increase),
-            modifier = Modifier.clickable {
-                if (currentValue > range.first) {
-                    currentValue--
-                    onChange(currentValue)
+            modifier = Modifier
+                .padding(start = 4.dp, top = 4.dp, bottom = 4.dp)
+                .clickable {
+                    onChange(false)
                 }
-            }
         )
 
         Text(
-            text = "$initialValue",
+            text = "$value",
             style = MaterialTheme.typography.subtitle1,
             modifier = Modifier.padding(16.dp, 6.dp)
         )
@@ -61,12 +55,11 @@ fun Counter(initialValue: Int, range: Pair<Int, Int>, onChange: (Int) -> Unit) {
         Icon(
             imageVector = Icons.Default.ArrowRight,
             contentDescription = stringResource(id = R.string.decrease),
-            modifier = Modifier.clickable {
-                if (currentValue < range.first) {
-                    currentValue++
-                    onChange(currentValue)
+            modifier = Modifier
+                .padding(top = 4.dp, bottom = 4.dp, end = 4.dp)
+                .clickable {
+                    onChange(true)
                 }
-            }
         )
     }
 }
@@ -75,6 +68,6 @@ fun Counter(initialValue: Int, range: Pair<Int, Int>, onChange: (Int) -> Unit) {
 @Composable
 fun CounterPreview() {
     WriterMeTheme {
-        Counter(1, 1 to 5) { a: Int -> }
+        Counter(1) { _: Boolean -> }
     }
 }

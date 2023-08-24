@@ -20,9 +20,8 @@ import io.writerme.app.ui.theme.light
 @Composable
 fun SettingsCounterRow(
     stringId: Int,
-    range: Pair<Int, Int>,
-    initialValue: Int,
-    onChange: (Int) -> Unit
+    value: Int,
+    onChange: (increase: Boolean) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -38,9 +37,8 @@ fun SettingsCounterRow(
         )
 
         Counter(
-            initialValue = initialValue,
-            range = range,
-            onChange = { }
+            value = value,
+            onChange = onChange
         )
     }
 }
@@ -51,8 +49,7 @@ fun SettingsCounterRowPreview() {
     WriterMeTheme {
         SettingsCounterRow(
             stringId = R.string.number_of_text_changes,
-            range = 1 to 5,
-            initialValue = 5,
+            value = 5,
             onChange = {}
         )
     }

@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = Home.route
+                        startDestination = Settings.route
                     ) {
                         composable(Home.route) {
                             HomeScreen()

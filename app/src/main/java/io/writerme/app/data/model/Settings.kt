@@ -23,7 +23,7 @@ open class Settings: RealmObject {
     var taskChanges: Int = Const.TASK_CHANGES_HISTORY
     var linkChanges: Int = Const.LINK_CHANGES_HISTORY
 
-    var currentLanguage: String = ""
+    var currentLanguage: String = Const.SUPPORTED_LANGUAGES[0]
 
     var isDarkMode: Boolean = true
 
