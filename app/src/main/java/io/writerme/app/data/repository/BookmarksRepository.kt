@@ -5,20 +5,11 @@ import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.utils.getDefaultInstance
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.io.Closeable
 
-class BookmarksRepository(scope: CoroutineScope): Closeable {
+class BookmarksRepository: Closeable {
 
-    lateinit var realm: Realm
-
-    init {
-        scope.launch(Dispatchers.Main) {
-            realm = Realm.getDefaultInstance()
-        }
-    }
+    private val realm: Realm = Realm.getDefaultInstance()
 
     suspend fun getMainFolder(): BookmarksFolder {
         val result = realm.query(BookmarksFolder::class, "id = $0", 0).first().find()

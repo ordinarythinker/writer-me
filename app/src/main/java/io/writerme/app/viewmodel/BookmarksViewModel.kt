@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BookmarksViewModel @Inject constructor(): ViewModel() {
 
-    private val bookmarksRepository: BookmarksRepository = BookmarksRepository(viewModelScope)
+    private val bookmarksRepository: BookmarksRepository = BookmarksRepository()
 
     private lateinit var _bookmarksStateFlow: MutableStateFlow<BookmarksState>
     lateinit var bookmarksStateFlow: StateFlow<BookmarksState>
