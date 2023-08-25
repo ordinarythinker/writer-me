@@ -73,6 +73,7 @@ class SettingsViewModel : ViewModel() {
             when(key) {
                 Const.TEXT_CHANGES_HISTORY_KEY -> {
                     val current = _settingsState.value.textChanges
+                    value = current
 
                     if (increase) {
                         if (current < Const.TEXT_CHANGES_HISTORY) {
@@ -86,6 +87,7 @@ class SettingsViewModel : ViewModel() {
                 }
                 Const.MEDIA_CHANGES_HISTORY_KEY -> {
                     val current = _settingsState.value.mediaChanges
+                    value = current
 
                     if (increase) {
                         if (current < Const.MEDIA_CHANGES_HISTORY) {
@@ -99,6 +101,7 @@ class SettingsViewModel : ViewModel() {
                 }
                 Const.VOICE_CHANGES_HISTORY_KEY -> {
                     val current = _settingsState.value.voiceChanges
+                    value = current
 
                     if (increase) {
                         if (current < Const.VOICE_CHANGES_HISTORY) {
@@ -112,6 +115,7 @@ class SettingsViewModel : ViewModel() {
                 }
                 Const.TASK_CHANGES_HISTORY_KEY -> {
                     val current = _settingsState.value.taskChanges
+                    value = current
 
                     if (increase) {
                         if (current < Const.TASK_CHANGES_HISTORY) {
@@ -125,6 +129,7 @@ class SettingsViewModel : ViewModel() {
                 }
                 Const.LINK_CHANGES_HISTORY_KEY -> {
                     val current = _settingsState.value.linkChanges
+                    value = current
 
                     if (increase) {
                         if (current < Const.LINK_CHANGES_HISTORY) {
