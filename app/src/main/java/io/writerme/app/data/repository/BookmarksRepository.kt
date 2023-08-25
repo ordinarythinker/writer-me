@@ -22,9 +22,10 @@ class BookmarksRepository: Closeable {
     }
 
     suspend fun createFolder(name: String, parent: BookmarksFolder? = null) {
-        val _parent = parent ?: getMainFolder()
 
         realm.write {
+            val _parent = parent ?: realm.query(BookmarksFolder::class, "id = $0", 0).first().find()
+
             val folder = BookmarksFolder().apply {
                 this.name = name
                 this.parent = _parent
@@ -34,10 +35,11 @@ class BookmarksRepository: Closeable {
         }
     }
 
-    suspend fun createBookmark(url: String, title: String, parent: BookmarksFolder? = null) {
-        val _parent = parent ?: getMainFolder()
+    suspend fun createBookmark(url: String, title: String, parent: BookmarksFolder? = null): Component {
 
-        realm.write {
+        return realm.write {
+            val _parent = parent ?: realm.query(BookmarksFolder::class, "id = $0", 0).first().find()
+
             val bookmark = Component().apply {
                 this.type = ComponentType.Link
                 this.title = title
@@ -46,7 +48,8 @@ class BookmarksRepository: Closeable {
 
             val realmObj = copyToRealm(bookmark)
 
-            _parent.bookmarks.add(realmObj)// possible place of an error: object cannot be used in the different thread
+            _parent?.bookmarks?.add(realmObj)
+            bookmark
         }
     }
 
