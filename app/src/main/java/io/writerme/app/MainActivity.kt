@@ -20,7 +20,6 @@ import io.writerme.app.ui.navigation.Home
 import io.writerme.app.ui.navigation.Note
 import io.writerme.app.ui.navigation.Settings
 import io.writerme.app.ui.screen.BookmarksScreen
-import io.writerme.app.ui.screen.HomeScreen
 import io.writerme.app.ui.screen.SettingsScreen
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.utils.Const
@@ -57,7 +56,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = Settings.route
                     ) {
                         composable(Home.route) {
-                            HomeScreen()
+                            //HomeScreen()
 
                         }
                         composable(Note.route) {
