@@ -58,4 +58,5 @@
     <string name="play_button">Play button</string>
     <string name="pause_button">Pause button</string>
     <string name="number_of_link_changes">Number of link changes</string>
+    <string name="home_screen">Home screen</string>
 </resources>

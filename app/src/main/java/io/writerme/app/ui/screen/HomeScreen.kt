@@ -104,9 +104,16 @@ fun HomeScreen(stateFlow: StateFlow<MainState>, navController: NavController? = 
                     ) {
                         BottomNavigationItem(
                             selected = true,
-                            onClick = { /*TODO*/ },
-                            icon = { /*TODO*/ }
+                            onClick = { },
+                            icon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_home),
+                                    contentDescription = stringResource(id = R.string.home_screen)
+                                )
+                            }
                         )
+
+                        
                     }
                 }
             }
