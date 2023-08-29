@@ -108,12 +108,47 @@ fun HomeScreen(stateFlow: StateFlow<MainState>, navController: NavController? = 
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_home),
-                                    contentDescription = stringResource(id = R.string.home_screen)
+                                    contentDescription = stringResource(id = R.string.home_screen),
+                                    tint = MaterialTheme.colors.light
                                 )
                             }
                         )
 
-                        
+                        BottomNavigationItem(
+                            selected = false,
+                            onClick = { },
+                            icon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_tasks),
+                                    contentDescription = stringResource(id = R.string.tasks_screen),
+                                    tint = MaterialTheme.colors.light
+                                )
+                            }
+                        )
+
+                        BottomNavigationItem(
+                            selected = false,
+                            onClick = { },
+                            icon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_bookmark),
+                                    contentDescription = stringResource(id = R.string.bookmarks_screen),
+                                    tint = MaterialTheme.colors.light
+                                )
+                            }
+                        )
+
+                        BottomNavigationItem(
+                            selected = false,
+                            onClick = { },
+                            icon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_settings),
+                                    contentDescription = stringResource(id = R.string.settings_task),
+                                    tint = MaterialTheme.colors.light
+                                )
+                            }
+                        )
                     }
                 }
             }
