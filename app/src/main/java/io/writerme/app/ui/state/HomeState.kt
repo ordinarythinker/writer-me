@@ -7,5 +7,7 @@ data class HomeState(
     val profilePhotoUrl: String = "",
     val isImportantVisible: String = "",
     val isFoldersVisible: String = "",
+    val tabs: List<String> = listOf(),
+    val chosenTab: String = "",
     var notes: List<Note> = listOf()
 )

@@ -40,6 +40,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import io.writerme.app.R
 import io.writerme.app.ui.component.ProfileImage
+import io.writerme.app.ui.component.TabSwitcher
 import io.writerme.app.ui.navigation.Bookmarks
 import io.writerme.app.ui.navigation.Settings
 import io.writerme.app.ui.navigation.Task
@@ -174,13 +175,6 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
                                 )
                             }
                         )
-                        /*Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-
-                        }*/
                     }
                 }
             }
@@ -219,6 +213,16 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
                         }
                     }
                 }
+
+                item {
+                    Spacer(modifier = Modifier.height(padding))
+
+                    TabSwitcher(
+                        tabs = state.value.tabs,
+                        chosen = state.value.chosenTab,
+                        onItemChosen = {}
+                    )
+                }
             }
         }
     }
@@ -227,7 +231,11 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    val main = HomeState(firstName = "Florian")
+    val main = HomeState(
+        firstName = "Florian",
+        tabs = listOf("All", "Important"),
+        chosenTab = "Important"
+    )
 
     val flow = MutableStateFlow(main)
 
