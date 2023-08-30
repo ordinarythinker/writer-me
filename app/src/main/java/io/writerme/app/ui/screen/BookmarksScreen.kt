@@ -252,7 +252,7 @@ fun BookmarksScreen(
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_add),
-                            contentDescription = stringResource(id = R.string.add_folder_button)
+                            contentDescription = stringResource(id = R.string.add_folder_bookmark)
                         )
                     }
                 }

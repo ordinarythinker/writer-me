@@ -2,19 +2,23 @@ package io.writerme.app.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -53,6 +57,8 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
     val scaffoldState = rememberScaffoldState()
     val padding = dimensionResource(id = R.dimen.screen_padding)
 
+    val fabShape = RoundedCornerShape(50.dp)
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_main),
@@ -88,23 +94,33 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
                     }
                 )
             },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { /*TODO*/ },
+                    shape = fabShape
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_add),
+                        contentDescription = stringResource(id = R.string.create_note)
+                    )
+                }
+            },
+            isFloatingActionButtonDocked = true,
+            floatingActionButtonPosition = FabPosition.Center,
             bottomBar = {
-                BottomNavigation(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(
+                BottomAppBar(
+                    modifier = Modifier.clip(
                             RoundedCornerShape(
                                 dimensionResource(id = R.dimen.big_radius)
                             )
                         ),
                     backgroundColor = MaterialTheme.colors.backgroundGrey,
-                    elevation = dimensionResource(id = R.dimen.shadow),
+                    cutoutShape = fabShape,
 
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically
+                    BottomNavigation (
+                        backgroundColor = Color.Transparent,
+                        elevation = 0.dp
                     ) {
                         BottomNavigationItem(
                             selected = true,
@@ -120,7 +136,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 
                         BottomNavigationItem(
                             selected = false,
-                            onClick = { },
+                            onClick = {  },
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_tasks),
@@ -129,6 +145,8 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
                                 )
                             }
                         )
+
+                        Spacer(modifier = Modifier.width(80.dp))
 
                         BottomNavigationItem(
                             selected = false,
@@ -153,6 +171,13 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
                                 )
                             }
                         )
+                        /*Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+
+                        }*/
                     }
                 }
             }
@@ -166,8 +191,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
                 item {
                     Row (
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(padding),
+                            .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         ProfileImage(url = state.value.profilePhotoUrl)
@@ -200,7 +224,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    val main = HomeState()
+    val main = HomeState(firstName = "Florian")
 
     val flow = MutableStateFlow(main)
 
