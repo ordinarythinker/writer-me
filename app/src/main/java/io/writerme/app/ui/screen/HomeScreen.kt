@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,7 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import io.writerme.app.R
-import io.writerme.app.ui.state.MainState
+import io.writerme.app.ui.component.ProfileImage
+import io.writerme.app.ui.state.HomeState
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.backgroundGrey
 import io.writerme.app.ui.theme.light
@@ -43,7 +45,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(stateFlow: StateFlow<MainState>, navController: NavController? = null) {
+fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = null) {
     val state = stateFlow.collectAsStateWithLifecycle()
 
     val scaffoldState = rememberScaffoldState()
@@ -166,26 +168,26 @@ fun HomeScreen(stateFlow: StateFlow<MainState>, navController: NavController? = 
                             .padding(padding),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        /*ProfileImage(url = state.value.profilePictureUrl)
+                        ProfileImage(url = state.value.profilePhotoUrl)
 
                         Column(
                             modifier = Modifier
                                 .weight(0.6f)
-                                .padding(screenPadding, 0.dp)
+                                .padding(padding, 0.dp)
                         ) {
                             Text(
-                                text = state.value.fullName,
+                                text = state.value.firstName, // TODO: here should be the time-depending greeting function
                                 style = MaterialTheme.typography.h1,
                                 color = MaterialTheme.colors.light
                             )
 
                             Text(
-                                text = state.value.email,
+                                text = state.value.firstName,
                                 style = MaterialTheme.typography.body1,
                                 color = MaterialTheme.colors.light,
                                 modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
                             )
-                        }*/
+                        }
                     }
                 }
             }
@@ -196,7 +198,7 @@ fun HomeScreen(stateFlow: StateFlow<MainState>, navController: NavController? = 
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    val main = MainState()
+    val main = HomeState()
 
     val flow = MutableStateFlow(main)
 
