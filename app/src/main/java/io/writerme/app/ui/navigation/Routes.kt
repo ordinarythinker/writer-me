@@ -8,6 +8,10 @@ object Home : Route {
     override val route: String = "home"
 }
 
+object Task : Route {
+    override val route: String = "task"
+}
+
 object Note : Route {
     override val route: String = "note"
 }

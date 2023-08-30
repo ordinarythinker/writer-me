@@ -40,6 +40,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import io.writerme.app.R
 import io.writerme.app.ui.component.ProfileImage
+import io.writerme.app.ui.navigation.Bookmarks
+import io.writerme.app.ui.navigation.Settings
+import io.writerme.app.ui.navigation.Task
 import io.writerme.app.ui.state.HomeState
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.backgroundGrey
@@ -136,7 +139,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 
                         BottomNavigationItem(
                             selected = false,
-                            onClick = {  },
+                            onClick = { navController?.navigate(Task.route) },
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_tasks),
@@ -150,7 +153,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 
                         BottomNavigationItem(
                             selected = false,
-                            onClick = { },
+                            onClick = { navController?.navigate(Bookmarks.route) },
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_bookmark),
@@ -162,7 +165,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 
                         BottomNavigationItem(
                             selected = false,
-                            onClick = { },
+                            onClick = { navController?.navigate(Settings.route) },
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_settings),
