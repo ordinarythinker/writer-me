@@ -9,10 +9,10 @@ import java.util.Calendar
 import java.util.Date
 
 @Composable
-fun toDateDescription(date: Date): String {
+fun Date.toDateDescription(): String {
     val now = Calendar.getInstance()
     val given = Calendar.getInstance()
-    given.time = date
+    given.time = this
 
     val yesterday = Calendar.getInstance()
     yesterday.add(Calendar.DAY_OF_YEAR, -1)
@@ -36,13 +36,25 @@ fun toDateDescription(date: Date): String {
         stringResource(id = R.string.tomorrow)
     } else {
         val format = SimpleDateFormat("EEEE, d MMMM yy", currentLocale)
-        format.format(date)
+        format.format(this)
     }
 
     val at = stringResource(id = R.string.at)
 
     val format = SimpleDateFormat("hh:mm a", currentLocale)
-    val time = format.format(date)
+    val time = format.format(this)
 
     return "$_when $at $time"
+}
+
+@Composable
+fun Date.toGreeting() : String {
+    val calendar = Calendar.getInstance()
+    calendar.time = this
+
+    return when (calendar.get(Calendar.HOUR_OF_DAY)) {
+        in 1..11 -> stringResource(id = R.string.good_morning)
+        in 11..17 -> stringResource(id = R.string.good_afternoon)
+        else -> stringResource(id = R.string.good_evening)
+    }
 }

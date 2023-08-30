@@ -40,8 +40,10 @@ import io.writerme.app.ui.state.HomeState
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.backgroundGrey
 import io.writerme.app.ui.theme.light
+import io.writerme.app.utils.toGreeting
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.util.Date
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -176,14 +178,14 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
                                 .padding(padding, 0.dp)
                         ) {
                             Text(
-                                text = state.value.firstName, // TODO: here should be the time-depending greeting function
-                                style = MaterialTheme.typography.h1,
+                                text = Date().toGreeting(),
+                                style = MaterialTheme.typography.body1,
                                 color = MaterialTheme.colors.light
                             )
 
                             Text(
                                 text = state.value.firstName,
-                                style = MaterialTheme.typography.body1,
+                                style = MaterialTheme.typography.h1,
                                 color = MaterialTheme.colors.light,
                                 modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
                             )

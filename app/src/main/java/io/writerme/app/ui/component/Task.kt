@@ -65,7 +65,7 @@ fun Task(task: Component, onClick: () -> Unit, modifier: Modifier = Modifier) {
                         modifier = Modifier.weight(0.8f)
                     ) {
                         Text(
-                            text = toDateDescription(task.time),
+                            text = task.time.toDateDescription(),
                             style = MaterialTheme.typography.h5,
                             color = MaterialTheme.colors.light
                         )
