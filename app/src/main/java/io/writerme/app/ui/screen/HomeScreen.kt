@@ -234,7 +234,7 @@ fun HomeScreenPreview() {
     val main = HomeState(
         firstName = "Florian",
         tabs = listOf("All", "Important"),
-        chosenTab = "Important"
+        chosenTab = "All"
     )
 
     val flow = MutableStateFlow(main)
