@@ -2,6 +2,7 @@ package io.writerme.app.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -55,7 +56,9 @@ fun TabSwitcher(
                 text = it,
                 style = MaterialTheme.typography.subtitle1,
                 color = MaterialTheme.colors.light,
-                modifier = modifier,
+                modifier = modifier.clickable {
+                    if (it != chosen) onItemChosen(it)
+                },
                 textAlign = TextAlign.Center
             )
         }
