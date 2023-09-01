@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -42,7 +43,7 @@ import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.lightGrey
 
 @Composable
-fun Note(note: Note) {
+fun Note(note: Note, onClick: (Long) -> Unit) {
     val padding = dimensionResource(id = R.dimen.screen_padding)
 
     val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
@@ -51,6 +52,7 @@ fun Note(note: Note) {
         shape = shape,
         modifier = Modifier
             .wrapContentHeight()
+            .heightIn(120.dp, 400.dp)
             .shadow(dimensionResource(id = R.dimen.shadow), shape),
         backgroundColor = Color.White
     ) {
@@ -174,7 +176,39 @@ fun Note(note: Note) {
                     }
                 }
 
+                items(items = note.content) { history ->
+                    history.newest()?.let { component ->
 
+                        when (component.type) {
+                            ComponentType.Text -> {
+                                Text(
+                                    text = component.content,
+                                    style = MaterialTheme.typography.body2
+                                )
+                            }
+
+                            ComponentType.Checkbox -> {
+                                Checkbox(component = component)
+                            }
+
+                            ComponentType.Voice -> {
+                                // pending
+                            }
+                            ComponentType.Task -> {
+                                // TODO
+                            }
+                            ComponentType.Link -> {
+                                Link(link = component, onClick = { onClick(note.id) })
+                            }
+                            ComponentType.Video -> {
+                                // pending...
+                            }
+                            ComponentType.Image -> {
+                                Image(component = component)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -184,12 +218,12 @@ fun Note(note: Note) {
 @Preview(showBackground = true)
 fun NotePreview() {
     val titleComponent = Component().apply {
-        title = "Day #12: Adventures started"
+        title = "Instagram Content Plan"
         type = ComponentType.Text
     }
 
     val text = Component().apply {
-        content = "It's all started with a simple thought that I wasn't able to control anymore. It gradually became an addiction: to travel and to see the world"
+        content = "I hope you enjoy it. Feel free to share your thoughts in the following section."
         type = ComponentType.Text
     }
 
@@ -197,10 +231,10 @@ fun NotePreview() {
         this.title = History(titleComponent)
         this.content.add(History(text))
         this.isImportant = true
-        this.tags = realmListOf("project", "traveling")
+        this.tags = realmListOf("project")
     }
 
     WriterMeTheme {
-        Note(note)
+        Note(note) {}
     }
 }
