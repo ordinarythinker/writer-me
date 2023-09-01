@@ -29,7 +29,7 @@ val Colors.light : Color
 val Colors.strokeLight : Color
     get() = LightGrey50
 
-val Colors.linkTitle : Color
+val Colors.lightGrey : Color
     get() = LightGrey65
 
 val Colors.dialogBackground : Color

@@ -26,13 +26,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import io.realm.kotlin.internal.interop.Link
 import io.writerme.app.R
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.ui.theme.WriterMeTheme
-import io.writerme.app.ui.theme.linkTitle
+import io.writerme.app.ui.theme.lightGrey
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -74,7 +72,7 @@ fun Link(link: Component, onClick: (Component) -> Unit, modifier: Modifier = Mod
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(MaterialTheme.colors.linkTitle)
+                            .background(MaterialTheme.colors.lightGrey)
                             .blur(60.dp)
                     )
 

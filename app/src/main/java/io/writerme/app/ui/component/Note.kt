@@ -3,11 +3,19 @@ package io.writerme.app.ui.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,16 +28,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.realm.kotlin.ext.realmListOf
 import io.writerme.app.R
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
 import io.writerme.app.ui.theme.WriterMeTheme
-import io.writerme.app.ui.theme.linkTitle
+import io.writerme.app.ui.theme.lightGrey
 
 @Composable
 fun Note(note: Note) {
@@ -42,7 +52,7 @@ fun Note(note: Note) {
         modifier = Modifier
             .wrapContentHeight()
             .shadow(dimensionResource(id = R.dimen.shadow), shape),
-        backgroundColor = Color.Blue
+        backgroundColor = Color.White
     ) {
         if (note.cover != null && note.cover!!.newest() != null) {
             Box(
@@ -76,12 +86,14 @@ fun Note(note: Note) {
                     Box(
                         modifier = Modifier
                             .matchParentSize()
-                            .background(MaterialTheme.colors.linkTitle)
+                            .background(MaterialTheme.colors.lightGrey)
                             .blur(60.dp)
                     )
 
                     Column(
-                        modifier = Modifier.fillMaxWidth().padding(padding, 4.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(padding, 4.dp)
                     ) {
                         note.title?.newest()?.let { component ->
                             Text(
@@ -108,7 +120,62 @@ fun Note(note: Note) {
                 }
             }
         } else {
-            // TODO
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(padding)
+            ) {
+                item {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        note.title?.newest()?.let { component ->
+                            Text(
+                                text = component.title,
+                                style = MaterialTheme.typography.h5,
+                                modifier = Modifier.fillMaxWidth(0.85f),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+
+                        if (note.isImportant) {
+
+
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_heart),
+                                contentDescription = stringResource(id = R.string.note_important_icon),
+                                modifier = Modifier
+                                    .padding(start = 4.dp, top = 8.dp, bottom = 8.dp)
+                                    .shadow(elevation = 4.dp, Heart())
+                            )
+                        }
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(padding))
+
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(note.tags) {tag ->
+                            Text(
+                                text = "#$tag",
+                                style = MaterialTheme.typography.caption,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(padding))
+                                    .background(MaterialTheme.colors.lightGrey)
+                                    .padding(padding, 4.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+                        }
+                    }
+                }
+
+
+            }
         }
     }
 }
@@ -128,8 +195,9 @@ fun NotePreview() {
 
     val note = Note().apply {
         this.title = History(titleComponent)
-        this.cover = History(Component())
         this.content.add(History(text))
+        this.isImportant = true
+        this.tags = realmListOf("project", "traveling")
     }
 
     WriterMeTheme {

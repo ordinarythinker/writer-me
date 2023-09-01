@@ -19,6 +19,8 @@ open class Note: RealmObject {
 
     var content: RealmList<History> = realmListOf()
 
+    var isImportant: Boolean = false
+
     private var _created: Long = 0
     var created: Date
         get() = Date(_created)
