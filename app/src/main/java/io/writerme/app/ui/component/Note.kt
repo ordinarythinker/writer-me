@@ -149,7 +149,7 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
                                 contentDescription = stringResource(id = R.string.note_important_icon),
                                 modifier = Modifier
                                     .padding(start = 4.dp, top = 8.dp, bottom = 8.dp)
-                                    .shadow(elevation = 4.dp, Heart())
+                                    .shadow(elevation = 4.dp, HeartShape())
                             )
                         }
                     }

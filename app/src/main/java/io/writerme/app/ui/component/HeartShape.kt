@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.graphics.PathParser
 import java.util.regex.Pattern
 
-class Heart : Shape {
+class HeartShape : Shape {
     override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,

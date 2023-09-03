@@ -1,8 +1,10 @@
 package io.writerme.app.ui.screen
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -217,7 +219,6 @@ fun NoteScreen(
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(start = padding, top = padding, end = padding, bottom = 70.dp)
-                    .background(Color.Blue)
             ) {
                 item {
                     val title = note.title?.newest()
@@ -290,46 +291,65 @@ fun NoteScreen(
                         val newest = item.newest()
 
                         newest?.let {
-                            when (it.type) {
-                                ComponentType.Text -> {
-                                    NoteText(
-                                        component = it,
-                                        isHistoryMode = false,
-                                        onValueChange = { /*TODO*/ },
-                                        onMoreClicked = { /*TODO*/ },
+                            Column(
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                AnimatedVisibility(
+                                    visible = state.value.isHistoryMode,
+                                    modifier = Modifier.align(Alignment.End)
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_more),
+                                        contentDescription = stringResource(id = R.string.more),
+                                        tint = MaterialTheme.colors.light,
+                                        modifier = Modifier
+                                            .padding(0.dp, 0.dp, 0.dp, 8.dp)
+                                            .size(24.dp)
+                                            .clickable {
+                                                // TODO: run the dropdown menu here
+                                            }
                                     )
+                                }
+
+                                when (it.type) {
+                                    ComponentType.Text -> {
+                                        NoteText(
+                                            component = it,
+                                            onValueChange = { /*TODO*/ },
+                                        )
 
 
-                                }
-                                ComponentType.Checkbox -> {
-                                    Checkbox(
-                                        component = it,
-                                        modifier = Modifier.padding(start = padding)
-                                    )
-                                    // TODO: possible problem since Checkbox is not editable
-                                    // TODO: make it editable, onValueChange
-                                }
-                                ComponentType.Voice -> {}
-                                ComponentType.Task -> {
-                                    Task(
-                                        task = it,
-                                        onClick = { /*TODO*/ }
-                                    )
-                                }
-                                ComponentType.Link -> {
-                                    Link(
-                                        link = it,
-                                        onClick = {},
-                                    )
-                                    // TODO: link is not editable, though it should be
-                                }
-                                ComponentType.Video -> {
-                                    // TODO: pending feature
-                                }
-                                ComponentType.Image -> {
-                                    io.writerme.app.ui.component.Image(
-                                        component = it
-                                    )
+                                    }
+                                    ComponentType.Checkbox -> {
+                                        Checkbox(
+                                            component = it,
+                                            modifier = Modifier.padding(start = padding)
+                                        )
+                                        // TODO: possible problem since Checkbox is not editable
+                                        // TODO: make it editable, onValueChange
+                                    }
+                                    ComponentType.Voice -> {}
+                                    ComponentType.Task -> {
+                                        Task(
+                                            task = it,
+                                            onClick = { /*TODO*/ }
+                                        )
+                                    }
+                                    ComponentType.Link -> {
+                                        Link(
+                                            link = it,
+                                            onClick = {},
+                                        )
+                                        // TODO: link is not editable, though it should be
+                                    }
+                                    ComponentType.Video -> {
+                                        // TODO: pending feature
+                                    }
+                                    ComponentType.Image -> {
+                                        io.writerme.app.ui.component.Image(
+                                            component = it
+                                        )
+                                    }
                                 }
                             }
 
@@ -339,7 +359,6 @@ fun NoteScreen(
                 )
 
                 item {
-                    // TODO: update the params later
                     TagsBar(
                         tags = listOf("traveling", "outdoors"),
                         addNewTag = {},
