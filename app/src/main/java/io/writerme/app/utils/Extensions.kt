@@ -2,9 +2,11 @@ package io.writerme.app.utils
 
 import android.content.Context
 import android.os.Build
+import android.widget.Toast
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.types.RealmList
+import io.writerme.app.R
 import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
@@ -108,3 +110,11 @@ fun Realm.Companion.getDefaultInstance(): Realm {
     return open(RealmConfiguration.default())
 }
 
+fun Context.copyComponentContent(component: Component) {
+    // TODO: implement
+    // https://developer.android.com/develop/ui/views/touch-and-input/copy-paste
+    // https://www.geeksforgeeks.org/android-jetpack-compose-use-clipboard-service/
+
+    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2)
+        Toast.makeText(this, this.resources.getString(R.string.copied), Toast.LENGTH_SHORT).show()
+}

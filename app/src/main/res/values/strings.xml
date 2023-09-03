@@ -69,4 +69,6 @@
     <string name="add_folder_bookmark">Add folder or bookmark</string>
     <string name="create_note">Create note</string>
     <string name="note_important_icon">The icon that indicates the note is important</string>
+    <string name="copy">Copy</string>
+    <string name="copied">Copied</string>
 </resources>
