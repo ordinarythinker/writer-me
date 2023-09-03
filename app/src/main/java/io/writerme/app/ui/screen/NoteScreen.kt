@@ -304,7 +304,7 @@ fun NoteScreen(
                                         tint = MaterialTheme.colors.light,
                                         modifier = Modifier
                                             .padding(0.dp, 0.dp, 0.dp, 8.dp)
-                                            .size(24.dp)
+                                            .size(20.dp)
                                             .clickable {
                                                 // TODO: run the dropdown menu here
                                             }

@@ -1,6 +1,5 @@
 package io.writerme.app.ui.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -59,7 +58,6 @@ fun TagsBar(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(Color.DarkGray)
             .padding(bottom = padding)
     ) {
         Divider(
