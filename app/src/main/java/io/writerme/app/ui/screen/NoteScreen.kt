@@ -412,7 +412,9 @@ fun NoteScreen(
 
                                                 Icon(
                                                     painter = painterResource(id = R.drawable.ic_copy),
-                                                    contentDescription = stringResource(id = R.string.copy)
+                                                    contentDescription = stringResource(id = R.string.copy),
+                                                    modifier = Modifier.size(20.dp),
+                                                    tint = Color.DarkGray
                                                 )
                                             }
                                         }
@@ -427,13 +429,15 @@ fun NoteScreen(
                                                 verticalAlignment = Alignment.CenterVertically
                                             ) {
                                                 Text(
-                                                    text = stringResource(id = R.string.copy),
+                                                    text = stringResource(id = R.string.history),
                                                     style  = MaterialTheme.typography.body1
                                                 )
 
                                                 Icon(
-                                                    painter = painterResource(id = R.drawable.ic_copy),
-                                                    contentDescription = stringResource(id = R.string.copy)
+                                                    painter = painterResource(id = R.drawable.ic_history),
+                                                    contentDescription = stringResource(id = R.string.copy),
+                                                    modifier = Modifier.size(20.dp),
+                                                    tint = Color.DarkGray
                                                 )
                                             }
                                         }

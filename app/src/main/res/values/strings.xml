@@ -71,4 +71,5 @@
     <string name="note_important_icon">The icon that indicates the note is important</string>
     <string name="copy">Copy</string>
     <string name="copied">Copied</string>
+    <string name="history">History</string>
 </resources>
