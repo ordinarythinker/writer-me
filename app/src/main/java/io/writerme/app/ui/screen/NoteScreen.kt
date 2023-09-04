@@ -238,14 +238,17 @@ fun NoteScreen(
                     }
                 }
             }
-        ) {
+        ) { paddingValues ->
             val note = state.value.note
             val padding = dimensionResource(id = R.dimen.screen_padding)
 
             LazyColumn(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(start = padding, top = padding, end = padding, bottom = 70.dp)
+                    .padding(
+                        start = padding, top = padding, end = padding,
+                        bottom = paddingValues.calculateBottomPadding() + padding
+                    )
             ) {
                 item {
                     val title = note.title?.newest()
@@ -308,6 +311,20 @@ fun NoteScreen(
                                     .fillMaxWidth()
                                     .padding(start = padding)
                             )
+                        }
+                    }
+                }
+
+                item {
+                    AnimatedVisibility(visible = state.value.tags.isNotEmpty()) {
+                        Column {
+                            TagsBar(
+                                tags = state.value.tags,
+                                addNewTag = {},
+                                deleteTag = {}
+                            )
+
+                            Spacer(modifier = Modifier.height(padding))
                         }
                     }
                 }
@@ -454,14 +471,6 @@ fun NoteScreen(
                         }
                     }
                 )
-
-                item {
-                    TagsBar(
-                        tags = listOf("traveling", "outdoors"),
-                        addNewTag = {},
-                        deleteTag = {}
-                    )
-                }
             }
         }
     }
@@ -518,15 +527,15 @@ fun NoteScreenPreview() {
 
         content.addAll(
             listOf(
-                History(text)
-                //History(checkbox), History(task), History(image)
+                History(text),
+                //History(checkbox), History(task), History(image), History(image)
             )
         )
 
         tags.addAll(listOf("stories", "work"))
     }
 
-    val noteState = NoteState(note = note)
+    val noteState = NoteState(note = note, tags = listOf("traveling", "outdoors"))
     val state = MutableStateFlow(noteState)
 
     WriterMeTheme {
