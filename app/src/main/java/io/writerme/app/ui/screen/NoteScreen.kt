@@ -35,6 +35,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -86,6 +87,10 @@ fun NoteScreen(
 
     var expandedDropdownId by remember {
         mutableIntStateOf(-1)
+    }
+
+    var isDropDownInHistoryMode by remember {
+        mutableStateOf(false)
     }
 
     val showDropdown: (id: Int) -> Unit = {
@@ -411,7 +416,7 @@ fun NoteScreen(
                                                 )
 
                                                 Icon(
-                                                    painter = painterResource(id = R.drawable.ic_copy),
+                                                    painter = painterResource(id = R.drawable.ic_history),
                                                     contentDescription = stringResource(id = R.string.copy),
                                                     modifier = Modifier.size(20.dp),
                                                     tint = Color.DarkGray
