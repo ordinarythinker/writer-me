@@ -50,6 +50,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -426,7 +427,39 @@ fun NoteScreen(
                                                     modifyHistory(item, component)
                                                     dismissDropDown()
                                                 }) {
-                                                    // TODO
+                                                    when (component.type) {
+                                                        ComponentType.Text,
+                                                        ComponentType.Checkbox,
+                                                        ComponentType.Task -> {
+                                                            Text(
+                                                                text = component.content,
+                                                                style = MaterialTheme.typography.body1
+                                                            )
+                                                        }
+
+                                                        ComponentType.Link -> {
+                                                            Text(
+                                                                text = component.url,
+                                                                style = MaterialTheme.typography.body1,
+                                                                modifier = Modifier.fillMaxWidth(),
+                                                                maxLines = 1,
+                                                                overflow = TextOverflow.Ellipsis
+                                                            )
+                                                        }
+
+                                                        ComponentType.Image -> {
+                                                            io.writerme.app.ui.component.Image(
+                                                                component = component
+                                                            )
+                                                        }
+
+                                                        ComponentType.Voice -> {
+                                                            // TODO: pending
+                                                        }
+                                                        ComponentType.Video -> {
+                                                            // TODO: pending feature
+                                                        }
+                                                    }
                                                 }
                                             }
                                         } else {
