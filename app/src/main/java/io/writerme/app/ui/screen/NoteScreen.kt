@@ -76,8 +76,12 @@ import java.util.Date
 @Composable
 fun NoteScreen(
     noteState: StateFlow<NoteState>,
+    addCoverImage: (Long) -> Unit,
     onTitleChange: (String) -> Unit,
-    showHashtagBar: (Boolean) -> Unit
+    showHashtagBar: (Boolean) -> Unit,
+    addNewTag: (String) -> Unit,
+    deleteTag: (String) -> Unit,
+    modifyHistory: (History, Component) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -292,7 +296,7 @@ fun NoteScreen(
                                     .background(MaterialTheme.colors.backgroundGrey)
                                     .padding(4.dp, 12.dp)
                                     .shadow(dimensionResource(id = R.dimen.shadow), shape),
-                                onClick = { /*TODO*/ }
+                                onClick = { addCoverImage(state.value.note.id) }
                             ) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_camera),
@@ -320,8 +324,8 @@ fun NoteScreen(
                         Column {
                             TagsBar(
                                 tags = state.value.tags,
-                                addNewTag = {},
-                                deleteTag = {}
+                                addNewTag = addNewTag,
+                                deleteTag = deleteTag
                             )
 
                             Spacer(modifier = Modifier.height(padding))
@@ -417,53 +421,65 @@ fun NoteScreen(
                                         onDismissRequest = { dismissDropDown() },
                                         scrollState = rememberScrollState()
                                     ) {
-                                        DropdownMenuItem(onClick = {
-                                            context.copyComponentContent(component)
+                                        if (isDropDownInHistoryMode) {
+                                            item.changes.forEach { component ->
+                                                DropdownMenuItem(onClick = {
+                                                    modifyHistory(item, component)
+                                                    dismissDropDown()
+                                                }) {
+                                                    // TODO
+                                                }
+                                            }
+                                        } else {
+                                            Column {
+                                                DropdownMenuItem(onClick = {
+                                                    context.copyComponentContent(component)
 
-                                            dismissDropDown()
-                                        }) {
-                                            Row(
-                                                modifier = Modifier.fillMaxWidth(),
-                                                horizontalArrangement = Arrangement.SpaceBetween,
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-                                                Text(
-                                                    text = stringResource(id = R.string.copy),
-                                                    style  = MaterialTheme.typography.body1
-                                                )
+                                                    dismissDropDown()
+                                                }) {
+                                                    Row(
+                                                        modifier = Modifier.fillMaxWidth(),
+                                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                                        verticalAlignment = Alignment.CenterVertically
+                                                    ) {
+                                                        Text(
+                                                            text = stringResource(id = R.string.copy),
+                                                            style  = MaterialTheme.typography.body1
+                                                        )
 
-                                                Icon(
-                                                    painter = painterResource(id = R.drawable.ic_history),
-                                                    contentDescription = stringResource(id = R.string.copy),
-                                                    modifier = Modifier.size(20.dp),
-                                                    tint = Color.DarkGray
-                                                )
+                                                        Icon(
+                                                            painter = painterResource(id = R.drawable.ic_history),
+                                                            contentDescription = stringResource(id = R.string.copy),
+                                                            modifier = Modifier.size(20.dp),
+                                                            tint = Color.DarkGray
+                                                        )
+                                                    }
+                                                }
+
+                                                DropdownMenuItem(onClick = {
+                                                    isDropDownInHistoryMode = true
+                                                }) {
+                                                    Row(
+                                                        modifier = Modifier.fillMaxWidth(),
+                                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                                        verticalAlignment = Alignment.CenterVertically
+                                                    ) {
+                                                        Text(
+                                                            text = stringResource(id = R.string.history),
+                                                            style  = MaterialTheme.typography.body1
+                                                        )
+
+                                                        Icon(
+                                                            painter = painterResource(id = R.drawable.ic_history),
+                                                            contentDescription = stringResource(id = R.string.copy),
+                                                            modifier = Modifier.size(20.dp),
+                                                            tint = Color.DarkGray
+                                                        )
+                                                    }
+                                                }
+                                            }
                                             }
                                         }
-
-                                        DropdownMenuItem(onClick = {
-
-                                            dismissDropDown()
-                                        }) {
-                                            Row(
-                                                modifier = Modifier.fillMaxWidth(),
-                                                horizontalArrangement = Arrangement.SpaceBetween,
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-                                                Text(
-                                                    text = stringResource(id = R.string.history),
-                                                    style  = MaterialTheme.typography.body1
-                                                )
-
-                                                Icon(
-                                                    painter = painterResource(id = R.drawable.ic_history),
-                                                    contentDescription = stringResource(id = R.string.copy),
-                                                    modifier = Modifier.size(20.dp),
-                                                    tint = Color.DarkGray
-                                                )
-                                            }
-                                        }
-                                    }
                                 }
                             }
 
@@ -539,6 +555,6 @@ fun NoteScreenPreview() {
     val state = MutableStateFlow(noteState)
 
     WriterMeTheme {
-        NoteScreen(noteState = state, {}, {})
+        NoteScreen(noteState = state, {}, {}, {}, {}, {}, { _, _ ->})
     }
 }
