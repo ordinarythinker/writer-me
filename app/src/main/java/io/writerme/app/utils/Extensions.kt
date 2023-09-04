@@ -79,6 +79,7 @@ fun RealmList<Component>.push(t: Component): Component? {
         ComponentType.Voice -> Const.VOICE_CHANGES_HISTORY
         ComponentType.Task -> Const.TASK_CHANGES_HISTORY
     }
+    t.id = System.currentTimeMillis()
 
     val deleted = if (this.size >= number) {
         val element = this[0]

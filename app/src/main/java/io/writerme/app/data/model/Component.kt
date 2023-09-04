@@ -99,6 +99,34 @@ open class Component(): RealmObject {
         this.imageUrl = imageUrl
         this.type = ComponentType.Link
     }
+
+    fun copy(
+        id: Long = System.currentTimeMillis(),
+        noteId: Long = this.noteId,
+        content: String = this.content,
+        isChecked: Boolean = this.isChecked,
+        url: String = this.url,
+        title: String = this.title,
+        imageUrl: String? = this.imageUrl,
+        time: Date = this.time,
+        isImage: Boolean = this.isImage,
+        changeTime: Long = this.changeTime,
+        type: ComponentType = this.type
+    ): Component {
+        return Component().apply {
+            this.id = id
+            this.noteId = noteId
+            this.content = content
+            this.isChecked = isChecked
+            this.url = url
+            this.title = title
+            this.imageUrl = imageUrl
+            this.time = time
+            this.isImage = isImage
+            this.changeTime = changeTime
+            this.type = type
+        }
+    }
 }
 
 enum class ComponentType(val value: String) {

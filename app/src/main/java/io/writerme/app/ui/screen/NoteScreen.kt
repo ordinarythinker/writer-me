@@ -53,6 +53,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.writerme.app.R
 import io.writerme.app.data.model.Component
@@ -68,6 +69,7 @@ import io.writerme.app.ui.state.NoteState
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.backgroundGrey
 import io.writerme.app.ui.theme.light
+import io.writerme.app.utils.OnLifecycleEvent
 import io.writerme.app.utils.copyComponentContent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -83,7 +85,8 @@ fun NoteScreen(
     showHashtagBar: (Boolean) -> Unit,
     addNewTag: (String) -> Unit,
     deleteTag: (String) -> Unit,
-    modifyHistory: (History, Component) -> Unit
+    modifyHistory: (History, Component) -> Unit,
+    saveChanges: () -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -106,6 +109,12 @@ fun NoteScreen(
     val dismissDropDown: () -> Unit = {
         expandedDropdownId = -1
     }
+
+    OnLifecycleEvent(onEvent = { _, event ->
+        if (event == Lifecycle.Event.ON_PAUSE) {
+            saveChanges()
+        }
+    })
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -591,6 +600,6 @@ fun NoteScreenPreview() {
     val state = MutableStateFlow(noteState)
 
     WriterMeTheme {
-        NoteScreen(noteState = state, {}, {}, {}, {}, {}, { _, _ ->})
+        NoteScreen(noteState = state, {}, {}, {}, {}, {}, { _, _ ->}, {})
     }
 }

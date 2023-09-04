@@ -24,6 +24,7 @@ import io.writerme.app.ui.screen.SettingsScreen
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.utils.Const
 import io.writerme.app.viewmodel.BookmarksViewModel
+import io.writerme.app.viewmodel.NoteViewModel
 import io.writerme.app.viewmodel.SettingsViewModel
 
 @AndroidEntryPoint
@@ -60,6 +61,7 @@ class MainActivity : ComponentActivity() {
 
                         }
                         composable(Note.route) {
+                            val noteViewModel = hiltViewModel<NoteViewModel>()
                             //NoteScreen(noteState = , onTitleChange = , showHashtagBar = )
                         }
 
