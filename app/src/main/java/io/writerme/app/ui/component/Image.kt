@@ -13,8 +13,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import io.writerme.app.R
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
@@ -40,7 +38,7 @@ fun Image(component: Component, modifier: Modifier = Modifier) {
             )
 
             /*AsyncImage(
-                model = component.imageUrl,
+                model = component.url,
                 contentDescription = component.content,
                 modifier = Modifier.fillMaxWidth(),
                 contentScale = ContentScale.Crop

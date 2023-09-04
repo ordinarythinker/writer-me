@@ -3,6 +3,8 @@ package io.writerme.app.utils
 import android.content.Context
 import android.os.Build
 import android.widget.Toast
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.types.RealmList
@@ -110,11 +112,16 @@ fun Realm.Companion.getDefaultInstance(): Realm {
     return open(RealmConfiguration.default())
 }
 
-fun Context.copyComponentContent(component: Component) {
-    // TODO: implement
-    // https://developer.android.com/develop/ui/views/touch-and-input/copy-paste
-    // https://www.geeksforgeeks.org/android-jetpack-compose-use-clipboard-service/
+fun ClipboardManager.copyComponentContent(component: Component, context: Context) {
+    val text = when (component.type) {
+        ComponentType.Text, ComponentType.Checkbox, ComponentType.Task -> component.content
+
+        ComponentType.Voice, ComponentType.Link,
+        ComponentType.Video, ComponentType.Image -> component.url
+    }
+
+    this.setText(AnnotatedString(text))
 
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2)
-        Toast.makeText(this, this.resources.getString(R.string.copied), Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.resources.getString(R.string.copied), Toast.LENGTH_SHORT).show()
 }

@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -414,8 +415,6 @@ fun NoteScreen(
                                         dimensionResource(id = R.dimen.small_radius)
                                     ))
                                 ) {
-                                    val context = LocalContext.current
-
                                     ExposedDropdownMenu(
                                         expanded = isExpanded,
                                         onDismissRequest = { dismissDropDown() },
@@ -431,10 +430,14 @@ fun NoteScreen(
                                                 }
                                             }
                                         } else {
+                                            val clipboardManager = LocalClipboardManager.current
+                                            val context = LocalContext.current
+
                                             Column {
                                                 DropdownMenuItem(onClick = {
-                                                    context.copyComponentContent(component)
-
+                                                    clipboardManager.copyComponentContent(
+                                                        component = component, context = context
+                                                    )
                                                     dismissDropDown()
                                                 }) {
                                                     Row(
@@ -478,8 +481,8 @@ fun NoteScreen(
                                                     }
                                                 }
                                             }
-                                            }
                                         }
+                                    }
                                 }
                             }
 
