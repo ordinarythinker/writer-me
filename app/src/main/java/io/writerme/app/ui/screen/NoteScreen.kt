@@ -141,7 +141,9 @@ fun NoteScreen(
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = {
+                            // TODO: back button
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_back),
                                 contentDescription = stringResource(id = R.string.back_button),
@@ -150,7 +152,9 @@ fun NoteScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = {
+                            // TODO: back button
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_more),
                                 contentDescription = stringResource(id = R.string.more),
@@ -178,7 +182,7 @@ fun NoteScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         /*
-                        // TODO: pending feature
+                        // pending features
 
                         IconButton(onClick = {  }) {
                             Icon(
@@ -220,7 +224,9 @@ fun NoteScreen(
                             )
                         }
 
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = {
+                            // TODO: add link
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_link),
                                 contentDescription = stringResource(id = R.string.add_link_button),
@@ -228,7 +234,9 @@ fun NoteScreen(
                             )
                         }
 
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = {
+                            // TODO: add voice
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_microphone),
                                 contentDescription = stringResource(id = R.string.add_voice_note_button),
@@ -236,7 +244,9 @@ fun NoteScreen(
                             )
                         }
 
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = {
+                            // TODO: add task
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_checked),
                                 contentDescription = stringResource(id = R.string.add_tast_button),
@@ -245,7 +255,9 @@ fun NoteScreen(
                             )
                         }
 
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = {
+                            // TODO: add image
+                        }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_camera),
                                 contentDescription = stringResource(id = R.string.add_media_button),
