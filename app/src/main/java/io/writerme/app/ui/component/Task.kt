@@ -8,12 +8,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -33,9 +38,18 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Task(task: Component, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun Task(
+    task: Component,
+    onClick: () -> Unit,
+    onValueChange: (Component) -> Unit,
+    modifier: Modifier = Modifier
+) {
     if (task.type == ComponentType.Task) {
         val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
+
+        var localText by remember {
+            mutableStateOf(task.content)
+        }
 
         Card(
             shape = shape,
@@ -47,7 +61,9 @@ fun Task(task: Component, onClick: () -> Unit, modifier: Modifier = Modifier) {
             onClick = onClick
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
             ) {
                 Box(modifier = Modifier
                     .matchParentSize()
@@ -69,10 +85,15 @@ fun Task(task: Component, onClick: () -> Unit, modifier: Modifier = Modifier) {
                             style = MaterialTheme.typography.h5,
                             color = MaterialTheme.colors.light
                         )
-                        Text(
-                            text = task.content,
-                            style = MaterialTheme.typography.h3,
-                            color = MaterialTheme.colors.light
+                        BasicTextField(
+                            value = localText,
+                            onValueChange = {
+                                localText = it
+                                task.content = it
+
+                                onValueChange(task)
+                            },
+                            textStyle = MaterialTheme.typography.h3.copy(color = MaterialTheme.colors.light)
                         )
                     }
                     Icon(
@@ -96,6 +117,6 @@ fun TaskPreview() {
     }
 
     WriterMeTheme {
-        Task(component, {})
+        Task(component, {}, {})
     }
 }

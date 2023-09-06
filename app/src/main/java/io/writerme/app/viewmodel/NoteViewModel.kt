@@ -66,9 +66,23 @@ class NoteViewModel @Inject constructor(): ViewModel() {
         }
     }
 
-    fun saveChanges() {
-        viewModelScope.launch {
+    fun onComponentChange(component: Component) {
+        pendingUpdates[component.id] = component
+        saveFlow.tryEmit(component)
+    }
 
+    fun addNewCheckBox(noteId: Long, position: Int) {
+        viewModelScope.launch {
+            noteRepository.addNewCheckBox(noteId, position)
+        }
+    }
+
+    fun saveChanges() {
+        pendingUpdates.forEach { (k, v) ->
+            viewModelScope.launch {
+                noteRepository.saveComponent(v)
+                pendingUpdates.remove(k)
+            }
         }
     }
 

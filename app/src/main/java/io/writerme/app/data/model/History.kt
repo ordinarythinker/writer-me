@@ -15,7 +15,7 @@ open class History: RealmObject {
 
     constructor(): super()
 
-    constructor(component: Component): this () {
+    constructor(component: Component): this() {
         changes.add(component)
     }
 

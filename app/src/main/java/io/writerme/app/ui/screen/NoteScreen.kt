@@ -86,7 +86,9 @@ fun NoteScreen(
     addNewTag: (String) -> Unit,
     deleteTag: (String) -> Unit,
     modifyHistory: (History, Component) -> Unit,
-    saveChanges: () -> Unit
+    saveChanges: () -> Unit,
+    onComponentChange: (Component) -> Unit,
+    addNewCheckBox: (Long, Int) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -206,7 +208,7 @@ fun NoteScreen(
                         */
 
                         IconButton(onClick = {
-                            if (!state.value.isHastTagBarVisible) {
+                            if (!state.value.isTagsBarVisible) {
                                 showHashtagBar(true)
                             }
                             focusRequester.requestFocus()
@@ -331,10 +333,10 @@ fun NoteScreen(
                 }
 
                 item {
-                    AnimatedVisibility(visible = state.value.tags.isNotEmpty()) {
+                    AnimatedVisibility(visible = state.value.note.tags.isNotEmpty()) {
                         Column {
                             TagsBar(
-                                tags = state.value.tags,
+                                tags = state.value.note.tags,
                                 addNewTag = addNewTag,
                                 deleteTag = deleteTag
                             )
@@ -380,22 +382,25 @@ fun NoteScreen(
                                         ComponentType.Text -> {
                                             NoteText(
                                                 component = component,
-                                                onValueChange = { /*TODO*/ },
+                                                onValueChange = onComponentChange,
                                             )
                                         }
                                         ComponentType.Checkbox -> {
                                             Checkbox(
                                                 component = component,
-                                                modifier = Modifier.padding(start = padding)
+                                                modifier = Modifier.padding(start = padding),
+                                                onValueChange = onComponentChange,
+                                                onAddNewCheckbox = {
+                                                    addNewCheckBox(state.value.note.id, currentIndex)
+                                                }
                                             )
-                                            // TODO: possible problem since Checkbox is not editable
-                                            // TODO: make it editable, onValueChange
                                         }
                                         ComponentType.Voice -> {}
                                         ComponentType.Task -> {
                                             Task(
                                                 task = component,
-                                                onClick = { /*TODO*/ }
+                                                onClick = { /*TODO*/ },
+                                                onValueChange = onComponentChange
                                             )
                                         }
                                         ComponentType.Link -> {
@@ -406,7 +411,7 @@ fun NoteScreen(
                                             // TODO: link is not editable, though it should be
                                         }
                                         ComponentType.Video -> {
-                                            // TODO: pending feature
+                                            // pending feature
                                         }
                                         ComponentType.Image -> {
                                             io.writerme.app.ui.component.Image(
@@ -463,10 +468,10 @@ fun NoteScreen(
                                                         }
 
                                                         ComponentType.Voice -> {
-                                                            // TODO: pending
+                                                            // pending
                                                         }
                                                         ComponentType.Video -> {
-                                                            // TODO: pending feature
+                                                            // pending feature
                                                         }
                                                     }
                                                 }
@@ -596,10 +601,10 @@ fun NoteScreenPreview() {
         tags.addAll(listOf("stories", "work"))
     }
 
-    val noteState = NoteState(note = note, tags = listOf("traveling", "outdoors"))
+    val noteState = NoteState(note = note)
     val state = MutableStateFlow(noteState)
 
     WriterMeTheme {
-        NoteScreen(noteState = state, {}, {}, {}, {}, {}, { _, _ ->}, {})
+        NoteScreen(noteState = state, {}, {}, {}, {}, {}, { _, _ ->}, {}, {}, { _, _ ->})
     }
 }
