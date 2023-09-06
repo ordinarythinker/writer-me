@@ -188,7 +188,7 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
                             }
 
                             ComponentType.Checkbox -> {
-                                Checkbox(component = component)
+                                Checkbox(component = component, {}, {})
                             }
 
                             ComponentType.Voice -> {
