@@ -1,6 +1,9 @@
 package io.writerme.app.ui.screen
 
 import android.annotation.SuppressLint
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -88,7 +91,9 @@ fun NoteScreen(
     modifyHistory: (History, Component) -> Unit,
     saveChanges: () -> Unit,
     onComponentChange: (Component) -> Unit,
-    addNewCheckBox: (Long, Int) -> Unit
+    addNewCheckBox: (Long, Int) -> Unit,
+    navigateBack: () -> Unit,
+    addSection: (Long, Component) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -118,6 +123,21 @@ fun NoteScreen(
         }
     })
 
+    val context = LocalContext.current
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            val imageComponent = Component().apply {
+                this.noteId = state.value.note.id
+                this.type = ComponentType.Image
+                this.imageUrl = uri.toString()
+            }
+
+            addSection(state.value.note.id, imageComponent)
+        }
+    )
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_main),
@@ -141,9 +161,7 @@ fun NoteScreen(
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = {
-                            // TODO: back button
-                        }) {
+                        IconButton(onClick = navigateBack) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_back),
                                 contentDescription = stringResource(id = R.string.back_button),
@@ -153,7 +171,7 @@ fun NoteScreen(
                     },
                     actions = {
                         IconButton(onClick = {
-                            // TODO: back button
+                            // TODO: dropdown menu button
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_more),
@@ -235,7 +253,8 @@ fun NoteScreen(
                         }
 
                         IconButton(onClick = {
-                            // TODO: add voice
+                            // pending: add voice
+                            Toast.makeText(context, context.resources.getString(R.string.pending), Toast.LENGTH_SHORT).show()
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_microphone),
@@ -245,7 +264,8 @@ fun NoteScreen(
                         }
 
                         IconButton(onClick = {
-                            // TODO: add task
+                            // pending: add task
+                            Toast.makeText(context, context.resources.getString(R.string.pending), Toast.LENGTH_SHORT).show()
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_checked),
@@ -256,7 +276,7 @@ fun NoteScreen(
                         }
 
                         IconButton(onClick = {
-                            // TODO: add image
+                            imagePicker.launch("image/*")
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_camera),
@@ -490,7 +510,6 @@ fun NoteScreen(
                                             }
                                         } else {
                                             val clipboardManager = LocalClipboardManager.current
-                                            val context = LocalContext.current
 
                                             Column {
                                                 DropdownMenuItem(onClick = {
@@ -617,6 +636,6 @@ fun NoteScreenPreview() {
     val state = MutableStateFlow(noteState)
 
     WriterMeTheme {
-        NoteScreen(noteState = state, {}, {}, {}, {}, {}, { _, _ ->}, {}, {}, { _, _ ->})
+        NoteScreen(noteState = state, {}, {}, {}, {}, {}, { _, _ ->}, {}, {}, { _, _ ->}, {}, { _, _ ->})
     }
 }

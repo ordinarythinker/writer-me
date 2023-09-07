@@ -92,6 +92,21 @@ class NoteRepository: Closeable {
         }
     }
 
+    suspend fun addSection(noteId: Long, comp: Component) {
+        if (noteId >= 0) {
+            realm.write {
+                val component = copyToRealm(comp)
+                val history = copyToRealm(History())
+                history.push(component)
+
+                val note = this.query(Note::class, "id = $0", noteId).first().find()
+                note?.content?.add(history)
+            }
+
+            addTextIfNecessary(noteId)
+        }
+    }
+
     override fun close() {
         realm.close()
     }

@@ -86,6 +86,12 @@ class NoteViewModel @Inject constructor(): ViewModel() {
         }
     }
 
+    fun addSection(noteId: Long, component: Component) {
+        viewModelScope.launch {
+            noteRepository.addSection(noteId, component)
+        }
+    }
+
     override fun onCleared() {
         saveChanges()
         super.onCleared()
