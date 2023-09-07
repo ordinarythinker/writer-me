@@ -25,5 +25,9 @@ open class History: RealmObject {
 
     fun newest(): Component? = changes.getLast()
 
+    fun getType(): ComponentType? {
+        return if (changes.isNotEmpty()) changes[0].type else null
+    }
+
     fun isNotEmpty(): Boolean = changes.isNotEmpty()
 }

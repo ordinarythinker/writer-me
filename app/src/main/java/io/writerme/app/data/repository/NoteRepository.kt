@@ -7,6 +7,7 @@ import io.writerme.app.data.model.ComponentType
 import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
 import io.writerme.app.utils.getDefaultInstance
+import io.writerme.app.utils.getLast
 import java.io.Closeable
 
 class NoteRepository: Closeable {
@@ -28,6 +29,36 @@ class NoteRepository: Closeable {
                 val toDelete = it.push(saved)
                 toDelete?.let { obj -> delete(obj) }
                 saved
+            }
+        }
+    }
+
+    private suspend fun addTextIfNecessary(noteId: Long) {
+        realm.write {
+            val note = this.query(Note::class, "id = $0", noteId).first().find()
+
+            note?.let {
+                if (it.content.isNotEmpty()) {
+                    val lastHistory = it.content.getLast()!!
+
+                    val type = lastHistory.getType()
+
+                    if (type == null || type != ComponentType.Text) {
+                        val textComponent = Component().apply {
+                            this.type = ComponentType.Text
+                            this.noteId = noteId
+                        }
+                        val text = copyToRealm(textComponent)
+
+                        if (type == null) {
+                            lastHistory.push(text)
+                        } else if (type != ComponentType.Text) {
+                            var history = History()
+                            history = copyToRealm(history)
+                            history.push(textComponent)
+                        }
+                    }
+                }
             }
         }
     }
@@ -56,6 +87,8 @@ class NoteRepository: Closeable {
                     }
                 }
             }
+
+            addTextIfNecessary(noteId)
         }
     }
 
