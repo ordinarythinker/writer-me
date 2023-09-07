@@ -88,7 +88,7 @@ import java.util.Date
 fun NoteScreen(
     noteState: StateFlow<NoteState>,
     toggleHistoryMode: () -> Unit,
-    toggleTopbarDropdownVisibility: () -> Unit,
+    toggleTopBarDropdownVisibility: () -> Unit,
     addCoverImage: (Long) -> Unit,
     onTitleChange: (String) -> Unit,
     showHashtagBar: (Boolean) -> Unit,
@@ -176,7 +176,7 @@ fun NoteScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = toggleTopbarDropdownVisibility) {
+                        IconButton(onClick = toggleTopBarDropdownVisibility) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_more),
                                 contentDescription = stringResource(id = R.string.more),
@@ -195,7 +195,7 @@ fun NoteScreen(
                         ) {
                             DropdownMenu(
                                 expanded = state.value.isTopBarDropdownVisible,
-                                onDismissRequest = toggleTopbarDropdownVisibility,
+                                onDismissRequest = toggleTopBarDropdownVisibility,
                                 properties = PopupProperties()
                             ) {
 
