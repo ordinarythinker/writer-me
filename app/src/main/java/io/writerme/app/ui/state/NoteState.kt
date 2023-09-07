@@ -5,6 +5,7 @@ import io.writerme.app.data.model.Note
 data class NoteState(
     val note: Note,
     val isTagsBarVisible: Boolean = false,
+    val isTopBarDropdownVisible: Boolean = false,
     val isHistoryMode: Boolean = false
 ) {
     companion object {

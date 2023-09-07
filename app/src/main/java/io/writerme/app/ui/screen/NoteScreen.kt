@@ -19,12 +19,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.BottomAppBar
+import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
@@ -56,6 +58,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.writerme.app.R
@@ -71,6 +74,7 @@ import io.writerme.app.ui.component.Task
 import io.writerme.app.ui.state.NoteState
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.backgroundGrey
+import io.writerme.app.ui.theme.dropdownBackground
 import io.writerme.app.ui.theme.light
 import io.writerme.app.utils.OnLifecycleEvent
 import io.writerme.app.utils.copyComponentContent
@@ -83,6 +87,8 @@ import java.util.Date
 @Composable
 fun NoteScreen(
     noteState: StateFlow<NoteState>,
+    toggleHistoryMode: () -> Unit,
+    toggleTopbarDropdownVisibility: () -> Unit,
     addCoverImage: (Long) -> Unit,
     onTitleChange: (String) -> Unit,
     showHashtagBar: (Boolean) -> Unit,
@@ -170,14 +176,48 @@ fun NoteScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = {
-                            // TODO: dropdown menu button
-                        }) {
+                        IconButton(onClick = toggleTopbarDropdownVisibility) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_more),
                                 contentDescription = stringResource(id = R.string.more),
                                 tint = MaterialTheme.colors.light
                             )
+                        }
+
+                        MaterialTheme(
+                            colors = MaterialTheme.colors.copy(
+                                surface = MaterialTheme.colors.dropdownBackground,
+                                background = Color.Blue
+                            ),
+                            shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(
+                                dimensionResource(id = R.dimen.small_radius)
+                            ))
+                        ) {
+                            DropdownMenu(
+                                expanded = state.value.isTopBarDropdownVisible,
+                                onDismissRequest = toggleTopbarDropdownVisibility,
+                                properties = PopupProperties()
+                            ) {
+
+                                DropdownMenuItem(
+                                    onClick = toggleHistoryMode,
+                                    enabled = true
+                                ) {
+                                    Text(
+                                        text = stringResource(id = R.string.history_mode),
+                                        style = MaterialTheme.typography.subtitle1,
+                                        color = MaterialTheme.colors.light
+                                    )
+
+                                    Spacer(modifier = Modifier.width(width = 8.dp))
+
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_history),
+                                        contentDescription = stringResource(id = R.string.history_mode),
+                                        tint = MaterialTheme.colors.light
+                                    )
+                                }
+                            }
                         }
                     }
                 )
@@ -636,6 +676,6 @@ fun NoteScreenPreview() {
     val state = MutableStateFlow(noteState)
 
     WriterMeTheme {
-        NoteScreen(noteState = state, {}, {}, {}, {}, {}, { _, _ ->}, {}, {}, { _, _ ->}, {}, { _, _ ->})
+        NoteScreen(noteState = state, {}, {}, {}, {}, {}, {}, {}, { _, _ ->}, {}, {}, { _, _ ->}, {}, { _, _ ->})
     }
 }

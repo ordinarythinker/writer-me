@@ -17,6 +17,7 @@ val LightGrey65 = Color(0xA6D9D9D9)
 val DarkGrey65 = Color(0xA66B6A6A)
 val DialogGrey85 = Color(0xD9292D32)
 val DarkBlack25 = Color(0x40000000)
+val DropDownGrey95 = Color(0xF2292D32)
 
 val ExtraLight15 = Color(0x26D9D9D9)
 
@@ -34,6 +35,9 @@ val Colors.lightGrey : Color
 
 val Colors.dialogBackground : Color
     get() = DialogGrey85
+
+val Colors.dropdownBackground : Color
+    get() = DropDownGrey95
 
 val Colors.fieldDark : Color
     get() = DarkBlack25
