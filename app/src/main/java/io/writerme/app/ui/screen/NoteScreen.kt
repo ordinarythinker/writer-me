@@ -38,11 +38,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -89,7 +85,7 @@ fun NoteScreen(
     noteState: StateFlow<NoteState>,
     toggleHistoryMode: () -> Unit,
     toggleTopBarDropdownVisibility: () -> Unit,
-    addCoverImage: (Long) -> Unit,
+    addCoverImage: (String) -> Unit,
     onTitleChange: (String) -> Unit,
     showHashtagBar: (Boolean) -> Unit,
     addNewTag: (String) -> Unit,
@@ -97,31 +93,18 @@ fun NoteScreen(
     modifyHistory: (History, Component) -> Unit,
     saveChanges: () -> Unit,
     onComponentChange: (Component) -> Unit,
-    addNewCheckBox: (Long, Int) -> Unit,
+    addNewCheckBox: (Int) -> Unit,
     navigateBack: () -> Unit,
-    addSection: (Long, Component) -> Unit
+    addSection: (Component) -> Unit,
+    showDropdown: (Int) -> Unit,
+    dismissDropDown: () -> Unit,
+    toggleDropDownHistoryMode: () -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
 
     val focusRequester = remember { FocusRequester() }
 
     val state = noteState.collectAsStateWithLifecycle()
-
-    var expandedDropdownId by remember {
-        mutableIntStateOf(-1)
-    }
-
-    var isDropDownInHistoryMode by remember {
-        mutableStateOf(false)
-    }
-
-    val showDropdown: (id: Int) -> Unit = {
-        expandedDropdownId = it
-    }
-
-    val dismissDropDown: () -> Unit = {
-        expandedDropdownId = -1
-    }
 
     OnLifecycleEvent(onEvent = { _, event ->
         if (event == Lifecycle.Event.ON_PAUSE) {
@@ -140,7 +123,7 @@ fun NoteScreen(
                 this.imageUrl = uri.toString()
             }
 
-            addSection(state.value.note.id, imageComponent)
+            addSection(imageComponent)
         }
     )
 
@@ -381,7 +364,10 @@ fun NoteScreen(
                                     .background(MaterialTheme.colors.backgroundGrey)
                                     .padding(4.dp, 12.dp)
                                     .shadow(dimensionResource(id = R.dimen.shadow), shape),
-                                onClick = { addCoverImage(state.value.note.id) }
+                                onClick = {
+                                    // TODO: review !!!
+                                    // addCoverImage(state.value.note.id)
+                                }
                             ) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_camera),
@@ -424,7 +410,7 @@ fun NoteScreen(
                         val newest = item.newest()
 
                         newest?.let { component ->
-                            val isExpanded = currentIndex == expandedDropdownId
+                            val isExpanded = currentIndex == state.value.expandedDropdownId
 
                             ExposedDropdownMenuBox(
                                 expanded = isExpanded,
@@ -463,7 +449,7 @@ fun NoteScreen(
                                                 modifier = Modifier.padding(start = padding),
                                                 onValueChange = onComponentChange,
                                                 onAddNewCheckbox = {
-                                                    addNewCheckBox(state.value.note.id, currentIndex)
+                                                    addNewCheckBox(currentIndex)
                                                 }
                                             )
                                         }
@@ -507,7 +493,7 @@ fun NoteScreen(
                                         onDismissRequest = { dismissDropDown() },
                                         scrollState = rememberScrollState()
                                     ) {
-                                        if (isDropDownInHistoryMode) {
+                                        if (state.value.isDropDownInHistoryMode) {
                                             item.changes.forEach { component ->
                                                 DropdownMenuItem(onClick = {
                                                     modifyHistory(item, component)
@@ -577,9 +563,7 @@ fun NoteScreen(
                                                     }
                                                 }
 
-                                                DropdownMenuItem(onClick = {
-                                                    isDropDownInHistoryMode = true
-                                                }) {
+                                                DropdownMenuItem(onClick = toggleDropDownHistoryMode) {
                                                     Row(
                                                         modifier = Modifier.fillMaxWidth(),
                                                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -676,6 +660,7 @@ fun NoteScreenPreview() {
     val state = MutableStateFlow(noteState)
 
     WriterMeTheme {
-        NoteScreen(noteState = state, {}, {}, {}, {}, {}, {}, {}, { _, _ ->}, {}, {}, { _, _ ->}, {}, { _, _ ->})
+        NoteScreen(noteState = state, {}, {}, {}, {}, {}, {}, {},
+            { _, _ ->}, {}, {}, { _ ->}, {}, { _ ->}, {}, {}, {})
     }
 }

@@ -4,22 +4,24 @@ interface Route {
     val route: String
 }
 
-object Home : Route {
+object HomeScreen : Route {
     override val route: String = "home"
 }
 
-object Task : Route {
+object TasksScreen : Route {
     override val route: String = "task"
 }
 
-object Note : Route {
-    override val route: String = "note"
+object NoteScreen : Route {
+    const val NOTE_PARAM = "id"
+
+    override val route: String = "note?id={$NOTE_PARAM}"
 }
 
-object Bookmarks : Route {
+object BookmarksScreen : Route {
     override val route: String = "bookmarks"
 }
 
-object Settings : Route {
+object SettingsScreen : Route {
     override val route: String = "settings"
 }

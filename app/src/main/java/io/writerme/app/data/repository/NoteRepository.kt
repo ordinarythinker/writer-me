@@ -2,16 +2,29 @@ package io.writerme.app.data.repository
 
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
+import io.realm.kotlin.ext.asFlow
+import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
 import io.writerme.app.utils.getDefaultInstance
 import io.writerme.app.utils.getLast
+import kotlinx.coroutines.flow.Flow
 import java.io.Closeable
 
 class NoteRepository: Closeable {
     private val realm: Realm = Realm.getDefaultInstance()
+
+    suspend fun createNewNote() : Flow<ObjectChange<Note>> {
+        return realm.write {
+            copyToRealm(Note())
+        }.asFlow()
+    }
+
+    suspend fun getNote(noteId: Long) : Flow<ObjectChange<Note>> {
+        return realm.query(Note::class, "id = $0", noteId).first().find()?.asFlow() ?: createNewNote()
+    }
 
     suspend fun saveComponent(component: Component) {
         realm.write {
@@ -30,6 +43,55 @@ class NoteRepository: Closeable {
                 toDelete?.let { obj -> delete(obj) }
                 saved
             }
+        }
+    }
+
+    suspend fun updateNoteTitle(noteId: Long, title: Component) {
+        realm.write {
+            val note = this.query(Note::class, "id = $0", noteId).first().find()
+
+            note?.let {
+
+                if (note.title == null) {
+                    note.title = copyToRealm(History())
+                }
+
+                note.title!!.push(copyToRealm(title, UpdatePolicy.ALL))
+            }
+        }
+    }
+
+    suspend fun updateNoteCover(noteId: Long, cover: Component) {
+        realm.write {
+            val note = this.query(Note::class, "id = $0", noteId).first().find()
+
+            note?.let {
+                if (note.cover == null) {
+                    note.cover = copyToRealm(History())
+                }
+
+                note.cover!!.push(copyToRealm(cover, UpdatePolicy.ALL))
+            }
+        }
+    }
+
+    suspend fun addNewTag(noteId: Long, tag: String) {
+        realm.write {
+            val note = this.query(Note::class, "id = $0", noteId).first().find()
+
+            note?.let {
+                if (!note.tags.contains(tag)) {
+                    note.tags.add(tag)
+                }
+            }
+        }
+    }
+
+    suspend fun deleteTag(noteId: Long, tag: String) {
+        realm.write {
+            val note = this.query(Note::class, "id = $0", noteId).first().find()
+
+            note?.tags?.remove(tag)
         }
     }
 

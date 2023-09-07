@@ -1,12 +1,15 @@
 package io.writerme.app.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.realm.kotlin.notifications.ResultsChange
+import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.History
+import io.writerme.app.data.model.Note
 import io.writerme.app.data.repository.NoteRepository
+import io.writerme.app.ui.navigation.NoteScreen
 import io.writerme.app.ui.state.NoteState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -24,7 +27,9 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @HiltViewModel
-class NoteViewModel @Inject constructor(): ViewModel() {
+class NoteViewModel @Inject constructor(
+    private val savedState: SavedStateHandle
+): ViewModel() {
 
     private val noteRepository: NoteRepository = NoteRepository()
     private val changes : HashMap<Long, Int> = hashMapOf()
@@ -32,7 +37,7 @@ class NoteViewModel @Inject constructor(): ViewModel() {
     private val pendingUpdates = mutableMapOf<Long, Component>()
     private val saveFlow = MutableSharedFlow<Component>()
 
-    private lateinit var _componentsSource: Flow<ResultsChange<Component>>
+    private lateinit var _noteSource: Flow<ObjectChange<Note>>
 
     private val _noteState: MutableStateFlow<NoteState> = MutableStateFlow(NoteState.empty())
     val noteState: StateFlow<NoteState> = _noteState
@@ -41,8 +46,22 @@ class NoteViewModel @Inject constructor(): ViewModel() {
         addCloseable(noteRepository)
 
         viewModelScope.launch {
-            _componentsSource.mapLatest {
-                //_noteState.emit(_noteState.value.copy(components = it.list))
+            val id: String? = savedState[NoteScreen.NOTE_PARAM]
+
+            _noteSource = if (id == null) {
+                noteRepository.createNewNote()
+            } else {
+                val noteId = id.toLongOrNull()
+
+                if (noteId != null) {
+                    noteRepository.getNote(noteId)
+                } else noteRepository.createNewNote()
+            }
+
+            _noteSource.mapLatest {
+                it.obj?.let { note ->
+                    _noteState.emit(_noteState.value.copy(note = note))
+                }
             }.stateIn(viewModelScope)
         }
 
@@ -71,9 +90,9 @@ class NoteViewModel @Inject constructor(): ViewModel() {
         saveFlow.tryEmit(component)
     }
 
-    fun addNewCheckBox(noteId: Long, position: Int) {
+    fun addNewCheckBox(position: Int) {
         viewModelScope.launch {
-            noteRepository.addNewCheckBox(noteId, position)
+            noteRepository.addNewCheckBox(_noteState.value.note.id, position)
         }
     }
 
@@ -86,9 +105,75 @@ class NoteViewModel @Inject constructor(): ViewModel() {
         }
     }
 
-    fun addSection(noteId: Long, component: Component) {
+    fun addSection(component: Component) {
         viewModelScope.launch {
-            noteRepository.addSection(noteId, component)
+            noteRepository.addSection(_noteState.value.note.id, component)
+        }
+    }
+
+    fun toggleHistoryMode() {
+        viewModelScope.launch {
+            val state = _noteState.value
+            _noteState.emit(state.copy(isHistoryMode = !state.isHistoryMode))
+        }
+    }
+
+    fun toggleTopBarDropdownVisibility() {
+        viewModelScope.launch {
+            val state = _noteState.value
+            _noteState.emit(state.copy(isTopBarDropdownVisible = !state.isTopBarDropdownVisible))
+        }
+    }
+
+    fun addCoverImage(noteId: Long) {
+        // TODO: this function is very questionable
+    }
+
+    fun onTitleChange(text: String) {
+        viewModelScope.launch {
+            val titleComponent = Component(_noteState.value.note, text)
+
+            noteRepository.updateNoteTitle(titleComponent.noteId, titleComponent)
+        }
+    }
+
+    fun showHashtagBar(show : Boolean) {
+        viewModelScope.launch {
+            val state = _noteState.value
+            _noteState.emit(state.copy(isTagsBarVisible = show))
+        }
+    }
+
+    fun addNewTag(tag: String) {
+        viewModelScope.launch {
+            noteRepository.addNewTag(_noteState.value.note.id, tag)
+        }
+    }
+
+    fun deleteTag(tag: String) {
+        viewModelScope.launch {
+            noteRepository.deleteTag(_noteState.value.note.id, tag)
+        }
+    }
+
+    fun showDropdown(index: Int) {
+        val state = _noteState.value
+        viewModelScope.launch {
+            _noteState.emit(state.copy(expandedDropdownId = index))
+        }
+    }
+
+    fun dismissDropDown() {
+        val state = _noteState.value
+        viewModelScope.launch {
+            _noteState.emit(state.copy(expandedDropdownId = -1))
+        }
+    }
+
+    fun toggleDropDownHistoryMode()  {
+        val state = _noteState.value
+        viewModelScope.launch {
+            _noteState.emit(state.copy(isDropDownInHistoryMode = !state.isDropDownInHistoryMode))
         }
     }
 

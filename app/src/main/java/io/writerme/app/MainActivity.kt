@@ -15,10 +15,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import io.writerme.app.ui.navigation.Bookmarks
-import io.writerme.app.ui.navigation.Home
-import io.writerme.app.ui.navigation.Note
-import io.writerme.app.ui.navigation.Settings
+import io.writerme.app.ui.navigation.BookmarksScreen
+import io.writerme.app.ui.navigation.HomeScreen
+import io.writerme.app.ui.navigation.NoteScreen
+import io.writerme.app.ui.navigation.SettingsScreen
 import io.writerme.app.ui.screen.BookmarksScreen
 import io.writerme.app.ui.screen.SettingsScreen
 import io.writerme.app.ui.theme.WriterMeTheme
@@ -54,18 +54,18 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = Settings.route
+                        startDestination = SettingsScreen.route
                     ) {
-                        composable(Home.route) {
+                        composable(HomeScreen.route) {
                             //HomeScreen()
 
                         }
-                        composable(Note.route) {
+                        composable(NoteScreen.route) {
                             val noteViewModel = hiltViewModel<NoteViewModel>()
                             //NoteScreen(noteState = , onTitleChange = , showHashtagBar = )
                         }
 
-                        composable(Bookmarks.route) {
+                        composable(BookmarksScreen.route) {
                             val bookmarksViewModel = hiltViewModel<BookmarksViewModel>()
 
                             BookmarksScreen(
@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        composable(Settings.route) {
+                        composable(SettingsScreen.route) {
                             val settingsViewModel = hiltViewModel<SettingsViewModel>()
 
                             SettingsScreen(

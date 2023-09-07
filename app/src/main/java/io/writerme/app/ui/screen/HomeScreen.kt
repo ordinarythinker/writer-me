@@ -41,9 +41,9 @@ import androidx.navigation.NavController
 import io.writerme.app.R
 import io.writerme.app.ui.component.ProfileImage
 import io.writerme.app.ui.component.TabSwitcher
-import io.writerme.app.ui.navigation.Bookmarks
-import io.writerme.app.ui.navigation.Settings
-import io.writerme.app.ui.navigation.Task
+import io.writerme.app.ui.navigation.BookmarksScreen
+import io.writerme.app.ui.navigation.SettingsScreen
+import io.writerme.app.ui.navigation.TasksScreen
 import io.writerme.app.ui.state.HomeState
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.backgroundGrey
@@ -140,7 +140,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 
                         BottomNavigationItem(
                             selected = false,
-                            onClick = { navController?.navigate(Task.route) },
+                            onClick = { navController?.navigate(TasksScreen.route) },
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_tasks),
@@ -154,7 +154,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 
                         BottomNavigationItem(
                             selected = false,
-                            onClick = { navController?.navigate(Bookmarks.route) },
+                            onClick = { navController?.navigate(BookmarksScreen.route) },
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_bookmark),
@@ -166,7 +166,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 
                         BottomNavigationItem(
                             selected = false,
-                            onClick = { navController?.navigate(Settings.route) },
+                            onClick = { navController?.navigate(SettingsScreen.route) },
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_settings),
