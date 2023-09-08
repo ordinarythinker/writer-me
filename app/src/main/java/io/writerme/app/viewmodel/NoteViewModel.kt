@@ -3,6 +3,7 @@ package io.writerme.app.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.Component
@@ -29,7 +30,8 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @HiltViewModel
 class NoteViewModel @Inject constructor(
-    private val savedState: SavedStateHandle
+    private val savedState: SavedStateHandle,
+    private val workManager: WorkManager
 ): ViewModel() {
 
     private val noteRepository: NoteRepository = NoteRepository()
@@ -180,16 +182,43 @@ class NoteViewModel @Inject constructor(
     }
 
     fun dismissDropDown() {
-        val state = _noteState.value
         viewModelScope.launch {
+            val state = _noteState.value
+
             _noteState.emit(state.copy(expandedDropdownId = -1))
         }
     }
 
     fun toggleDropDownHistoryMode()  {
-        val state = _noteState.value
         viewModelScope.launch {
+            val state = _noteState.value
+
             _noteState.emit(state.copy(isDropDownInHistoryMode = !state.isDropDownInHistoryMode))
+        }
+    }
+
+    fun addLinkSection(url : String) {
+        viewModelScope.launch {
+            val noteId = _noteState.value.note.id
+
+            val component = Component().apply {
+                this.noteId = noteId
+                this.type = ComponentType.Link
+                this.url = url
+            }
+
+            val link = noteRepository.saveComponent(component)
+            // TODO: schedule here image loading
+
+            noteRepository.addSection(noteId, link)
+        }
+    }
+
+    fun toggleAddLinkDialogVisibility() {
+        viewModelScope.launch {
+            val state = _noteState.value
+
+            _noteState.emit(state.copy(isAddLinkDialogDisplayed = !state.isAddLinkDialogDisplayed))
         }
     }
 

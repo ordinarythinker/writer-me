@@ -269,20 +269,6 @@ fun BookmarksScreen(
                         )
                     }
 
-                    if (state.value.isFolderDialogDisplayed) {
-                        TitledDialog(
-                            title = stringResource(id = R.string.create_folder),
-                            onDismiss = dismissCreateFolderDialog,
-                            content = {
-                                CreateFolderDialogBody(
-                                    createFolder = createFolder,
-                                    onDismiss = dismissCreateFolderDialog
-                                )
-                            }
-                        )
-                    }
-
-
                     Row {
                         LazyVerticalGrid(
                             columns = GridCells.Adaptive(120.dp),
@@ -333,6 +319,19 @@ fun BookmarksScreen(
                 }
             }
         )
+
+        if (state.value.isFolderDialogDisplayed) {
+            TitledDialog(
+                title = stringResource(id = R.string.create_folder),
+                onDismiss = dismissCreateFolderDialog,
+                content = {
+                    CreateFolderDialogBody(
+                        createFolder = createFolder,
+                        onDismiss = dismissCreateFolderDialog
+                    )
+                }
+            )
+        }
     }
 }
 

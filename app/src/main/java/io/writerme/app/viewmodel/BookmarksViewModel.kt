@@ -31,7 +31,7 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class BookmarksViewModel @Inject constructor(
-    val workManager: WorkManager
+    private val workManager: WorkManager
 ) : ViewModel() {
 
     private val bookmarksRepository: BookmarksRepository = BookmarksRepository()

@@ -18,7 +18,7 @@ class NoteRepository: Closeable {
 
     suspend fun createNewNote() : Flow<ObjectChange<Note>> {
         return realm.write {
-            copyToRealm(Note())
+            copyToRealm(Note(), UpdatePolicy.ALL)
         }.asFlow()
     }
 
@@ -26,8 +26,8 @@ class NoteRepository: Closeable {
         return realm.query(Note::class, "id = $0", noteId).first().find()?.asFlow() ?: createNewNote()
     }
 
-    suspend fun saveComponent(component: Component) {
-        realm.write {
+    suspend fun saveComponent(component: Component): Component {
+        return realm.write {
             this.copyToRealm(component, UpdatePolicy.ALL)
         }
     }
@@ -53,7 +53,7 @@ class NoteRepository: Closeable {
             note?.let {
 
                 if (note.title == null) {
-                    note.title = copyToRealm(History())
+                    note.title = copyToRealm(History(), UpdatePolicy.ALL)
                 }
 
                 note.title!!.push(copyToRealm(title, UpdatePolicy.ALL))
@@ -67,7 +67,7 @@ class NoteRepository: Closeable {
 
             note?.let {
                 if (note.cover == null) {
-                    note.cover = copyToRealm(History())
+                    note.cover = copyToRealm(History(), UpdatePolicy.ALL)
                 }
 
                 note.cover!!.push(copyToRealm(cover, UpdatePolicy.ALL))
@@ -110,13 +110,13 @@ class NoteRepository: Closeable {
                             this.type = ComponentType.Text
                             this.noteId = noteId
                         }
-                        val text = copyToRealm(textComponent)
+                        val text = copyToRealm(textComponent, UpdatePolicy.ALL)
 
                         if (type == null) {
                             lastHistory.push(text)
                         } else if (type != ComponentType.Text) {
                             var history = History()
-                            history = copyToRealm(history)
+                            history = copyToRealm(history, UpdatePolicy.ALL)
                             history.push(textComponent)
                         }
                     }
@@ -134,11 +134,11 @@ class NoteRepository: Closeable {
                     this.type = ComponentType.Checkbox
                 }
 
-                val checkBox = copyToRealm(component)
+                val checkBox = copyToRealm(component, UpdatePolicy.ALL)
 
                 val note = this.query(Note::class, "id = $0", noteId).first().find()
 
-                val history = this.copyToRealm(History())
+                val history = this.copyToRealm(History(), UpdatePolicy.ALL)
                 history.changes.add(checkBox)
 
                 note?.let {
@@ -157,8 +157,8 @@ class NoteRepository: Closeable {
     suspend fun addSection(noteId: Long, comp: Component) {
         if (noteId >= 0) {
             realm.write {
-                val component = copyToRealm(comp)
-                val history = copyToRealm(History())
+                val component = copyToRealm(comp, UpdatePolicy.ALL)
+                val history = copyToRealm(History(), UpdatePolicy.ALL)
                 history.push(component)
 
                 val note = this.query(Note::class, "id = $0", noteId).first().find()

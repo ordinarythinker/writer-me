@@ -7,6 +7,7 @@ data class NoteState(
     val isTagsBarVisible: Boolean = false,
     val isTopBarDropdownVisible: Boolean = false,
     val isDropDownInHistoryMode: Boolean = false,
+    val isAddLinkDialogDisplayed: Boolean = false,
     val expandedDropdownId: Int = -1,
     val isHistoryMode: Boolean = false
 ) {

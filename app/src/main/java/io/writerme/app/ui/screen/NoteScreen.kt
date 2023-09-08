@@ -62,11 +62,13 @@ import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
+import io.writerme.app.ui.component.AddLinkDialogBody
 import io.writerme.app.ui.component.Checkbox
 import io.writerme.app.ui.component.Link
 import io.writerme.app.ui.component.NoteText
 import io.writerme.app.ui.component.TagsBar
 import io.writerme.app.ui.component.Task
+import io.writerme.app.ui.component.TitledDialog
 import io.writerme.app.ui.state.NoteState
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.backgroundGrey
@@ -98,7 +100,9 @@ fun NoteScreen(
     addImageSection: (String) -> Unit,
     showDropdown: (Int) -> Unit,
     dismissDropDown: () -> Unit,
-    toggleDropDownHistoryMode: () -> Unit
+    toggleDropDownHistoryMode: () -> Unit,
+    addLinkSection: (String) -> Unit,
+    toggleAddLinkDialogVisibility: () -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -266,9 +270,7 @@ fun NoteScreen(
                             )
                         }
 
-                        IconButton(onClick = {
-                            // TODO: add link
-                        }) {
+                        IconButton(onClick = toggleAddLinkDialogVisibility) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_link),
                                 contentDescription = stringResource(id = R.string.add_link_button),
@@ -594,6 +596,19 @@ fun NoteScreen(
                 )
             }
         }
+
+        if (state.value.isAddLinkDialogDisplayed) {
+            TitledDialog(
+                title = stringResource(id = R.string.create_folder),
+                onDismiss = toggleAddLinkDialogVisibility,
+                content = {
+                    AddLinkDialogBody(
+                        addLink = addLinkSection,
+                        onDismiss = toggleAddLinkDialogVisibility
+                    )
+                }
+            )
+        }
     }
 }
 
@@ -661,6 +676,6 @@ fun NoteScreenPreview() {
 
     WriterMeTheme {
         NoteScreen(noteState = state, {}, {}, {}, {}, {}, {}, {},
-            { _, _ ->}, {}, {}, { _ ->}, {}, { _ ->}, {}, {}, {})
+            { _, _ ->}, {}, {}, { _ ->}, {}, { _ ->}, {}, {}, {}, {}, {})
     }
 }
