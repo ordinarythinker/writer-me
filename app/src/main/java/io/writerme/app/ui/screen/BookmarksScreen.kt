@@ -59,9 +59,10 @@ import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.ui.component.CreateBookmarkDialog
-import io.writerme.app.ui.component.CreateFolderDialog
+import io.writerme.app.ui.component.CreateFolderDialogBody
 import io.writerme.app.ui.component.Folder
 import io.writerme.app.ui.component.Link
+import io.writerme.app.ui.component.TitledDialog
 import io.writerme.app.ui.state.BookmarksState
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.dialogBackground
@@ -194,7 +195,8 @@ fun BookmarksScreen(
                                 backgroundColor = Color.Transparent
                             ) {
                                 Row (
-                                    modifier = Modifier.clip(shape)
+                                    modifier = Modifier
+                                        .clip(shape)
                                         .background(MaterialTheme.colors.dialogBackground)
                                         .padding(8.dp)
                                         .shadow(dimensionResource(id = R.dimen.shadow), shape),
@@ -268,9 +270,15 @@ fun BookmarksScreen(
                     }
 
                     if (state.value.isFolderDialogDisplayed) {
-                        CreateFolderDialog(
-                            createFolder = createFolder,
-                            onDismiss = dismissCreateFolderDialog
+                        TitledDialog(
+                            title = stringResource(id = R.string.create_folder),
+                            onDismiss = dismissCreateFolderDialog,
+                            content = {
+                                CreateFolderDialogBody(
+                                    createFolder = createFolder,
+                                    onDismiss = dismissCreateFolderDialog
+                                )
+                            }
                         )
                     }
 
