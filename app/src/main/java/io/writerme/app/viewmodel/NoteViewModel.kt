@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.Component
+import io.writerme.app.data.model.ComponentType
 import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
 import io.writerme.app.data.repository.NoteRepository
@@ -105,8 +106,14 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun addSection(component: Component) {
+    fun addImageSection(url: String) {
         viewModelScope.launch {
+            val component = Component().apply {
+                this.noteId = _noteState.value.note.id
+                this.imageUrl = url
+                this.type = ComponentType.Image
+            }
+
             noteRepository.addSection(_noteState.value.note.id, component)
         }
     }
@@ -125,8 +132,17 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun addCoverImage(noteId: Long) {
-        // TODO: this function is very questionable
+    fun addCoverImage(uri: String) {
+        viewModelScope.launch {
+            val noteId = _noteState.value.note.id
+            val component = Component().apply {
+                this.noteId = noteId
+                this.imageUrl = url
+                this.type = ComponentType.Image
+            }
+
+            noteRepository.updateNoteCoverImage(noteId, component)
+        }
     }
 
     fun onTitleChange(text: String) {

@@ -95,7 +95,7 @@ fun NoteScreen(
     onComponentChange: (Component) -> Unit,
     addNewCheckBox: (Int) -> Unit,
     navigateBack: () -> Unit,
-    addSection: (Component) -> Unit,
+    addImageSection: (String) -> Unit,
     showDropdown: (Int) -> Unit,
     dismissDropDown: () -> Unit,
     toggleDropDownHistoryMode: () -> Unit
@@ -114,16 +114,17 @@ fun NoteScreen(
 
     val context = LocalContext.current
 
-    val imagePicker = rememberLauncherForActivityResult(
+    val addCoverImagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
-            val imageComponent = Component().apply {
-                this.noteId = state.value.note.id
-                this.type = ComponentType.Image
-                this.imageUrl = uri.toString()
-            }
+            addCoverImage(uri.toString())
+        }
+    )
 
-            addSection(imageComponent)
+    val addImageComponentPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            addImageSection(uri.toString())
         }
     )
 
@@ -299,7 +300,7 @@ fun NoteScreen(
                         }
 
                         IconButton(onClick = {
-                            imagePicker.launch("image/*")
+                            addImageComponentPicker.launch("image/*")
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_camera),
@@ -365,8 +366,7 @@ fun NoteScreen(
                                     .padding(4.dp, 12.dp)
                                     .shadow(dimensionResource(id = R.dimen.shadow), shape),
                                 onClick = {
-                                    // TODO: review !!!
-                                    // addCoverImage(state.value.note.id)
+                                    addCoverImagePicker.launch("image/*")
                                 }
                             ) {
                                 Icon(
