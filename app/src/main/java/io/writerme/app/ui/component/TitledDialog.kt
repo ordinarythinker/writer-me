@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -61,7 +60,7 @@ fun TitledDialog(
                 Column {
                     Text(
                         modifier = Modifier.padding(0.dp, 8.dp, 0.dp, padding),
-                        text = stringResource(id = R.string.create_folder),
+                        text = title,
                         style = MaterialTheme.typography.h4,
                         color = MaterialTheme.colors.light
                     )

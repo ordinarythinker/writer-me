@@ -74,4 +74,6 @@
     <string name="history">History</string>
     <string name="pending">Sorry, this feature is pending</string>
     <string name="history_mode">History mode</string>
+    <string name="url">url</string>
+    <string name="add">add</string>
 </resources>
