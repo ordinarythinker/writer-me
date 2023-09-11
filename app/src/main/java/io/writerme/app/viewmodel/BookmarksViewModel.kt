@@ -14,7 +14,7 @@ import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.repository.BookmarksRepository
-import io.writerme.app.data.work.BookmarkImageLoadingWorker
+import io.writerme.app.data.work.ImageLoadingWorker
 import io.writerme.app.ui.state.BookmarksState
 import io.writerme.app.utils.Const
 import kotlinx.coroutines.Dispatchers
@@ -152,7 +152,7 @@ class BookmarksViewModel @Inject constructor(
         val data = Data.Builder().putLong(Const.BOOKMARK_ID, bookmark.id).build()
 
         val scheduledNetRequest =
-            OneTimeWorkRequestBuilder<BookmarkImageLoadingWorker>()
+            OneTimeWorkRequestBuilder<ImageLoadingWorker>()
                 .setConstraints(constraints)
                 .setInputData(data)
                 .build()
