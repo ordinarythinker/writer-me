@@ -2,21 +2,14 @@ package io.writerme.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.Constraints
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.asFlow
 import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.BookmarksFolder
-import io.writerme.app.data.model.Component
 import io.writerme.app.data.repository.BookmarksRepository
-import io.writerme.app.data.work.ImageLoadingWorker
 import io.writerme.app.ui.state.BookmarksState
-import io.writerme.app.utils.Const
+import io.writerme.app.utils.scheduleImageLoading
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -139,28 +132,7 @@ class BookmarksViewModel @Inject constructor(
                 return@withContext bookmarksRepository.createBookmark(url, title, parent)
             }
 
-            scheduleImageLoading(bookmark)
+            workManager.scheduleImageLoading(bookmark.id)
         }
-    }
-
-    private fun scheduleImageLoading(bookmark: Component) {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresBatteryNotLow(true)
-            .build()
-
-        val data = Data.Builder().putLong(Const.BOOKMARK_ID, bookmark.id).build()
-
-        val scheduledNetRequest =
-            OneTimeWorkRequestBuilder<ImageLoadingWorker>()
-                .setConstraints(constraints)
-                .setInputData(data)
-                .build()
-
-        workManager.enqueueUniqueWork(
-            "oneFileDownloadWork_${System.currentTimeMillis()}",
-            ExistingWorkPolicy.KEEP,
-            scheduledNetRequest
-        )
     }
 }

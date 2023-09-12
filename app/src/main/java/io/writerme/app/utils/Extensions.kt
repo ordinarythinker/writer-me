@@ -8,6 +8,12 @@ import android.widget.Toast
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.core.net.toUri
+import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.types.RealmList
@@ -18,6 +24,7 @@ import io.writerme.app.data.model.ComponentType
 import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
 import io.writerme.app.data.model.Settings
+import io.writerme.app.data.work.ImageLoadingWorker
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Locale
@@ -33,7 +40,7 @@ fun <T> RealmList<T>.getLast(): T? {
 fun Long.toTime(): String {
     var result = ""
     var quotient = this
-    var remainder = 0L
+    var remainder: Long
 
     val seconds = 60
     val minutes = seconds
@@ -146,4 +153,21 @@ fun Bitmap.toFile(
     } catch (e: Exception) {
         null
     }
+}
+
+fun WorkManager.scheduleImageLoading(componentId: Long) {
+    val constraints = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .setRequiresBatteryNotLow(true)
+        .build()
+
+    val scheduledNetRequest = OneTimeWorkRequestBuilder<ImageLoadingWorker>()
+        .setInputData(workDataOf(ImageLoadingWorker.IMAGE_COMPONENT_ID to componentId))
+        .setConstraints(constraints).build()
+
+    this.enqueueUniqueWork(
+        "oneFileDownloadWork_${System.currentTimeMillis()}",
+        ExistingWorkPolicy.KEEP,
+        scheduledNetRequest
+    )
 }

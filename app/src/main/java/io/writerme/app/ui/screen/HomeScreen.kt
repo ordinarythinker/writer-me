@@ -58,8 +58,7 @@ fun HomeScreen(
     openBookmarksScreen: () -> Unit,
     openSettingsScreen: () -> Unit,
 
-
-    ) {
+) {
     val state = stateFlow.collectAsStateWithLifecycle()
 
     val scaffoldState = rememberScaffoldState()

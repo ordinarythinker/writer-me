@@ -13,6 +13,7 @@ import io.writerme.app.data.model.Note
 import io.writerme.app.data.repository.NoteRepository
 import io.writerme.app.ui.navigation.NoteScreen
 import io.writerme.app.ui.state.NoteState
+import io.writerme.app.utils.scheduleImageLoading
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -139,7 +140,7 @@ class NoteViewModel @Inject constructor(
             val noteId = _noteState.value.note.id
             val component = Component().apply {
                 this.noteId = noteId
-                this.imageUrl = url
+                this.imageUrl = uri
                 this.type = ComponentType.Image
             }
 
@@ -208,7 +209,7 @@ class NoteViewModel @Inject constructor(
             }
 
             val link = noteRepository.saveComponent(component)
-            // TODO: schedule here image loading
+            workManager.scheduleImageLoading(link.id)
 
             noteRepository.addSection(noteId, link)
         }
