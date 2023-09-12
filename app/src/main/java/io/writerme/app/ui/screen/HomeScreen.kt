@@ -37,13 +37,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import io.writerme.app.R
 import io.writerme.app.ui.component.ProfileImage
 import io.writerme.app.ui.component.TabSwitcher
-import io.writerme.app.ui.navigation.BookmarksScreen
-import io.writerme.app.ui.navigation.SettingsScreen
-import io.writerme.app.ui.navigation.TasksScreen
 import io.writerme.app.ui.state.HomeState
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.backgroundGrey
@@ -55,7 +51,15 @@ import java.util.Date
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = null) {
+fun HomeScreen(
+    stateFlow: StateFlow<HomeState>,
+    toggleSearchMode: () -> Unit,
+    openTasksScreen: () -> Unit,
+    openBookmarksScreen: () -> Unit,
+    openSettingsScreen: () -> Unit,
+
+
+    ) {
     val state = stateFlow.collectAsStateWithLifecycle()
 
     val scaffoldState = rememberScaffoldState()
@@ -128,7 +132,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
                     ) {
                         BottomNavigationItem(
                             selected = true,
-                            onClick = { },
+                            onClick = toggleSearchMode,
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_home),
@@ -140,7 +144,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 
                         BottomNavigationItem(
                             selected = false,
-                            onClick = { navController?.navigate(TasksScreen.route) },
+                            onClick = openTasksScreen,
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_tasks),
@@ -154,7 +158,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 
                         BottomNavigationItem(
                             selected = false,
-                            onClick = { navController?.navigate(BookmarksScreen.route) },
+                            onClick = openBookmarksScreen,
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_bookmark),
@@ -166,7 +170,7 @@ fun HomeScreen(stateFlow: StateFlow<HomeState>, navController: NavController? = 
 
                         BottomNavigationItem(
                             selected = false,
-                            onClick = { navController?.navigate(SettingsScreen.route) },
+                            onClick = openSettingsScreen,
                             icon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_settings),
@@ -240,6 +244,6 @@ fun HomeScreenPreview() {
     val flow = MutableStateFlow(main)
 
     WriterMeTheme {
-        HomeScreen(stateFlow = flow)
+        HomeScreen(stateFlow = flow, {}, {}, {}, {})
     }
 }
