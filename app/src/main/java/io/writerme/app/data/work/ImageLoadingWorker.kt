@@ -1,6 +1,7 @@
 package io.writerme.app.data.work
 
 import android.content.Context
+import androidx.core.graphics.drawable.toBitmap
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import coil.ImageLoader
@@ -9,6 +10,7 @@ import io.realm.kotlin.Realm
 import io.writerme.app.data.model.Component
 import io.writerme.app.net.MetaTagScraper
 import io.writerme.app.utils.getDefaultInstance
+import io.writerme.app.utils.toFile
 
 class ImageLoadingWorker(
     private val context: Context,
@@ -22,21 +24,31 @@ class ImageLoadingWorker(
 
         if (componentId >= 0) {
 
-            val component = realm.query(Component::class, "id = $0", componentId).first().find()
+            val component = realm.query(Component::class, "id == $0", componentId).first().find()
 
             if (component != null) {
                 val metaTags = MetaTagScraper().scrape(component.url)
 
                 val imageUrl = metaTags.ogImage ?: metaTags.twitterImage
 
-                imageUrl?.let {
+                imageUrl?.let { url ->
                     val imageLoader = ImageLoader(context)
                     val request = ImageRequest.Builder(context)
-                        .data(it)
+                        .data(url)
                         .build()
-                    val drawable = imageLoader.execute(request).drawable
+                    val result = imageLoader.execute(request).drawable
 
-                    // TODO: save to file, add file url to image component, write to DB
+                    result?.let { drawable ->
+                        val bitmap = drawable.toBitmap()
+                        val uri = bitmap.toFile(context.filesDir)
+
+                        if (uri != null) {
+                            realm.write {
+                                val imageComponent = this.query(Component::class, "id == $0", componentId).first().find()
+                                imageComponent?.imageUrl = uri.toString()
+                            }
+                        }
+                    }
                 }
 
                 realm.close()

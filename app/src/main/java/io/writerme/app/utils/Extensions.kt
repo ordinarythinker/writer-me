@@ -1,10 +1,13 @@
 package io.writerme.app.utils
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.text.AnnotatedString
+import androidx.core.net.toUri
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.types.RealmList
@@ -15,6 +18,8 @@ import io.writerme.app.data.model.ComponentType
 import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
 import io.writerme.app.data.model.Settings
+import java.io.File
+import java.io.FileOutputStream
 import java.util.Locale
 
 fun <T> RealmList<T>.getLast(): T? {
@@ -125,4 +130,20 @@ fun ClipboardManager.copyComponentContent(component: Component, context: Context
 
     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2)
         Toast.makeText(context, context.resources.getString(R.string.copied), Toast.LENGTH_SHORT).show()
+}
+
+fun Bitmap.toFile(
+    parentFolder: File
+) : Uri? {
+    return try {
+        val file = File("${parentFolder.absolutePath}/image_${System.currentTimeMillis()}.jpg")
+
+        FileOutputStream(file).use { fos ->
+            this.compress(Bitmap.CompressFormat.JPEG, 1, fos)
+        }
+
+        file.toUri()
+    } catch (e: Exception) {
+        null
+    }
 }
