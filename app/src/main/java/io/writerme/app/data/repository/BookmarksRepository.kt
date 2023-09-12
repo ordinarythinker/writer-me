@@ -12,7 +12,7 @@ class BookmarksRepository: Closeable {
     private val realm: Realm = Realm.getDefaultInstance()
 
     suspend fun getMainFolder(): BookmarksFolder {
-        val result = realm.query(BookmarksFolder::class, "id = $0", 0).first().find()
+        val result = realm.query(BookmarksFolder::class, "id == $0", 0).first().find()
 
         return result
             ?: realm.write {
@@ -24,7 +24,7 @@ class BookmarksRepository: Closeable {
     suspend fun createFolder(name: String, parent: BookmarksFolder? = null) {
 
         realm.write {
-            val _parent = parent ?: realm.query(BookmarksFolder::class, "id = $0", 0).first().find()
+            val _parent = parent ?: realm.query(BookmarksFolder::class, "id == $0", 0).first().find()
 
             val folder = BookmarksFolder().apply {
                 this.name = name
@@ -38,7 +38,7 @@ class BookmarksRepository: Closeable {
     suspend fun createBookmark(url: String, title: String, parent: BookmarksFolder? = null): Component {
 
         return realm.write {
-            val _parent = parent ?: realm.query(BookmarksFolder::class, "id = $0", 0).first().find()
+            val _parent = parent ?: realm.query(BookmarksFolder::class, "id == $0", 0).first().find()
 
             val bookmark = Component().apply {
                 this.type = ComponentType.Link

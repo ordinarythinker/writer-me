@@ -13,7 +13,7 @@ class SettingsRepository : Closeable {
     private val realm: Realm = Realm.getDefaultInstance()
 
     private suspend fun _getSettings(): Settings {
-        val result = realm.query(Settings::class, "id = $0", 0).first().find()
+        val result = realm.query(Settings::class, "id == $0", 0).first().find()
 
         return result
             ?: realm.write {
@@ -34,7 +34,7 @@ class SettingsRepository : Closeable {
     suspend fun setCounter(key: String, value: Int) {
 
         realm.write {
-            val settings = this.query(Settings::class, "id = $0", 0).first().find()
+            val settings = this.query(Settings::class, "id == $0", 0).first().find()
 
             when(key) {
                 Const.MEDIA_CHANGES_HISTORY_KEY -> settings?.mediaChanges = value
@@ -48,7 +48,7 @@ class SettingsRepository : Closeable {
 
     suspend fun setDarkMode(isDarkMode: Boolean) {
         realm.write {
-            val settings = this.query(Settings::class, "id = $0", 0).first().find()
+            val settings = this.query(Settings::class, "id == $0", 0).first().find()
 
             settings?.isDarkMode = isDarkMode
         }
@@ -56,7 +56,7 @@ class SettingsRepository : Closeable {
 
     suspend fun setLanguage(language: String) {
         realm.write {
-            val settings = this.query(Settings::class, "id = $0", 0).first().find()
+            val settings = this.query(Settings::class, "id == $0", 0).first().find()
 
             settings?.currentLanguage = language
         }
