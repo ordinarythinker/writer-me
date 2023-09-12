@@ -44,8 +44,7 @@ class ImageLoadingWorker(
 
                         if (uri != null) {
                             realm.write {
-                                val imageComponent = this.query(Component::class, "id == $0", componentId).first().find()
-                                imageComponent?.imageUrl = uri.toString()
+                                findLatest(component)?.imageUrl = uri.toString()
                             }
                         }
                     }
