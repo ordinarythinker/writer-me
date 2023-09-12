@@ -20,6 +20,7 @@ import io.writerme.app.ui.navigation.HomeScreen
 import io.writerme.app.ui.navigation.NoteScreen
 import io.writerme.app.ui.navigation.SettingsScreen
 import io.writerme.app.ui.screen.BookmarksScreen
+import io.writerme.app.ui.screen.NoteScreen
 import io.writerme.app.ui.screen.SettingsScreen
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.utils.Const
@@ -62,7 +63,28 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(NoteScreen.route) {
                             val noteViewModel = hiltViewModel<NoteViewModel>()
-                            //NoteScreen(noteState = , onTitleChange = , showHashtagBar = )
+
+                            NoteScreen(
+                                noteState = noteViewModel.noteState,
+                                toggleHistoryMode = noteViewModel::toggleHistoryMode,
+                                toggleTopBarDropdownVisibility = noteViewModel::toggleTopBarDropdownVisibility,
+                                addCoverImage = noteViewModel::addCoverImage,
+                                onTitleChange = noteViewModel::onTitleChange,
+                                showHashtagBar = noteViewModel::showHashtagBar,
+                                addNewTag = noteViewModel::addNewTag,
+                                deleteTag = noteViewModel::deleteTag,
+                                modifyHistory = noteViewModel::modifyHistory,
+                                saveChanges = noteViewModel::saveChanges,
+                                onComponentChange = noteViewModel::onComponentChange,
+                                addNewCheckBox = noteViewModel::addNewCheckBox,
+                                navigateBack = { navController.popBackStack() },
+                                addImageSection = noteViewModel::addImageSection,
+                                showDropdown = noteViewModel::showDropdown,
+                                dismissDropDown = noteViewModel::dismissDropDown,
+                                toggleDropDownHistoryMode = noteViewModel::toggleDropDownHistoryMode,
+                                addLinkSection = noteViewModel::addLinkSection,
+                                toggleAddLinkDialogVisibility = noteViewModel::toggleAddLinkDialogVisibility
+                            )
                         }
 
                         composable(BookmarksScreen.route) {
