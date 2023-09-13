@@ -2,6 +2,7 @@ package io.writerme.app.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigation
@@ -37,7 +41,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.realm.kotlin.ext.realmListOf
 import io.writerme.app.R
+import io.writerme.app.data.model.Component
+import io.writerme.app.data.model.ComponentType
+import io.writerme.app.data.model.History
+import io.writerme.app.data.model.Note
+import io.writerme.app.ui.component.Note
 import io.writerme.app.ui.component.ProfileImage
 import io.writerme.app.ui.component.TabSwitcher
 import io.writerme.app.ui.state.HomeState
@@ -47,6 +57,7 @@ import io.writerme.app.ui.theme.light
 import io.writerme.app.utils.toGreeting
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.util.Calendar
 import java.util.Date
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -57,6 +68,7 @@ fun HomeScreen(
     openTasksScreen: () -> Unit,
     openBookmarksScreen: () -> Unit,
     openSettingsScreen: () -> Unit,
+    onNoteClick: (Long) -> Unit,
 
 ) {
     val state = stateFlow.collectAsStateWithLifecycle()
@@ -226,6 +238,22 @@ fun HomeScreen(
                         onItemChosen = {}
                     )
                 }
+
+                item {
+                    LazyVerticalStaggeredGrid(
+                        columns = StaggeredGridCells.Adaptive(180.dp),
+                        verticalItemSpacing = padding,
+                        horizontalArrangement = Arrangement.spacedBy(padding),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(state.value.notes) { item ->
+                            Note(
+                                note = item,
+                                onClick = onNoteClick
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -234,6 +262,89 @@ fun HomeScreen(
 @Preview
 @Composable
 fun HomeScreenPreview() {
+    val note1 = Note()
+
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.HOUR, 5)
+
+    note1.apply {
+        this.title = History(
+            Component(note1, "Instagram Content Plan")
+        )
+        this.isImportant = true
+        this.tags = realmListOf("project")
+        this.content.addAll(
+            listOf(
+                History(
+                    Component(note1, "I hope you enjoy it. Feel free to share your thoughts in the following section...")
+                ),
+                History(
+                    Component(
+                        note1, calendar.time, "Meeting with Anna"
+                    )
+                )
+            )
+        )
+    }
+
+    val note2 = Note()
+    note2.apply {
+        this.title = History(
+            Component(note2, "Day #12: Adventure begins")
+        )
+        this.cover = History(
+            Component().apply {
+                this.noteId = note2.id
+                this.type = ComponentType.Image
+            }
+        )
+
+        this.content.add(History(
+            Component(note2, "It’s all started with a post I saw on the Instagram.")
+        ))
+    }
+
+    val note3 = Note()
+    note3.apply {
+        this.title = History(
+            Component(note3, "Day #12: Adventure begins")
+        )
+        this.cover = History(
+            Component().apply {
+                this.noteId = note3.id
+                this.type = ComponentType.Image
+            }
+        )
+
+        this.content.add(History(
+            Component(note3, "It’s all started with a post I saw on the Instagram.")
+        ))
+    }
+
+    val note4 = Note()
+    note4.apply {
+        this.title = History(
+            Component(note4, "To buy:")
+        )
+        this.tags = realmListOf("shopping")
+        this.content.addAll(
+            listOf(
+                History(
+                    Component(note4, "bread", false)
+                ),
+                History(
+                    Component(note4, "milk", false)
+                ),
+                History(
+                    Component(note4, "apples", false)
+                ),
+                History(
+                    Component(note4, "Don’t forget to buy everything from grandmas order")
+                )
+            )
+        )
+    }
+
     val main = HomeState(
         firstName = "Florian",
         tabs = listOf("All", "Important"),
@@ -243,6 +354,6 @@ fun HomeScreenPreview() {
     val flow = MutableStateFlow(main)
 
     WriterMeTheme {
-        HomeScreen(stateFlow = flow, {}, {}, {}, {})
+        HomeScreen(stateFlow = flow, {}, {}, {}, {}, {})
     }
 }

@@ -1,6 +1,7 @@
 package io.writerme.app.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,10 +42,13 @@ import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.lightGrey
+import io.writerme.app.utils.toDateDescription
+import java.util.Calendar
 
 @Composable
 fun Note(note: Note, onClick: (Long) -> Unit) {
     val padding = dimensionResource(id = R.dimen.screen_padding)
+    val verticalSpacing = padding / 2
 
     val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
 
@@ -129,7 +133,9 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
             ) {
                 item {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         note.title?.newest()?.let { component ->
                             Text(
@@ -142,13 +148,11 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
                         }
 
                         if (note.isImportant) {
-
-
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_heart),
                                 contentDescription = stringResource(id = R.string.note_important_icon),
                                 modifier = Modifier
-                                    .padding(start = 4.dp, top = 8.dp, bottom = 8.dp)
+                                    .padding(start = 4.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                                     .shadow(elevation = 4.dp, HeartShape())
                             )
                         }
@@ -156,7 +160,7 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
                 }
 
                 item {
-                    Spacer(modifier = Modifier.height(padding))
+                    Spacer(modifier = Modifier.height(verticalSpacing))
 
                     LazyRow(
                         modifier = Modifier.fillMaxWidth()
@@ -178,6 +182,7 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
 
                 items(items = note.content) { history ->
                     history.newest()?.let { component ->
+                        Spacer(modifier = Modifier.height(verticalSpacing))
 
                         when (component.type) {
                             ComponentType.Text -> {
@@ -195,7 +200,29 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
                                 // pending
                             }
                             ComponentType.Task -> {
-                                // TODO
+                                Row(modifier = Modifier.fillMaxWidth()) {
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            text = component.time.toDateDescription(),
+                                            style = MaterialTheme.typography.h5,
+                                            modifier = Modifier.fillMaxWidth(1f),
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                        Text(
+                                            text = component.content,
+                                            style = MaterialTheme.typography.h6,
+                                            modifier = Modifier.fillMaxWidth(1f),
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                    }
+                                    
+                                    Spacer(modifier = Modifier.width(padding))
+                                    
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_proceed),
+                                        contentDescription = null,
+                                    )
+                                }
                             }
                             ComponentType.Link -> {
                                 Link(link = component, onClick = { onClick(note.id) })
@@ -217,6 +244,9 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
 @Composable
 @Preview(showBackground = true)
 fun NotePreview() {
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.HOUR, 5)
+
     val titleComponent = Component().apply {
         title = "Instagram Content Plan"
         type = ComponentType.Text
@@ -230,6 +260,11 @@ fun NotePreview() {
     val note = Note().apply {
         this.title = History(titleComponent)
         this.content.add(History(text))
+        this.content.add(History(
+            Component(
+                this, calendar.time, "Meeting with Anna"
+            )
+        ))
         this.isImportant = true
         this.tags = realmListOf("project")
     }
