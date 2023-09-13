@@ -103,7 +103,7 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
                     ) {
                         note.title?.newest()?.let { component ->
                             Text(
-                                text = component.title,
+                                text = component.content,
                                 style = MaterialTheme.typography.h5,
                                 modifier = Modifier.fillMaxWidth(),
                                 maxLines = 1,
@@ -139,7 +139,7 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
                     ) {
                         note.title?.newest()?.let { component ->
                             Text(
-                                text = component.title,
+                                text = component.content,
                                 style = MaterialTheme.typography.h5,
                                 modifier = Modifier.fillMaxWidth(0.85f),
                                 maxLines = 2,
@@ -152,7 +152,6 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
                                 painter = painterResource(id = R.drawable.ic_heart),
                                 contentDescription = stringResource(id = R.string.note_important_icon),
                                 modifier = Modifier
-                                    .padding(start = 4.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
                                     .shadow(elevation = 4.dp, HeartShape())
                             )
                         }
@@ -206,13 +205,15 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
                                             text = component.time.toDateDescription(),
                                             style = MaterialTheme.typography.h5,
                                             modifier = Modifier.fillMaxWidth(1f),
-                                            overflow = TextOverflow.Ellipsis
+                                            overflow = TextOverflow.Ellipsis,
+                                            maxLines = 1
                                         )
                                         Text(
                                             text = component.content,
                                             style = MaterialTheme.typography.h6,
                                             modifier = Modifier.fillMaxWidth(1f),
-                                            overflow = TextOverflow.Ellipsis
+                                            overflow = TextOverflow.Ellipsis,
+                                            maxLines = 1
                                         )
                                     }
                                     

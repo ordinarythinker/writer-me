@@ -1,5 +1,7 @@
 package io.writerme.app.ui.state
 
+import io.realm.kotlin.ext.realmListOf
+import io.realm.kotlin.types.RealmList
 import io.writerme.app.data.model.Note
 
 data class HomeState(
@@ -9,5 +11,5 @@ data class HomeState(
     val isFoldersVisible: String = "",
     val tabs: List<String> = listOf(),
     val chosenTab: String = "",
-    var notes: List<Note> = listOf()
+    var notes: RealmList<Note> = realmListOf()
 )

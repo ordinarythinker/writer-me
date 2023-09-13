@@ -13,11 +13,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -74,6 +75,7 @@ fun HomeScreen(
     val state = stateFlow.collectAsStateWithLifecycle()
 
     val scaffoldState = rememberScaffoldState()
+    val scrollState = rememberScrollState()
     val padding = dimensionResource(id = R.dimen.screen_padding)
 
     val fabShape = RoundedCornerShape(50.dp)
@@ -195,63 +197,60 @@ fun HomeScreen(
             }
         ) {
 
-            LazyColumn(
+            Column(
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(start = padding, top = padding, end = padding, bottom = 70.dp)
+                    .verticalScroll(scrollState)
             ) {
-                item {
-                    Row (
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ProfileImage(url = state.value.profilePhotoUrl)
+
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+                            .weight(0.6f)
+                            .padding(padding, 0.dp)
                     ) {
-                        ProfileImage(url = state.value.profilePhotoUrl)
+                        Text(
+                            text = Date().toGreeting(),
+                            style = MaterialTheme.typography.body1,
+                            color = MaterialTheme.colors.light
+                        )
 
-                        Column(
-                            modifier = Modifier
-                                .weight(0.6f)
-                                .padding(padding, 0.dp)
-                        ) {
-                            Text(
-                                text = Date().toGreeting(),
-                                style = MaterialTheme.typography.body1,
-                                color = MaterialTheme.colors.light
-                            )
-
-                            Text(
-                                text = state.value.firstName,
-                                style = MaterialTheme.typography.h1,
-                                color = MaterialTheme.colors.light,
-                                modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
-                            )
-                        }
+                        Text(
+                            text = state.value.firstName,
+                            style = MaterialTheme.typography.h1,
+                            color = MaterialTheme.colors.light,
+                            modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+                        )
                     }
                 }
 
-                item {
-                    Spacer(modifier = Modifier.height(padding))
+                Spacer(modifier = Modifier.height(padding))
 
-                    TabSwitcher(
-                        tabs = state.value.tabs,
-                        chosen = state.value.chosenTab,
-                        onItemChosen = {}
-                    )
-                }
+                TabSwitcher(
+                    tabs = state.value.tabs,
+                    chosen = state.value.chosenTab,
+                    onItemChosen = {}
+                )
 
-                item {
-                    LazyVerticalStaggeredGrid(
-                        columns = StaggeredGridCells.Adaptive(180.dp),
-                        verticalItemSpacing = padding,
-                        horizontalArrangement = Arrangement.spacedBy(padding),
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        items(state.value.notes) { item ->
-                            Note(
-                                note = item,
-                                onClick = onNoteClick
-                            )
-                        }
+                Spacer(modifier = Modifier.height(padding))
+
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    verticalItemSpacing = padding,
+                    horizontalArrangement = Arrangement.spacedBy(padding),
+                    modifier = Modifier.fillMaxWidth().height(900.dp)
+                ) {
+                    items(state.value.notes) { item ->
+                        Note(
+                            note = item,
+                            onClick = onNoteClick
+                        )
                     }
                 }
             }
@@ -348,7 +347,8 @@ fun HomeScreenPreview() {
     val main = HomeState(
         firstName = "Florian",
         tabs = listOf("All", "Important"),
-        chosenTab = "All"
+        chosenTab = "All",
+        notes = realmListOf(note1, note3, note2, note4)
     )
 
     val flow = MutableStateFlow(main)
