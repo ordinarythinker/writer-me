@@ -26,13 +26,14 @@ import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.light
 import io.writerme.app.ui.theme.lightTransparent
 import io.writerme.app.ui.theme.strokeLight
+import io.writerme.app.utils.displayName
 
 @Composable
 fun TabSwitcher(
-    tabs: List<String>,
-    chosen: String,
-    onItemChosen: (String) -> Unit
+    chosen: HomeFilterTab,
+    onItemChosen: (HomeFilterTab) -> Unit
 ) {
+    val tabs = listOf(HomeFilterTab.All, HomeFilterTab.Important)
     val tabWidth = dimensionResource(id = R.dimen.tab_width)
     val radius = dimensionResource(id = R.dimen.small_radius)
     val shape = RoundedCornerShape(radius)
@@ -68,7 +69,7 @@ fun TabSwitcher(
             Row {
                 tabs.forEach {
                     Text(
-                        text = it,
+                        text = it.displayName(),
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.light,
                         modifier = Modifier
@@ -109,6 +110,6 @@ fun TabSwitcherPreview() {
     val tabs = listOf("All", "Important")
 
     WriterMeTheme {
-        TabSwitcher(tabs = tabs, tabs[0], ) {}
+        TabSwitcher(HomeFilterTab.All, ) {}
     }
 }

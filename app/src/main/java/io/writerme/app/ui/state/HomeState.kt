@@ -1,15 +1,12 @@
 package io.writerme.app.ui.state
 
-import io.realm.kotlin.ext.realmListOf
-import io.realm.kotlin.types.RealmList
 import io.writerme.app.data.model.Note
+import io.writerme.app.ui.component.HomeFilterTab
 
 data class HomeState(
     val firstName: String = "",
     val profilePhotoUrl: String = "",
-    val isImportantVisible: String = "",
-    val isFoldersVisible: String = "",
-    val tabs: List<String> = listOf(),
-    val chosenTab: String = "",
-    var notes: RealmList<Note> = realmListOf()
+    val chosenTab: HomeFilterTab = HomeFilterTab.All,
+    val isSearchMode: Boolean = false,
+    var notes: List<Note> = listOf()
 )

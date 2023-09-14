@@ -1,13 +1,11 @@
 package io.writerme.app.ui.screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -48,6 +46,7 @@ import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
+import io.writerme.app.ui.component.HomeFilterTab
 import io.writerme.app.ui.component.Note
 import io.writerme.app.ui.component.ProfileImage
 import io.writerme.app.ui.component.TabSwitcher
@@ -61,7 +60,6 @@ import kotlinx.coroutines.flow.StateFlow
 import java.util.Calendar
 import java.util.Date
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     stateFlow: StateFlow<HomeState>,
@@ -70,7 +68,8 @@ fun HomeScreen(
     openBookmarksScreen: () -> Unit,
     openSettingsScreen: () -> Unit,
     onNoteClick: (Long) -> Unit,
-
+    createNote: () -> Unit,
+    onTabChosen: (HomeFilterTab) -> Unit,
 ) {
     val state = stateFlow.collectAsStateWithLifecycle()
 
@@ -117,7 +116,7 @@ fun HomeScreen(
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { /*TODO*/ },
+                    onClick = createNote,
                     shape = fabShape
                 ) {
                     Icon(
@@ -199,8 +198,8 @@ fun HomeScreen(
 
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(start = padding, top = padding, end = padding, bottom = 70.dp)
+                    .fillMaxSize()
+                    .padding(start = padding, top = padding, end = it.calculateBottomPadding() + padding, bottom = 70.dp)
                     .verticalScroll(scrollState)
             ) {
                 Row (
@@ -233,9 +232,8 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(padding))
 
                 TabSwitcher(
-                    tabs = state.value.tabs,
                     chosen = state.value.chosenTab,
-                    onItemChosen = {}
+                    onItemChosen = onTabChosen
                 )
 
                 Spacer(modifier = Modifier.height(padding))
@@ -346,14 +344,13 @@ fun HomeScreenPreview() {
 
     val main = HomeState(
         firstName = "Florian",
-        tabs = listOf("All", "Important"),
-        chosenTab = "All",
+        chosenTab = HomeFilterTab.All,
         notes = realmListOf(note1, note3, note2, note4)
     )
 
     val flow = MutableStateFlow(main)
 
     WriterMeTheme {
-        HomeScreen(stateFlow = flow, {}, {}, {}, {}, {})
+        HomeScreen(stateFlow = flow, {}, {}, {}, {}, {}, {}, {})
     }
 }

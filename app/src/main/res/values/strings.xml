@@ -76,4 +76,6 @@
     <string name="history_mode">History mode</string>
     <string name="url">url</string>
     <string name="add">add</string>
+    <string name="all">All</string>
+    <string name="important">Important</string>
 </resources>

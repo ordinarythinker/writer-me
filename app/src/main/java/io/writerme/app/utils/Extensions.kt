@@ -5,7 +5,9 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.core.net.toUri
 import androidx.work.Constraints
@@ -25,6 +27,7 @@ import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
 import io.writerme.app.data.model.Settings
 import io.writerme.app.data.work.ImageLoadingWorker
+import io.writerme.app.ui.component.HomeFilterTab
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Locale
@@ -170,4 +173,23 @@ fun WorkManager.scheduleImageLoading(componentId: Long) {
         ExistingWorkPolicy.KEEP,
         scheduledNetRequest
     )
+}
+
+fun String.toFirstName(): String {
+    return if (this.isNotEmpty()) {
+        val array = this.split("[\\W\\s]+".toRegex()).toTypedArray()
+        return array[0]
+    } else this
+}
+
+@Composable
+fun HomeFilterTab.displayName() : String {
+    return when (this) {
+        HomeFilterTab.All -> {
+            stringResource(id = R.string.all)
+        }
+        HomeFilterTab.Important -> {
+            stringResource(id = R.string.important)
+        }
+    }
 }

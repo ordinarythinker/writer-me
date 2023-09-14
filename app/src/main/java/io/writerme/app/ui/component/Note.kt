@@ -192,7 +192,28 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
                             }
 
                             ComponentType.Checkbox -> {
-                                Checkbox(component = component, {}, {})
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Spacer(Modifier.width(4.dp))
+
+                                    Icon(
+                                        modifier = Modifier
+                                            .width(10.dp)
+                                            .height(10.dp)
+                                            .padding(top = 3.dp),
+                                        painter = if (component.isChecked) painterResource(id = R.drawable.ic_checked)
+                                        else painterResource(id = R.drawable.ic_unchecked),
+                                        contentDescription = stringResource(id = R.string.checkbox_name)
+                                    )
+                                    Spacer(Modifier.width(6.dp))
+
+                                    Text(
+                                        text = component.content,
+                                        style = MaterialTheme.typography.body2,
+                                        modifier = Modifier.fillMaxWidth()
+                                    )
+                                }
                             }
 
                             ComponentType.Voice -> {

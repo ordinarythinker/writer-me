@@ -3,7 +3,10 @@ package io.writerme.app.data.repository
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.asFlow
+import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ObjectChange
+import io.realm.kotlin.notifications.ResultsChange
+import io.realm.kotlin.query.Sort
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.data.model.History
@@ -20,6 +23,10 @@ class NoteRepository: Closeable {
         return realm.write {
             copyToRealm(Note(), UpdatePolicy.ALL)
         }.asFlow()
+    }
+
+    fun getNotes(): Flow<ResultsChange<Note>> {
+        return realm.query<Note>().sort("changeTime", Sort.DESCENDING).find().asFlow()
     }
 
     suspend fun getNote(noteId: Long) : Flow<ObjectChange<Note>> {

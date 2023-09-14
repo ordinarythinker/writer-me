@@ -2,6 +2,7 @@ package io.writerme.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.Settings
 import io.writerme.app.data.repository.SettingsRepository
@@ -15,9 +16,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class SettingsViewModel : ViewModel() {
+@HiltViewModel
+class SettingsViewModel @Inject constructor() : ViewModel() {
 
     private val settingsRepository = SettingsRepository()
 
