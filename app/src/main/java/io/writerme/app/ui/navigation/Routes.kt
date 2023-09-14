@@ -16,6 +16,7 @@ object NoteScreen : Route {
     const val NOTE_PARAM = "id"
 
     override val route: String = "note?id={$NOTE_PARAM}"
+    const val navigationRoute: String = "note?id="
 }
 
 object BookmarksScreen : Route {

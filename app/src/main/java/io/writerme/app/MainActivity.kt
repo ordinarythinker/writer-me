@@ -14,17 +14,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import io.writerme.app.ui.navigation.BookmarksScreen
 import io.writerme.app.ui.navigation.HomeScreen
 import io.writerme.app.ui.navigation.NoteScreen
 import io.writerme.app.ui.navigation.SettingsScreen
+import io.writerme.app.ui.navigation.TasksScreen
 import io.writerme.app.ui.screen.BookmarksScreen
+import io.writerme.app.ui.screen.HomeScreen
 import io.writerme.app.ui.screen.NoteScreen
 import io.writerme.app.ui.screen.SettingsScreen
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.utils.Const
 import io.writerme.app.viewmodel.BookmarksViewModel
+import io.writerme.app.viewmodel.HomeViewModel
 import io.writerme.app.viewmodel.NoteViewModel
 import io.writerme.app.viewmodel.SettingsViewModel
 
@@ -48,7 +52,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             WriterMeTheme {
-                // A surface container using the 'background' color from the theme
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -58,10 +62,37 @@ class MainActivity : ComponentActivity() {
                         startDestination = SettingsScreen.route
                     ) {
                         composable(HomeScreen.route) {
-                            //HomeScreen()
+                            val homeViewModel = hiltViewModel<HomeViewModel>()
 
+                            HomeScreen(
+                                stateFlow = homeViewModel.homeStateFlow,
+                                toggleSearchMode = homeViewModel::toggleSearchMode,
+                                openTasksScreen = {
+                                    navController.navigate(TasksScreen.route)
+                                },
+                                openBookmarksScreen = {
+                                    navController.navigate(BookmarksScreen.route)
+                                },
+                                openSettingsScreen = {
+                                    navController.navigate(SettingsScreen.route)
+                                },
+                                onNoteClick = {
+                                    navController.navigate("${NoteScreen.navigationRoute}$it")
+                                },
+                                createNote = {
+                                    navController.navigate(NoteScreen.navigationRoute)
+                                },
+                                onTabChosen = homeViewModel::onTabChosen
+                            )
                         }
-                        composable(NoteScreen.route) {
+                        composable(
+                            NoteScreen.route,
+                            arguments = listOf(
+                                navArgument(NoteScreen.NOTE_PARAM) {
+                                    nullable = true
+                                }
+                            )
+                        ) {
                             val noteViewModel = hiltViewModel<NoteViewModel>()
 
                             NoteScreen(
