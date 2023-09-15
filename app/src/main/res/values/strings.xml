@@ -80,4 +80,8 @@
     <string name="important">Important</string>
     <string name="welcome">Welcome!</string>
     <string name="no_notes">Your list of notes is empty so far. To create a new note use the button below</string>
+    <string name="not_important">Not important</string>
+    <string name="image">Image</string>
+    <string name="proceed">Proceed</string>
+    <string name="thank_you">and thank you for choosing our app!</string>
 </resources>

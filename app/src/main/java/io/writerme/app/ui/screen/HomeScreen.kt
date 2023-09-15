@@ -5,7 +5,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,16 +17,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -66,6 +72,7 @@ import kotlinx.coroutines.flow.StateFlow
 import java.util.Calendar
 import java.util.Date
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     stateFlow: StateFlow<HomeState>,
@@ -76,6 +83,8 @@ fun HomeScreen(
     onNoteClick: (Long) -> Unit,
     createNote: () -> Unit,
     onTabChosen: (HomeFilterTab) -> Unit,
+    toggleNoteDropdown: (Int) -> Unit,
+    toggleImportance: (Long) -> Unit
 ) {
     val state = stateFlow.collectAsStateWithLifecycle()
 
@@ -278,11 +287,70 @@ fun HomeScreen(
                             .fillMaxWidth()
                             .height(900.dp)
                     ) {
-                        items(state.value.notes) { item ->
-                            Note(
-                                note = item,
-                                onClick = onNoteClick
-                            )
+                        itemsIndexed(items = state.value.notes) { index, item ->
+                            val isExpanded = index == state.value.expandedDropdownId
+
+                            ExposedDropdownMenuBox(
+                                expanded = isExpanded,
+                                onExpandedChange = { toggleNoteDropdown(index) }
+                            ) {
+                                Note(
+                                    note = item,
+                                    modifier = Modifier
+                                        .combinedClickable(
+                                            onClick = {
+                                                onNoteClick(item.id)
+                                            },
+                                            onLongClick = {
+                                                toggleNoteDropdown(index)
+                                            },
+                                            onDoubleClick = {
+                                                toggleImportance(item.id)
+                                            }
+                                        )
+                                )
+
+                                MaterialTheme(
+                                    colors = MaterialTheme.colors.copy(
+                                        surface = MaterialTheme.colors.light,
+                                        background = Color.Blue
+                                    ),
+                                    shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(
+                                        dimensionResource(id = R.dimen.small_radius)
+                                    ))
+                                ) {
+                                    ExposedDropdownMenu(
+                                        expanded = isExpanded,
+                                        onDismissRequest = { toggleNoteDropdown(index) },
+                                        scrollState = rememberScrollState()
+                                    ) {
+                                        DropdownMenuItem(onClick = {
+                                            toggleImportance(item.id)
+                                            toggleNoteDropdown(index)
+                                        }) {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Text(
+                                                    text = if (item.isImportant) {
+                                                        stringResource(id = R.string.not_important)
+                                                    } else stringResource(id = R.string.important),
+                                                    style  = MaterialTheme.typography.body1
+                                                )
+
+                                                Icon(
+                                                    painter = painterResource(id = R.drawable.ic_heart),
+                                                    contentDescription = stringResource(id = R.string.important),
+                                                    modifier = Modifier.size(20.dp),
+                                                    tint = Color.DarkGray
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -387,6 +455,6 @@ fun HomeScreenPreview() {
     val flow = MutableStateFlow(main)
 
     WriterMeTheme {
-        HomeScreen(stateFlow = flow, {}, {}, {}, {}, {}, {}, {})
+        HomeScreen(stateFlow = flow, {}, {}, {}, {}, {}, {}, {}, {}, {})
     }
 }

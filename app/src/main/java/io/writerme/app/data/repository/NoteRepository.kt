@@ -176,11 +176,13 @@ class NoteRepository: Closeable {
         }
     }
 
-    suspend fun setImportant(noteId: Long) {
+    suspend fun toggleImportance(noteId: Long) {
         if (noteId >= 0) {
             realm.write {
                 val note = this.query(Note::class, "id == $0", noteId).first().find()
-                note?.isImportant = true
+                note?.let {
+                    it.isImportant = !it.isImportant
+                }
             }
         }
     }

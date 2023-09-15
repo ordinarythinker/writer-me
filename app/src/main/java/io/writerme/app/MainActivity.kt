@@ -82,7 +82,9 @@ class MainActivity : ComponentActivity() {
                                 createNote = {
                                     navController.navigate(NoteScreen.navigationRoute)
                                 },
-                                onTabChosen = homeViewModel::onTabChosen
+                                onTabChosen = homeViewModel::onTabChosen,
+                                toggleNoteDropdown = homeViewModel::toggleNoteDropdown,
+                                toggleImportance = homeViewModel::toggleImportance
                             )
                         }
                         composable(

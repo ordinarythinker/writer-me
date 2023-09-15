@@ -9,5 +9,6 @@ data class HomeState(
     val chosenTab: HomeFilterTab = HomeFilterTab.All,
     val isSearchMode: Boolean = false,
     val isImportantVisible: Boolean = false,
+    val expandedDropdownId: Int = -1,
     var notes: List<Note> = listOf()
 )

@@ -94,9 +94,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun setImportant(noteId: Long) {
+    fun toggleImportance(noteId: Long) {
         viewModelScope.launch {
-            notesRepository.setImportant(noteId)
+            notesRepository.toggleImportance(noteId)
         }
     }
 
@@ -113,6 +113,20 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             _homeStateFlow.emit(
                 _homeStateFlow.value.copy(chosenTab = tab)
+            )
+        }
+    }
+
+    fun toggleNoteDropdown(index: Int) {
+        viewModelScope.launch {
+            val current = _homeStateFlow.value
+
+            val newValue = if (current.expandedDropdownId != index) {
+                index
+            } else -1 // hide dropdown
+
+            _homeStateFlow.emit(
+                _homeStateFlow.value.copy(expandedDropdownId = newValue)
             )
         }
     }

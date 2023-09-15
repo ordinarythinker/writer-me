@@ -46,7 +46,10 @@ import io.writerme.app.utils.toDateDescription
 import java.util.Calendar
 
 @Composable
-fun Note(note: Note, onClick: (Long) -> Unit) {
+fun Note(
+    note: Note,
+    modifier: Modifier = Modifier
+) {
     val padding = dimensionResource(id = R.dimen.screen_padding)
     val verticalSpacing = padding / 2
 
@@ -54,7 +57,7 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
 
     Card(
         shape = shape,
-        modifier = Modifier
+        modifier = modifier
             .wrapContentHeight()
             .heightIn(120.dp, 400.dp)
             .shadow(dimensionResource(id = R.dimen.shadow), shape),
@@ -247,7 +250,7 @@ fun Note(note: Note, onClick: (Long) -> Unit) {
                                 }
                             }
                             ComponentType.Link -> {
-                                Link(link = component, onClick = { onClick(note.id) })
+
                             }
                             ComponentType.Video -> {
                                 // pending...
@@ -292,6 +295,6 @@ fun NotePreview() {
     }
 
     WriterMeTheme {
-        Note(note) {}
+        Note(note)
     }
 }
