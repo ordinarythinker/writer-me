@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = SettingsScreen.route
+                        startDestination = HomeScreen.route
                     ) {
                         composable(HomeScreen.route) {
                             val homeViewModel = hiltViewModel<HomeViewModel>()
