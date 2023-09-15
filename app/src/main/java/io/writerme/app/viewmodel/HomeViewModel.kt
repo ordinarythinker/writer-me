@@ -59,7 +59,11 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
             notesFlow.mapLatest {
                 val current = _homeStateFlow.value
-                _homeStateFlow.emit(current.copy(notes = it.list.toList()))
+                val list = it.list.toList()
+
+                val isImportantVisible = list.any { note -> note.isImportant }
+
+                _homeStateFlow.emit(current.copy(notes = list, isImportantVisible = isImportantVisible))
             }.stateIn(viewModelScope)
 
             homeStateFlow.mapLatest {
@@ -87,6 +91,12 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     _homeStateFlow.emit(current.copy(notes = results.toList()))
                 }
             }.stateIn(viewModelScope)
+        }
+    }
+
+    fun setImportant(noteId: Long) {
+        viewModelScope.launch {
+            notesRepository.setImportant(noteId)
         }
     }
 

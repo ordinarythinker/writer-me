@@ -1,5 +1,10 @@
 package io.writerme.app.ui.screen
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,6 +42,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -199,7 +205,12 @@ fun HomeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = padding, top = padding, end = it.calculateBottomPadding() + padding, bottom = 70.dp)
+                    .padding(
+                        start = padding,
+                        top = padding,
+                        end = padding,
+                        bottom = it.calculateBottomPadding() + padding
+                    )
                     .verticalScroll(scrollState)
             ) {
                 Row (
@@ -229,26 +240,50 @@ fun HomeScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(padding))
+                if (state.value.isImportantVisible) {
+                    Spacer(modifier = Modifier.height(padding))
+                }
 
-                TabSwitcher(
-                    chosen = state.value.chosenTab,
-                    onItemChosen = onTabChosen
-                )
-
-                Spacer(modifier = Modifier.height(padding))
-
-                LazyVerticalStaggeredGrid(
-                    columns = StaggeredGridCells.Fixed(2),
-                    verticalItemSpacing = padding,
-                    horizontalArrangement = Arrangement.spacedBy(padding),
-                    modifier = Modifier.fillMaxWidth().height(900.dp)
+                AnimatedVisibility(
+                    visible = state.value.isImportantVisible,
+                    enter = fadeIn() + scaleIn(),
+                    exit = fadeOut() + scaleOut()
                 ) {
-                    items(state.value.notes) { item ->
-                        Note(
-                            note = item,
-                            onClick = onNoteClick
+                    TabSwitcher(
+                        chosen = state.value.chosenTab,
+                        onItemChosen = onTabChosen
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(padding))
+
+                if (state.value.notes.isEmpty()) {
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.no_notes),
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colors.light
                         )
+                    }
+                } else {
+                    LazyVerticalStaggeredGrid(
+                        columns = StaggeredGridCells.Fixed(2),
+                        verticalItemSpacing = padding,
+                        horizontalArrangement = Arrangement.spacedBy(padding),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(900.dp)
+                    ) {
+                        items(state.value.notes) { item ->
+                            Note(
+                                note = item,
+                                onClick = onNoteClick
+                            )
+                        }
                     }
                 }
             }
@@ -345,7 +380,8 @@ fun HomeScreenPreview() {
     val main = HomeState(
         firstName = "Florian",
         chosenTab = HomeFilterTab.All,
-        notes = realmListOf(note1, note3, note2, note4)
+        isImportantVisible = true,
+        notes = listOf()
     )
 
     val flow = MutableStateFlow(main)

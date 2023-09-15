@@ -8,5 +8,6 @@ data class HomeState(
     val profilePhotoUrl: String = "",
     val chosenTab: HomeFilterTab = HomeFilterTab.All,
     val isSearchMode: Boolean = false,
+    val isImportantVisible: Boolean = false,
     var notes: List<Note> = listOf()
 )
