@@ -16,6 +16,10 @@ object GreetingScreen : Route {
     override val route: String = "greeting"
 }
 
+object RegistrationScreen : Route {
+    override val route: String = "registration"
+}
+
 object NoteScreen : Route {
     const val NOTE_PARAM = "id"
 
