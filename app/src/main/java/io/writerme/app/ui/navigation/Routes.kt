@@ -12,6 +12,10 @@ object TasksScreen : Route {
     override val route: String = "task"
 }
 
+object GreetingScreen : Route {
+    override val route: String = "greeting"
+}
+
 object NoteScreen : Route {
     const val NOTE_PARAM = "id"
 
