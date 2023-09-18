@@ -149,9 +149,8 @@ fun RegistrationScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            //isFirstMessageVisible
             AnimatedVisibility(
-                visible = true,
+                visible = isFirstMessageVisible,
                 enter = slideInHorizontally() + fadeIn(),
                 exit = slideOutHorizontally() + fadeOut()
             ) {
@@ -175,14 +174,12 @@ fun RegistrationScreen(
                 )
             }
 
-            //isSecondMessageVisible
-            if (true) {
+            if (isSecondMessageVisible) {
                 Spacer(modifier = Modifier.height(2.dp))
             }
 
-            // isSecondMessageVisible
             AnimatedVisibility(
-                visible = true,
+                visible = isSecondMessageVisible,
                 enter = slideInHorizontally() + fadeIn(),
                 exit = slideOutHorizontally() + fadeOut()
             ) {
@@ -206,19 +203,18 @@ fun RegistrationScreen(
                 )
             }
 
-            // isUserMessageVisible
-            if (true) {
+            if (isUserMessageVisible) {
                 Spacer(modifier = Modifier.height(6.dp))
             }
 
             AnimatedVisibility(
-                visible = true,
+                visible = isUserMessageVisible,
                 enter = slideInHorizontally(initialOffsetX = { it/2 }) + fadeIn(),
                 exit = slideOutHorizontally(targetOffsetX = { it/2 }) + fadeOut(),
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text(
-                    text = "Florian Hermes",
+                    text = name,
                     style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Normal),
                     modifier = Modifier
                         .fillMaxWidth(0.65f)
@@ -236,13 +232,12 @@ fun RegistrationScreen(
                 )
             }
 
-            // isLastMessageVisible
-            if (true) {
+            if (isLastMessageVisible) {
                 Spacer(modifier = Modifier.height(6.dp))
             }
 
             AnimatedVisibility(
-                visible = true,
+                visible = isLastMessageVisible,
                 enter = slideInHorizontally() + fadeIn(),
                 exit = slideOutHorizontally() + fadeOut()
             ) {
