@@ -15,7 +15,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -23,8 +22,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -53,10 +49,10 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun GreetingScreen(proceed: () -> Unit) {
+fun GreetingScreen(proceedToNextScreen: () -> Unit) {
 
-    val welcome = stringResource(id = R.string.welcome)
-    val thankYou = stringResource(id = R.string.thank_you)
+    val writerMe = stringResource(id = R.string.app_name)
+    val ideas = stringResource(id = R.string.ideas)
 
     var hasImageAnimationStarted by remember {
         mutableStateOf(false)
@@ -70,15 +66,11 @@ fun GreetingScreen(proceed: () -> Unit) {
         mutableStateOf(false)
     }
 
-    var hasProceedButtonAnimationStarted by remember {
-        mutableStateOf(false)
-    }
-
-    var welcomeText by remember {
+    var writerText by remember {
         mutableStateOf("")
     }
 
-    var thankYouText by remember {
+    var ideasText by remember {
         mutableStateOf("")
     }
 
@@ -108,14 +100,14 @@ fun GreetingScreen(proceed: () -> Unit) {
             hasBottomArcAnimationStarted = true
 
             delay(5000)
-            hasProceedButtonAnimationStarted = true
+            proceedToNextScreen()
         }
 
         launch {
             delay(2000)
 
-            welcome.forEachIndexed { charIndex, _ ->
-                welcomeText = welcome.substring(
+            writerMe.forEachIndexed { charIndex, _ ->
+                writerText = writerMe.substring(
                     startIndex = 0,
                     endIndex = charIndex + 1,
                 )
@@ -124,8 +116,8 @@ fun GreetingScreen(proceed: () -> Unit) {
 
             delay(800)
 
-            thankYou.forEachIndexed { charIndex, _ ->
-                thankYouText = thankYou.substring(
+            ideas.forEachIndexed { charIndex, _ ->
+                ideasText = ideas.substring(
                     startIndex = 0,
                     endIndex = charIndex + 1,
                 )
@@ -213,7 +205,7 @@ fun GreetingScreen(proceed: () -> Unit) {
                 exit = fadeOut()
             ) {
                 Text(
-                    text = welcomeText,
+                    text = writerText,
                     color = MaterialTheme.colors.light,
                     style = MaterialTheme.typography.h1.copy(fontSize = 40.sp, fontWeight = FontWeight.Normal),
                     modifier = Modifier.padding(start = startPadding, top = 120.dp)
@@ -226,36 +218,11 @@ fun GreetingScreen(proceed: () -> Unit) {
                 exit = fadeOut()
             ) {
                 Text(
-                    text = thankYouText,
+                    text = ideasText,
                     color = MaterialTheme.colors.light,
                     style = MaterialTheme.typography.h3.copy(fontWeight = FontWeight.Normal),
                     modifier = Modifier.padding(start = startPadding, top = 24.dp)
                 )
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-
-            AnimatedVisibility(
-                visible = hasProceedButtonAnimationStarted,
-                enter = slideInHorizontally(
-                    initialOffsetX = { it/2 },
-                    animationSpec = tween(durationMillis = 500, easing = LinearEasing)
-                ) + fadeIn(),
-                exit = slideOutHorizontally(targetOffsetX = { it/2 }) + fadeOut(),
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                IconButton(
-                    onClick = proceed,
-                    modifier = Modifier
-                        .padding(end = 32.dp, bottom = 32.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_arrow_right),
-                        contentDescription = stringResource(id = R.string.proceed),
-                        tint = MaterialTheme.colors.light
-                    )
-                }
             }
         }
     }
