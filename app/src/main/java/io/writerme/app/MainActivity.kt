@@ -16,14 +16,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
-import io.writerme.app.ui.navigation.BookmarksScreen
-import io.writerme.app.ui.navigation.HomeScreen
-import io.writerme.app.ui.navigation.NoteScreen
-import io.writerme.app.ui.navigation.SettingsScreen
-import io.writerme.app.ui.navigation.TasksScreen
+import io.writerme.app.ui.navigation.*
 import io.writerme.app.ui.screen.BookmarksScreen
+import io.writerme.app.ui.screen.GreetingScreen
 import io.writerme.app.ui.screen.HomeScreen
 import io.writerme.app.ui.screen.NoteScreen
+import io.writerme.app.ui.screen.RegistrationScreen
 import io.writerme.app.ui.screen.SettingsScreen
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.utils.Const
@@ -61,6 +59,18 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = HomeScreen.route
                     ) {
+                        composable(GreetingScreen.route) {
+                            GreetingScreen {
+                                navController.navigate(RegistrationScreen.route)
+                            }
+                        }
+
+                        composable(RegistrationScreen.route) {
+                            RegistrationScreen {
+                                navController.navigate(HomeScreen.route)
+                            }
+                        }
+
                         composable(HomeScreen.route) {
                             val homeViewModel = hiltViewModel<HomeViewModel>()
 
