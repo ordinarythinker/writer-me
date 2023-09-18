@@ -31,7 +31,9 @@ import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.light
 
 @Composable
-fun RegistrationScreen() {
+fun RegistrationScreen(
+    proceedToNextScreen: () -> Unit
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_main),
@@ -45,11 +47,11 @@ fun RegistrationScreen() {
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            /*Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(1f))
 
 
             AnimatedVisibility(
-                visible = hasProceedButtonAnimationStarted,
+                visible = true,
                 enter = slideInHorizontally(
                     initialOffsetX = { it/2 },
                     animationSpec = tween(durationMillis = 500, easing = LinearEasing)
@@ -58,7 +60,7 @@ fun RegistrationScreen() {
                 modifier = Modifier.align(Alignment.End)
             ) {
                 IconButton(
-                    onClick = proceed,
+                    onClick = proceedToNextScreen,
                     modifier = Modifier
                         .padding(end = 32.dp, bottom = 32.dp)
                 ) {
@@ -68,7 +70,7 @@ fun RegistrationScreen() {
                         tint = MaterialTheme.colors.light
                     )
                 }
-            }*/
+            }
         }
     }
 }
@@ -77,6 +79,6 @@ fun RegistrationScreen() {
 @Composable
 fun RegistrationScreenPreview() {
     WriterMeTheme {
-        RegistrationScreen()
+        RegistrationScreen({})
     }
 }
