@@ -66,9 +66,12 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(RegistrationScreen.route) {
-                            RegistrationScreen {
-                                navController.navigate(HomeScreen.route)
-                            }
+                            RegistrationScreen(
+                                saveName = {
+                                    // TODO
+                                },
+                                proceedToNextScreen = { navController.navigate(HomeScreen.route) }
+                            )
                         }
 
                         composable(HomeScreen.route) {

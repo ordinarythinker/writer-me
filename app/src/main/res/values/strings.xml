@@ -89,6 +89,6 @@
     <string name="typing">Typing</string>
     <string name="send_button">Send button</string>
     <string name="hi">Hi and welcome!\nMy name is Writer.Me and I\'m ready to become your personal bank of ideas!</string>
-    <string name="introduce">Would mind telling me your name?</string>
+    <string name="introduce">Would you mind telling me your name?</string>
     <string name="saving">Thanks!\nJust a moment, I\'m saving the data</string>
 </resources>

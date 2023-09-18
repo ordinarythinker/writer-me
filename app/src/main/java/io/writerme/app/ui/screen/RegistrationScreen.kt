@@ -1,8 +1,11 @@
 package io.writerme.app.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
@@ -34,6 +37,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -61,6 +67,10 @@ fun RegistrationScreen(
         mutableStateOf("")
     }
 
+    var sentName by remember {
+        mutableStateOf("")
+    }
+
     var isFirstMessageVisible by remember {
         mutableStateOf(false)
     }
@@ -85,6 +95,17 @@ fun RegistrationScreen(
         mutableStateOf(typing)
     }
 
+    val send: () -> Unit = {
+        if (name.length > 2) {
+            sentName = name
+            name = ""
+            isUserMessageVisible = true
+
+            saveName(sentName)
+            isLastMessageVisible = true
+        }
+    }
+
     LaunchedEffect(key1 = null) {
         launch {
             var millis = 0
@@ -100,15 +121,20 @@ fun RegistrationScreen(
                     else -> typing
                 }
                 counter++
-                delay(100)
+                delay(300)
 
                 millis += 100
 
-                if (millis == 500) isFirstMessageVisible = true
-                if (millis == 3000) break
+                if (millis == 900) isFirstMessageVisible = true
+                if (millis == 2400) break
             }
             isTyping = false
             isSecondMessageVisible = true
+        }
+
+        if (isLastMessageVisible) {
+            delay(1000)
+            proceedToNextScreen()
         }
     }
 
@@ -151,8 +177,10 @@ fun RegistrationScreen(
 
             AnimatedVisibility(
                 visible = isFirstMessageVisible,
-                enter = slideInHorizontally() + fadeIn(),
-                exit = slideOutHorizontally() + fadeOut()
+                enter = slideInHorizontally(
+                    animationSpec = tween(durationMillis = 300)
+                ) + scaleIn(),
+                exit = slideOutHorizontally() + scaleOut()
             ) {
                 Text(
                     text = stringResource(id = R.string.hi),
@@ -175,13 +203,15 @@ fun RegistrationScreen(
             }
 
             if (isSecondMessageVisible) {
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(4.dp))
             }
 
             AnimatedVisibility(
                 visible = isSecondMessageVisible,
-                enter = slideInHorizontally() + fadeIn(),
-                exit = slideOutHorizontally() + fadeOut()
+                enter = slideInHorizontally(
+                    animationSpec = tween(durationMillis = 300)
+                ) + scaleIn(),
+                exit = slideOutHorizontally() + scaleOut()
             ) {
                 Text(
                     text = stringResource(id = R.string.introduce),
@@ -204,17 +234,17 @@ fun RegistrationScreen(
             }
 
             if (isUserMessageVisible) {
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
             AnimatedVisibility(
                 visible = isUserMessageVisible,
-                enter = slideInHorizontally(initialOffsetX = { it/2 }) + fadeIn(),
-                exit = slideOutHorizontally(targetOffsetX = { it/2 }) + fadeOut(),
+                enter = slideInHorizontally(initialOffsetX = { it/2 }) + scaleIn(),
+                exit = slideOutHorizontally(targetOffsetX = { it/2 }) + scaleOut(),
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text(
-                    text = name,
+                    text = sentName,
                     style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Normal),
                     modifier = Modifier
                         .fillMaxWidth(0.65f)
@@ -233,13 +263,15 @@ fun RegistrationScreen(
             }
 
             if (isLastMessageVisible) {
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
             AnimatedVisibility(
                 visible = isLastMessageVisible,
-                enter = slideInHorizontally() + fadeIn(),
-                exit = slideOutHorizontally() + fadeOut()
+                enter = slideInHorizontally(
+                    animationSpec = tween(durationMillis = 300)
+                ) + scaleIn(),
+                exit = slideOutHorizontally() + scaleOut()
             ) {
                 Text(
                     text = stringResource(id = R.string.saving),
@@ -291,7 +323,13 @@ fun RegistrationScreen(
                     },
                     modifier = Modifier
                         .textFieldBackground()
-                        .weight(1f),
+                        .weight(1f)
+                        .onKeyEvent {
+                            if (it.type == KeyEventType.KeyDown) {
+                                send()
+                                true
+                            } else false
+                        },
                     singleLine = true,
                     textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
                     decorationBox = { innerTextField ->
@@ -310,7 +348,7 @@ fun RegistrationScreen(
 
                 IconButton(
                     onClick = {
-                        /*TODO*/
+                        send()
                     }
                 ) {
                     Icon(
