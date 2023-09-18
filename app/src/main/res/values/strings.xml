@@ -85,4 +85,5 @@
     <string name="proceed">Proceed</string>
     <string name="thank_you">and thank you for choosing our app!</string>
     <string name="ideas">Great ideas start here!</string>
+    <string name="full_name">Full name</string>
 </resources>
