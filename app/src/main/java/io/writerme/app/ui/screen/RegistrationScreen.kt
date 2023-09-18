@@ -1,13 +1,12 @@
 package io.writerme.app.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,47 +37,79 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.writerme.app.R
 import io.writerme.app.ui.theme.WriterMeTheme
+import io.writerme.app.ui.theme.dropdownBackground
 import io.writerme.app.ui.theme.light
 import io.writerme.app.ui.theme.lightGrey
+import io.writerme.app.ui.theme.strokeLight
 import io.writerme.app.utils.textFieldBackground
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegistrationScreen(
-    proceedToNextScreen: () -> Unit
+    saveName: (String) -> Unit,
+    proceedToNextScreen: () -> Unit,
 ) {
     val typing = stringResource(id = R.string.typing)
-    val writer = stringResource(id = R.string.app_name)
 
     var name by remember {
         mutableStateOf("")
     }
 
-    var isProceedButtonVisible by remember {
+    var isFirstMessageVisible by remember {
         mutableStateOf(false)
     }
 
-    var typingText by remember {
-        mutableStateOf("")
+    var isSecondMessageVisible by remember {
+        mutableStateOf(false)
     }
 
-    val incomingMessageShape = RoundedCornerShape(
-        topStart = 8.dp,
-        topEnd = 8.dp,
-        bottomEnd = 8.dp,
-        bottomStart = 0.dp)
+    var isUserMessageVisible by remember {
+        mutableStateOf(false)
+    }
 
-    val outgoingMessageShape = RoundedCornerShape(
-        topStart = 8.dp,
-        topEnd = 8.dp,
-        bottomEnd = 0.dp,
-        bottomStart = 8.dp)
+    var isLastMessageVisible by remember {
+        mutableStateOf(false)
+    }
+
+    var isTyping by remember {
+        mutableStateOf(true)
+    }
+
+    var typingText by remember {
+        mutableStateOf(typing)
+    }
 
     LaunchedEffect(key1 = null) {
+        launch {
+            var millis = 0
+            var counter = 1
+            while (counter <= 3) {
+                typingText = when(counter) {
+                    1 -> "$typing."
+                    2 -> "$typing.."
+                    3 -> {
+                        counter = 1
+                        "$typing..."
+                    }
+                    else -> typing
+                }
+                counter++
+                delay(100)
 
+                millis += 100
+
+                if (millis == 500) isFirstMessageVisible = true
+                if (millis == 3000) break
+            }
+            isTyping = false
+            isSecondMessageVisible = true
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -118,31 +149,138 @@ fun RegistrationScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
+            //isFirstMessageVisible
             AnimatedVisibility(
-                visible = isProceedButtonVisible,
-                enter = slideInHorizontally(
-                    initialOffsetX = { it/2 },
-                    animationSpec = tween(durationMillis = 500, easing = LinearEasing)
-                ) + fadeIn(),
+                visible = true,
+                enter = slideInHorizontally() + fadeIn(),
+                exit = slideOutHorizontally() + fadeOut()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.hi),
+                    style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Normal),
+                    color = MaterialTheme.colors.light.copy(alpha = 0.7f),
+                    modifier = Modifier
+                        .fillMaxWidth(0.65f)
+                        .background(
+                            color = MaterialTheme.colors.dropdownBackground,
+                            shape = RoundedCornerShape(
+                                topStart = 8.dp,
+                                topEnd = 8.dp,
+                                bottomEnd = 0.dp,
+                                bottomStart = 0.dp
+                            )
+                        )
+                        .padding(12.dp)
+
+                )
+            }
+
+            //isSecondMessageVisible
+            if (true) {
+                Spacer(modifier = Modifier.height(2.dp))
+            }
+
+            // isSecondMessageVisible
+            AnimatedVisibility(
+                visible = true,
+                enter = slideInHorizontally() + fadeIn(),
+                exit = slideOutHorizontally() + fadeOut()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.introduce),
+                    style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Normal),
+                    color = MaterialTheme.colors.light.copy(alpha = 0.7f),
+                    modifier = Modifier
+                        .fillMaxWidth(0.65f)
+                        .background(
+                            color = MaterialTheme.colors.dropdownBackground,
+                            shape = RoundedCornerShape(
+                                topStart = 0.dp,
+                                topEnd = 0.dp,
+                                bottomEnd = 8.dp,
+                                bottomStart = 0.dp
+                            )
+                        )
+                        .padding(12.dp)
+
+                )
+            }
+
+            // isUserMessageVisible
+            if (true) {
+                Spacer(modifier = Modifier.height(6.dp))
+            }
+
+            AnimatedVisibility(
+                visible = true,
+                enter = slideInHorizontally(initialOffsetX = { it/2 }) + fadeIn(),
                 exit = slideOutHorizontally(targetOffsetX = { it/2 }) + fadeOut(),
                 modifier = Modifier.align(Alignment.End)
             ) {
-                IconButton(
-                    onClick = proceedToNextScreen
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_arrow_right),
-                        contentDescription = stringResource(id = R.string.proceed),
-                        tint = MaterialTheme.colors.light
-                    )
-                }
+                Text(
+                    text = "Florian Hermes",
+                    style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Normal),
+                    modifier = Modifier
+                        .fillMaxWidth(0.65f)
+                        .background(
+                            color = MaterialTheme.colors.strokeLight,
+                            shape = RoundedCornerShape(
+                                topStart = 8.dp,
+                                topEnd = 8.dp,
+                                bottomEnd = 0.dp,
+                                bottomStart = 8.dp
+                            )
+                        )
+                        .padding(12.dp)
+
+                )
             }
 
-            Text(
-                text = typing,
-                style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.lightGrey
-            )
+            // isLastMessageVisible
+            if (true) {
+                Spacer(modifier = Modifier.height(6.dp))
+            }
+
+            AnimatedVisibility(
+                visible = true,
+                enter = slideInHorizontally() + fadeIn(),
+                exit = slideOutHorizontally() + fadeOut()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.saving),
+                    style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Normal),
+                    color = MaterialTheme.colors.light.copy(alpha = 0.7f),
+                    modifier = Modifier
+                        .fillMaxWidth(0.65f)
+                        .background(
+                            color = MaterialTheme.colors.dropdownBackground,
+                            shape = RoundedCornerShape(
+                                topStart = 8.dp,
+                                topEnd = 8.dp,
+                                bottomEnd = 8.dp,
+                                bottomStart = 0.dp
+                            )
+                        )
+                        .padding(12.dp)
+
+                )
+            }
+
+            if (isTyping) {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            AnimatedVisibility(
+                visible = isTyping,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                Text(
+                    text = typingText,
+                    style = MaterialTheme.typography.body1,
+                    color = MaterialTheme.colors.lightGrey
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -165,7 +303,7 @@ fun RegistrationScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             if (name.isEmpty()) {
                                 Text(
-                                    text = stringResource(id = R.string.type_your_text_here),
+                                    text = stringResource(id = R.string.full_name),
                                     style = MaterialTheme.typography.body1,
                                     color = MaterialTheme.colors.lightGrey
                                 )
@@ -196,6 +334,6 @@ fun RegistrationScreen(
 @Composable
 fun RegistrationScreenPreview() {
     WriterMeTheme {
-        RegistrationScreen({})
+        RegistrationScreen({}, {})
     }
 }
