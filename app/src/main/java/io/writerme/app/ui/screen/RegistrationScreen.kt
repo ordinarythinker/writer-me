@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +17,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
@@ -34,38 +38,47 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.writerme.app.R
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.light
+import io.writerme.app.ui.theme.lightGrey
 import io.writerme.app.utils.textFieldBackground
-import kotlinx.coroutines.delay
 
 @Composable
 fun RegistrationScreen(
     proceedToNextScreen: () -> Unit
 ) {
-    val welcome = stringResource(id = R.string.welcome)
-
-    var welcomeText by remember {
-        mutableStateOf("")
-    }
+    val typing = stringResource(id = R.string.typing)
+    val writer = stringResource(id = R.string.app_name)
 
     var name by remember {
         mutableStateOf("")
     }
 
+    var isProceedButtonVisible by remember {
+        mutableStateOf(false)
+    }
+
+    var typingText by remember {
+        mutableStateOf("")
+    }
+
+    val incomingMessageShape = RoundedCornerShape(
+        topStart = 8.dp,
+        topEnd = 8.dp,
+        bottomEnd = 8.dp,
+        bottomStart = 0.dp)
+
+    val outgoingMessageShape = RoundedCornerShape(
+        topStart = 8.dp,
+        topEnd = 8.dp,
+        bottomEnd = 0.dp,
+        bottomStart = 8.dp)
+
     LaunchedEffect(key1 = null) {
-        welcome.forEachIndexed { charIndex, _ ->
-            welcomeText = welcome.substring(
-                startIndex = 0,
-                endIndex = charIndex + 1,
-            )
-            delay(120)
-        }
+
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -80,50 +93,33 @@ fun RegistrationScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(34.dp)
+                .padding(16.dp)
         ) {
-            AnimatedVisibility(
-                visible = true,
-                enter = fadeIn(),
-                exit = fadeOut()
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_writer_me),
+                    contentDescription = stringResource(id = R.string.app_name),
+                    modifier = Modifier.size(50.dp)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
                 Text(
-                    text = welcome,
-                    color = MaterialTheme.colors.light,
-                    style = MaterialTheme.typography.h1.copy(fontSize = 40.sp, fontWeight = FontWeight.Normal),
-                    modifier = Modifier.padding(top = 100.dp)
+                    text = stringResource(id = R.string.app_name),
+                    style = MaterialTheme.typography.h1,
+                    color = MaterialTheme.colors.light
                 )
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
-            BasicTextField(
-                value = name,
-                maxLines = 1,
-                onValueChange = { name = it },
-                modifier = Modifier
-                    .textFieldBackground()
-                    .fillMaxWidth(),
-                singleLine = true,
-                textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
-                decorationBox = { innerTextField ->
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (name.isEmpty()) {
-                            Text(
-                                text = stringResource(id = R.string.full_name),
-                                style = MaterialTheme.typography.body1,
-                                color = MaterialTheme.colors.light
-                            )
-                        }
-                        innerTextField()
-                    }
-                },
-            )
-
-            Spacer(modifier = Modifier.height(40.dp))
-
             AnimatedVisibility(
-                visible = true,
+                visible = isProceedButtonVisible,
                 enter = slideInHorizontally(
                     initialOffsetX = { it/2 },
                     animationSpec = tween(durationMillis = 500, easing = LinearEasing)
@@ -138,6 +134,57 @@ fun RegistrationScreen(
                         painter = painterResource(id = R.drawable.ic_arrow_right),
                         contentDescription = stringResource(id = R.string.proceed),
                         tint = MaterialTheme.colors.light
+                    )
+                }
+            }
+
+            Text(
+                text = typing,
+                style = MaterialTheme.typography.body1,
+                color = MaterialTheme.colors.lightGrey
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BasicTextField(
+                    value = name,
+                    maxLines = 1,
+                    onValueChange = {
+                        name = it
+                    },
+                    modifier = Modifier
+                        .textFieldBackground()
+                        .weight(1f),
+                    singleLine = true,
+                    textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
+                    decorationBox = { innerTextField ->
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            if (name.isEmpty()) {
+                                Text(
+                                    text = stringResource(id = R.string.type_your_text_here),
+                                    style = MaterialTheme.typography.body1,
+                                    color = MaterialTheme.colors.lightGrey
+                                )
+                            }
+                            innerTextField()
+                        }
+                    },
+                )
+
+                IconButton(
+                    onClick = {
+                        /*TODO*/
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_send),
+                        contentDescription = stringResource(id = R.string.send_button),
+                        tint = MaterialTheme.colors.lightGrey,
+                        modifier = Modifier.size(30.dp)
                     )
                 }
             }
