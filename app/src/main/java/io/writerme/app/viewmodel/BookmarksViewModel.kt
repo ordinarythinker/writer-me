@@ -48,7 +48,7 @@ class BookmarksViewModel @Inject constructor(
 
             bookmarksFlow.mapLatest {
                 it.obj?.let { fdr ->
-                    _bookmarksStateFlow.emit(_bookmarksStateFlow.value.copy(folder = fdr))
+                    _bookmarksStateFlow.emit(_bookmarksStateFlow.value.copy(currentFolder = fdr))
                 }
             }.stateIn(viewModelScope)
         }
@@ -57,7 +57,7 @@ class BookmarksViewModel @Inject constructor(
     fun onFolderClicked(folder: BookmarksFolder) {
         viewModelScope.launch {
             _bookmarksStateFlow.emit(
-                _bookmarksStateFlow.value.copy(folder = folder)
+                _bookmarksStateFlow.value.copy(currentFolder = folder)
             )
         }
     }
@@ -114,7 +114,7 @@ class BookmarksViewModel @Inject constructor(
             val value = _bookmarksStateFlow.value
             value.currentFolder.parent?.let { folder ->
                 _bookmarksStateFlow.emit(
-                    value.copy(folder = folder)
+                    value.copy(currentFolder = folder)
                 )
             }
         }

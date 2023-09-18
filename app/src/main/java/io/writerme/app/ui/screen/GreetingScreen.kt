@@ -70,6 +70,10 @@ fun GreetingScreen(proceed: () -> Unit) {
         mutableStateOf(false)
     }
 
+    var hasProceedButtonAnimationStarted by remember {
+        mutableStateOf(false)
+    }
+
     var welcomeText by remember {
         mutableStateOf("")
     }
@@ -102,6 +106,9 @@ fun GreetingScreen(proceed: () -> Unit) {
 
             delay(700)
             hasBottomArcAnimationStarted = true
+
+            delay(5000)
+            hasProceedButtonAnimationStarted = true
         }
 
         launch {
@@ -228,17 +235,27 @@ fun GreetingScreen(proceed: () -> Unit) {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            IconButton(
-                onClick = proceed,
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(end = 32.dp, bottom = 32.dp)
+
+            AnimatedVisibility(
+                visible = hasProceedButtonAnimationStarted,
+                enter = slideInHorizontally(
+                    initialOffsetX = { it/2 },
+                    animationSpec = tween(durationMillis = 500, easing = LinearEasing)
+                ) + fadeIn(),
+                exit = slideOutHorizontally(targetOffsetX = { it/2 }) + fadeOut(),
+                modifier = Modifier.align(Alignment.End)
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_right),
-                    contentDescription = stringResource(id = R.string.proceed),
-                    tint = MaterialTheme.colors.light
-                )
+                IconButton(
+                    onClick = proceed,
+                    modifier = Modifier
+                        .padding(end = 32.dp, bottom = 32.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_arrow_right),
+                        contentDescription = stringResource(id = R.string.proceed),
+                        tint = MaterialTheme.colors.light
+                    )
+                }
             }
         }
     }
