@@ -18,22 +18,47 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.writerme.app.R
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.light
+import kotlinx.coroutines.delay
 
 @Composable
 fun RegistrationScreen(
     proceedToNextScreen: () -> Unit
 ) {
+    val welcome = stringResource(id = R.string.welcome)
+
+    var welcomeText by remember {
+        mutableStateOf("")
+    }
+
+    LaunchedEffect(key1 = null) {
+        welcome.forEachIndexed { charIndex, _ ->
+            welcomeText = welcome.substring(
+                startIndex = 0,
+                endIndex = charIndex + 1,
+            )
+            delay(120)
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_main),
@@ -47,6 +72,20 @@ fun RegistrationScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
+            AnimatedVisibility(
+                visible = true,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                Text(
+                    text = welcome,
+                    color = MaterialTheme.colors.light,
+                    style = MaterialTheme.typography.h1.copy(fontSize = 40.sp, fontWeight = FontWeight.Normal),
+                    modifier = Modifier.padding(start = 34.dp, top = 120.dp)
+                )
+            }
+
+
             Spacer(modifier = Modifier.weight(1f))
 
 

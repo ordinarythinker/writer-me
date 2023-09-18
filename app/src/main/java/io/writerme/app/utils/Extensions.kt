@@ -5,10 +5,20 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
@@ -28,6 +38,8 @@ import io.writerme.app.data.model.Note
 import io.writerme.app.data.model.Settings
 import io.writerme.app.data.work.ImageLoadingWorker
 import io.writerme.app.ui.component.HomeFilterTab
+import io.writerme.app.ui.theme.fieldDark
+import io.writerme.app.ui.theme.strokeLight
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Locale
@@ -193,3 +205,15 @@ fun HomeFilterTab.displayName() : String {
         }
     }
 }
+
+@Composable
+fun Modifier.textFieldBackground() =
+    this.clip(RoundedCornerShape(dimensionResource(id = R.dimen.big_radius)))
+    .border(
+        dimensionResource(id = R.dimen.field_border_width),
+        MaterialTheme.colors.strokeLight,
+        RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
+    )
+    .background(MaterialTheme.colors.fieldDark)
+    .padding(dimensionResource(id = R.dimen.screen_padding), 0.dp)
+    .height(40.dp)

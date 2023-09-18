@@ -49,6 +49,7 @@ import io.writerme.app.ui.theme.dialogBackground
 import io.writerme.app.ui.theme.fieldDark
 import io.writerme.app.ui.theme.light
 import io.writerme.app.ui.theme.strokeLight
+import io.writerme.app.utils.textFieldBackground
 
 @Composable
 fun CreateBookmarkDialog(
@@ -138,24 +139,13 @@ fun CreateBookmarkDialog(
 
                     val fieldShape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
 
-                    val backgroundModifier = Modifier
-                        .clip(fieldShape)
-                        .border(
-                            dimensionResource(id = R.dimen.field_border_width),
-                            MaterialTheme.colors.strokeLight,
-                            fieldShape
-                        )
-                        .background(MaterialTheme.colors.fieldDark)
-                        .padding(padding, 0.dp)
-                        .height(40.dp)
-
                     AnimatedVisibility(visible = !isFolderChoosingMode) {
                         Column {
                             BasicTextField(
                                 value = url,
                                 maxLines = 1,
                                 onValueChange = { url = it },
-                                modifier = backgroundModifier.fillMaxWidth(),
+                                modifier = Modifier.textFieldBackground().fillMaxWidth(),
                                 singleLine = true,
                                 textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
                                 decorationBox = { innerTextField ->
@@ -179,7 +169,7 @@ fun CreateBookmarkDialog(
                                 maxLines = 1,
                                 onValueChange = { title = it },
                                 singleLine = true,
-                                modifier = backgroundModifier.fillMaxWidth(),
+                                modifier = Modifier.textFieldBackground().fillMaxWidth(),
                                 textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
                                 decorationBox = { innerTextField ->
                                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -198,7 +188,7 @@ fun CreateBookmarkDialog(
                             Spacer(modifier = Modifier.height(padding))
 
                             Row (
-                                modifier = backgroundModifier
+                                modifier = Modifier.textFieldBackground()
                                     .fillMaxWidth()
                                     .clickable {
                                         if (bookmarksFolder.folders.isNotEmpty()) {
@@ -227,7 +217,7 @@ fun CreateBookmarkDialog(
 
                             Text(
                                 text = stringResource(id = R.string.create),
-                                modifier = backgroundModifier
+                                modifier = Modifier.textFieldBackground()
                                     .wrapContentHeight()
                                     .padding(20.dp, 0.dp)
                                     .align(Alignment.CenterHorizontally)
@@ -284,7 +274,7 @@ fun CreateBookmarkDialog(
 
                             Text(
                                 text = stringResource(id = R.string.choose),
-                                modifier = backgroundModifier
+                                modifier = Modifier.textFieldBackground()
                                     .wrapContentHeight()
                                     .padding(20.dp, 0.dp)
                                     .align(Alignment.CenterHorizontally)
