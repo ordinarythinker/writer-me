@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -151,7 +152,10 @@ fun CreateBookmarkDialog(
                                 textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
                                 cursorBrush = SolidColor(MaterialTheme.colors.light),
                                 decorationBox = { innerTextField ->
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.CenterStart
+                                    ) {
                                         if (url.isEmpty()) {
                                             Text(
                                                 text = stringResource(id = R.string.link),
@@ -175,7 +179,10 @@ fun CreateBookmarkDialog(
                                 textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
                                 cursorBrush = SolidColor(MaterialTheme.colors.light),
                                 decorationBox = { innerTextField ->
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.CenterStart
+                                    ) {
                                         if (url.isEmpty()) {
                                             Text(
                                                 text = stringResource(id = R.string.title),
