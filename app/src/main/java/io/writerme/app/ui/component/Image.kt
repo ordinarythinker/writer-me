@@ -11,8 +11,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import coil.compose.AsyncImage
 import io.writerme.app.R
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
@@ -30,19 +30,19 @@ fun Image(component: Component, modifier: Modifier = Modifier) {
                 .shadow(dimensionResource(id = R.dimen.shadow), shape),
             backgroundColor = Color.White
         ) {
-            androidx.compose.foundation.Image(
+            /*androidx.compose.foundation.Image(
                 painter = painterResource(id = R.drawable.travel),
                 contentDescription = "",
                 modifier = Modifier.fillMaxWidth(),
                 contentScale = ContentScale.Crop
-            )
+            )*/
 
-            /*AsyncImage(
+            AsyncImage(
                 model = component.url,
                 contentDescription = component.content,
                 modifier = Modifier.fillMaxWidth(),
                 contentScale = ContentScale.Crop
-            )*/
+            )
         }
     }
 }

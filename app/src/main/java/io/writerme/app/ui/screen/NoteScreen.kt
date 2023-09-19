@@ -345,7 +345,7 @@ fun NoteScreen(
 
                             title?.let {
                                 BasicTextField(
-                                    value = title.title,
+                                    value = title.title.ifEmpty { stringResource(id = R.string.type_title) },
                                     onValueChange = onTitleChange,
                                     textStyle = MaterialTheme.typography.h1.copy(color = MaterialTheme.colors.light),
                                     modifier = Modifier

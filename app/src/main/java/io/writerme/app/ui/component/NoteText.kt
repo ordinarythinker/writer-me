@@ -7,7 +7,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import io.writerme.app.R
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.ui.theme.WriterMeTheme
@@ -24,7 +26,7 @@ fun NoteText(
 
     if (component.type == ComponentType.Text) {
         BasicTextField(
-            value = localText,
+            value = localText.ifEmpty { stringResource(id = R.string.type_your_note_here) },
             onValueChange = {
                 localText = it
                 component.content = it
