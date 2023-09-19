@@ -9,7 +9,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -32,7 +31,9 @@ import io.writerme.app.viewmodel.HomeViewModel
 import io.writerme.app.viewmodel.NoteViewModel
 import io.writerme.app.viewmodel.RegistrationViewModel
 import io.writerme.app.viewmodel.SettingsViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -59,15 +60,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    var startingRoute: String = GreetingScreen.route
 
-                    LaunchedEffect(key1 = null) {
-                        launch {
+                    val startingRoute: String = runBlocking {
+                        withContext(Dispatchers.IO) {
                             val settingsRepository = SettingsRepository()
-                            if (settingsRepository.getSettings().fullName.isNotEmpty()) {
-                                startingRoute = HomeScreen.route
-                            }
+                            val route = if (settingsRepository.getSettings().fullName.isNotEmpty()) {
+                                HomeScreen.route
+                            } else GreetingScreen.route
                             settingsRepository.close()
+
+                            route
                         }
                     }
 
