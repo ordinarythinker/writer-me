@@ -29,8 +29,8 @@ class BookmarksViewModel @Inject constructor(
 
     private val bookmarksRepository: BookmarksRepository = BookmarksRepository()
 
-    private lateinit var _bookmarksStateFlow: MutableStateFlow<BookmarksState>
-    lateinit var bookmarksStateFlow: StateFlow<BookmarksState>
+    private val _bookmarksStateFlow: MutableStateFlow<BookmarksState> = MutableStateFlow(BookmarksState.empty())
+    val bookmarksStateFlow: StateFlow<BookmarksState> = _bookmarksStateFlow
 
     private lateinit var bookmarksFlow: Flow<ObjectChange<BookmarksFolder>>
 
@@ -38,13 +38,7 @@ class BookmarksViewModel @Inject constructor(
         addCloseable(bookmarksRepository)
 
         viewModelScope.launch {
-            val folder = bookmarksRepository.getMainFolder()
-
-            val state = BookmarksState(folder)
-            _bookmarksStateFlow = MutableStateFlow(state)
-            bookmarksStateFlow = _bookmarksStateFlow
-
-            bookmarksFlow = folder.asFlow()
+            bookmarksFlow = bookmarksRepository.getMainFolder().asFlow()
 
             bookmarksFlow.mapLatest {
                 it.obj?.let { fdr ->

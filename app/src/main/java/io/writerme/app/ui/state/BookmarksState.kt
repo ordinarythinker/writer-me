@@ -7,4 +7,10 @@ data class BookmarksState(
     val isBookmarkDialogDisplayed: Boolean = false,
     val isFolderDialogDisplayed: Boolean = false,
     val isFloatingDialogShown: Boolean = false
-)
+) {
+    companion object {
+        fun empty() : BookmarksState {
+            return BookmarksState(BookmarksFolder())
+        }
+    }
+}
