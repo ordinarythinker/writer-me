@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,6 +65,7 @@ fun CreateFolderDialogBody(
             modifier = Modifier.textFieldBackground().fillMaxWidth(),
             singleLine = true,
             textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
+            cursorBrush = SolidColor(MaterialTheme.colors.light),
             decorationBox = { innerTextField ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (name.isEmpty()) {

@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
@@ -350,7 +351,8 @@ fun NoteScreen(
                                     textStyle = MaterialTheme.typography.h1.copy(color = MaterialTheme.colors.light),
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(bottom = dimensionResource(id = R.dimen.screen_padding_big))
+                                        .padding(bottom = dimensionResource(id = R.dimen.screen_padding_big)),
+                                    cursorBrush = SolidColor(MaterialTheme.colors.light),
                                 )
                             }
                         }
@@ -379,14 +381,15 @@ fun NoteScreen(
                                 )
                             }
 
-                            val text = title?.title ?: ""
+                            val text = title?.title ?: stringResource(id = R.string.type_title)
                             BasicTextField(
                                 value = text,
                                 onValueChange = onTitleChange,
                                 textStyle = MaterialTheme.typography.h1.copy(color = MaterialTheme.colors.light),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(start = padding)
+                                    .padding(start = padding),
+                                cursorBrush = SolidColor(MaterialTheme.colors.light)
                             )
                         }
                     }

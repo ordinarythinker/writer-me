@@ -37,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
@@ -334,8 +335,12 @@ fun RegistrationScreen(
                         },
                     singleLine = true,
                     textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
+                    cursorBrush = SolidColor(MaterialTheme.colors.light),
                     decorationBox = { innerTextField ->
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
                             if (name.isEmpty()) {
                                 Text(
                                     text = stringResource(id = R.string.full_name),

@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
@@ -72,7 +73,8 @@ fun Checkbox(
                             true
                         } else false
                     },
-                textStyle = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.light)
+                textStyle = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.light),
+                cursorBrush = SolidColor(MaterialTheme.colors.light)
             )
         }
     }

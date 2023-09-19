@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -93,7 +94,8 @@ fun Task(
 
                                 onValueChange(task)
                             },
-                            textStyle = MaterialTheme.typography.h3.copy(color = MaterialTheme.colors.light)
+                            textStyle = MaterialTheme.typography.h3.copy(color = MaterialTheme.colors.light),
+                            cursorBrush = SolidColor(MaterialTheme.colors.light),
                         )
                     }
                     Icon(

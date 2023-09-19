@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -148,6 +149,7 @@ fun CreateBookmarkDialog(
                                 modifier = Modifier.textFieldBackground().fillMaxWidth(),
                                 singleLine = true,
                                 textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
+                                cursorBrush = SolidColor(MaterialTheme.colors.light),
                                 decorationBox = { innerTextField ->
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         if (url.isEmpty()) {
@@ -171,6 +173,7 @@ fun CreateBookmarkDialog(
                                 singleLine = true,
                                 modifier = Modifier.textFieldBackground().fillMaxWidth(),
                                 textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.light),
+                                cursorBrush = SolidColor(MaterialTheme.colors.light),
                                 decorationBox = { innerTextField ->
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         if (url.isEmpty()) {

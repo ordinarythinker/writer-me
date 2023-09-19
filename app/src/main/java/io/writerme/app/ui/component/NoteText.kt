@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import io.writerme.app.R
@@ -32,7 +33,8 @@ fun NoteText(
                 component.content = it
                 onValueChange(component)
             },
-            textStyle = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.light)
+            textStyle = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.light),
+            cursorBrush = SolidColor(MaterialTheme.colors.light)
         )
     }
 }
