@@ -131,8 +131,10 @@ fun RegistrationScreen(
             isTyping = false
             isSecondMessageVisible = true
         }
+    }
 
-        if (isLastMessageVisible) {
+    if (isLastMessageVisible) {
+        LaunchedEffect(key1 = null) {
             delay(1000)
             proceedToNextScreen()
         }

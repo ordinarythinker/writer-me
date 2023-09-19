@@ -1,34 +1,31 @@
 package io.writerme.app.data.repository
 
 import io.realm.kotlin.Realm
-import io.realm.kotlin.ext.asFlow
-import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.Settings
 import io.writerme.app.utils.Const
 import io.writerme.app.utils.getDefaultInstance
-import kotlinx.coroutines.flow.Flow
 import java.io.Closeable
 
 class SettingsRepository : Closeable {
     private val realm: Realm = Realm.getDefaultInstance()
 
-    private suspend fun _getSettings(): Settings {
+    suspend fun getSettings(): Settings {
         val result = realm.query(Settings::class, "id == $0", 0).first().find()
 
         return result
             ?: realm.write {
                 val s = Settings()
-                // TODO: remove in production
-                s.apply {
-                    fullName = "Florian Hermes"
-                    email = "florian.hermes@email.com"
-                }
                 copyToRealm(s)
             }
     }
 
-    suspend fun getSettings(): Flow<ObjectChange<Settings>> {
-        return _getSettings().asFlow()
+    suspend fun saveName(name: String) {
+        val set = getSettings()
+
+        realm.write {
+            val settings = findLatest(set)
+            settings?.fullName = name
+        }
     }
 
     suspend fun setCounter(key: String, value: Int) {

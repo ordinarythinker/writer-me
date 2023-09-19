@@ -3,6 +3,7 @@ package io.writerme.app.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.realm.kotlin.ext.asFlow
 import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.Settings
 import io.writerme.app.data.repository.SettingsRepository
@@ -34,7 +35,7 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
         addCloseable(settingsRepository)
 
         viewModelScope.launch {
-            _settingsSource = settingsRepository.getSettings()
+            _settingsSource = settingsRepository.getSettings().asFlow()
 
             _settingsSource.mapLatest {
                 it.obj?.let {  settings ->

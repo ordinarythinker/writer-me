@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -16,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
+import io.writerme.app.data.repository.SettingsRepository
 import io.writerme.app.ui.navigation.*
 import io.writerme.app.ui.screen.BookmarksScreen
 import io.writerme.app.ui.screen.GreetingScreen
@@ -28,7 +30,9 @@ import io.writerme.app.utils.Const
 import io.writerme.app.viewmodel.BookmarksViewModel
 import io.writerme.app.viewmodel.HomeViewModel
 import io.writerme.app.viewmodel.NoteViewModel
+import io.writerme.app.viewmodel.RegistrationViewModel
 import io.writerme.app.viewmodel.SettingsViewModel
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -55,9 +59,21 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    var startingRoute: String = GreetingScreen.route
+
+                    LaunchedEffect(key1 = null) {
+                        launch {
+                            val settingsRepository = SettingsRepository()
+                            if (settingsRepository.getSettings().fullName.isNotEmpty()) {
+                                startingRoute = HomeScreen.route
+                            }
+                            settingsRepository.close()
+                        }
+                    }
+
                     NavHost(
                         navController = navController,
-                        startDestination = HomeScreen.route
+                        startDestination = startingRoute
                     ) {
                         composable(GreetingScreen.route) {
                             GreetingScreen {
@@ -66,10 +82,10 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(RegistrationScreen.route) {
+                            val registrationViewModel = hiltViewModel<RegistrationViewModel>()
+
                             RegistrationScreen(
-                                saveName = {
-                                    // TODO
-                                },
+                                saveName = registrationViewModel::saveName,
                                 proceedToNextScreen = { navController.navigate(HomeScreen.route) }
                             )
                         }

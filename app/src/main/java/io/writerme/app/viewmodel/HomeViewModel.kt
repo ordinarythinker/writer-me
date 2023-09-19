@@ -3,6 +3,7 @@ package io.writerme.app.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.realm.kotlin.ext.asFlow
 import io.realm.kotlin.notifications.ObjectChange
 import io.realm.kotlin.notifications.ResultsChange
 import io.writerme.app.data.model.Note
@@ -43,7 +44,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
         viewModelScope.launch {
 
-            settingsFlow = settingsRepository.getSettings()
+            settingsFlow = settingsRepository.getSettings().asFlow()
 
             settingsFlow.mapLatest {
                 val current = _homeStateFlow.value
