@@ -346,13 +346,28 @@ fun NoteScreen(
 
                             title?.let {
                                 BasicTextField(
-                                    value = title.title.ifEmpty { stringResource(id = R.string.type_title) },
+                                    value = title.title,
                                     onValueChange = onTitleChange,
                                     textStyle = MaterialTheme.typography.h1.copy(color = MaterialTheme.colors.light),
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(bottom = dimensionResource(id = R.dimen.screen_padding_big)),
                                     cursorBrush = SolidColor(MaterialTheme.colors.light),
+                                    decorationBox = { innerTextField ->
+                                        Box(
+                                            modifier = Modifier.fillMaxSize(),
+                                            contentAlignment = Alignment.CenterStart
+                                        ) {
+                                            if (title.title.isEmpty()) {
+                                                Text(
+                                                    text = stringResource(id = R.string.type_title),
+                                                    style = MaterialTheme.typography.body1,
+                                                    color = MaterialTheme.colors.light
+                                                )
+                                            }
+                                            innerTextField()
+                                        }
+                                    },
                                 )
                             }
                         }
@@ -381,7 +396,7 @@ fun NoteScreen(
                                 )
                             }
 
-                            val text = title?.title ?: stringResource(id = R.string.type_title)
+                            val text = title?.title ?: ""
                             BasicTextField(
                                 value = text,
                                 onValueChange = onTitleChange,
@@ -389,7 +404,22 @@ fun NoteScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(start = padding),
-                                cursorBrush = SolidColor(MaterialTheme.colors.light)
+                                cursorBrush = SolidColor(MaterialTheme.colors.light),
+                                decorationBox = { innerTextField ->
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.CenterStart
+                                    ) {
+                                        if (title?.title == null || title.title.isEmpty()) {
+                                            Text(
+                                                text = stringResource(id = R.string.type_title),
+                                                style = MaterialTheme.typography.body1,
+                                                color = MaterialTheme.colors.light
+                                            )
+                                        }
+                                        innerTextField()
+                                    }
+                                }
                             )
                         }
                     }

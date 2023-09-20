@@ -93,4 +93,5 @@
     <string name="saving">Thanks!\nJust a moment, I\'m saving the data</string>
     <string name="type_title">Type the title here...</string>
     <string name="type_your_note_here">Type your note here...</string>
+    <string name="sorry_pending">Sorry, this feature is pending</string>
 </resources>

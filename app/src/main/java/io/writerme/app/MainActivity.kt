@@ -4,12 +4,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -72,6 +74,7 @@ class MainActivity : ComponentActivity() {
                             route
                         }
                     }
+                    val context = LocalContext.current
 
                     NavHost(
                         navController = navController,
@@ -99,7 +102,9 @@ class MainActivity : ComponentActivity() {
                                 stateFlow = homeViewModel.homeStateFlow,
                                 toggleSearchMode = homeViewModel::toggleSearchMode,
                                 openTasksScreen = {
-                                    navController.navigate(TasksScreen.route)
+                                    //navController.navigate(TasksScreen.route)
+
+                                    Toast.makeText(context, R.string.sorry_pending, Toast.LENGTH_LONG).show()
                                 },
                                 openBookmarksScreen = {
                                     navController.navigate(BookmarksScreen.route)
