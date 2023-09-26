@@ -47,6 +47,8 @@ class NoteViewModel @Inject constructor(
     private val _noteState: MutableStateFlow<NoteState> = MutableStateFlow(NoteState.empty())
     val noteState: StateFlow<NoteState> = _noteState
 
+    // TODO: NOTHING IS UPDATED ON USER SCREEN!!!!!!!!!!
+
     init {
         addCloseable(noteRepository)
 
@@ -61,7 +63,7 @@ class NoteViewModel @Inject constructor(
 
             _noteSource.mapLatest {
                 it.obj?.let { note ->
-                    Log.i("NoteScreen", "note updated")
+                    Log.i("NoteScreen", "note's updated")
                     _noteState.emit(_noteState.value.copy(note = note))
                 }
             }.stateIn(viewModelScope)
@@ -69,7 +71,7 @@ class NoteViewModel @Inject constructor(
 
         saveFlow.debounce(300)
             .onEach { component ->
-                Log.i("NoteScreen", "text updated updated")
+                Log.i("NoteScreen", "text's updated")
                 pendingUpdates.remove(component.id)
                 noteRepository.saveComponent(component)
             }.launchIn(viewModelScope)
