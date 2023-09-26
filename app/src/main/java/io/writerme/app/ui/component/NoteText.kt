@@ -1,14 +1,20 @@
 package io.writerme.app.ui.component
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import io.writerme.app.R
 import io.writerme.app.data.model.Component
@@ -20,6 +26,9 @@ import io.writerme.app.ui.theme.light
 fun NoteText(
     component: Component,
     onValueChange: (Component) -> Unit,
+    placeholderResource : Int = R.string.type_your_note_here,
+    typography: TextStyle = MaterialTheme.typography.subtitle1,
+    modifier: Modifier = Modifier
 ) {
     var localText by remember {
         mutableStateOf(component.content)
@@ -27,14 +36,29 @@ fun NoteText(
 
     if (component.type == ComponentType.Text) {
         BasicTextField(
-            value = localText.ifEmpty { stringResource(id = R.string.type_your_note_here) },
+            value = localText,
             onValueChange = {
                 localText = it
-                component.content = it
-                onValueChange(component)
+                onValueChange(component.copy(content = it))
             },
-            textStyle = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.light),
-            cursorBrush = SolidColor(MaterialTheme.colors.light)
+            modifier = modifier,
+            textStyle = typography.copy(color = MaterialTheme.colors.light),
+            cursorBrush = SolidColor(MaterialTheme.colors.light),
+            decorationBox = { innerTextField ->
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    if (localText.isEmpty()) {
+                        Text(
+                            text = stringResource(id = placeholderResource),
+                            style = typography,
+                            color = MaterialTheme.colors.light
+                        )
+                    }
+                    innerTextField()
+                }
+            },
         )
     }
 }

@@ -1,5 +1,6 @@
 package io.writerme.app.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -52,18 +53,15 @@ class NoteViewModel @Inject constructor(
         viewModelScope.launch {
             val id: String? = savedState[NoteScreen.NOTE_PARAM]
 
-            _noteSource = if (id == null) {
-                noteRepository.createNewNote()
-            } else {
-                val noteId = id.toLongOrNull()
+            val noteId = id?.toLongOrNull()
 
-                if (noteId != null) {
-                    noteRepository.getNote(noteId)
-                } else noteRepository.createNewNote()
-            }
+            _noteSource = if (noteId != null) {
+                noteRepository.getNote(noteId)
+            } else noteRepository.createNewNote()
 
             _noteSource.mapLatest {
                 it.obj?.let { note ->
+                    Log.i("NoteScreen", "note updated")
                     _noteState.emit(_noteState.value.copy(note = note))
                 }
             }.stateIn(viewModelScope)
@@ -71,6 +69,7 @@ class NoteViewModel @Inject constructor(
 
         saveFlow.debounce(300)
             .onEach { component ->
+                Log.i("NoteScreen", "text updated updated")
                 pendingUpdates.remove(component.id)
                 noteRepository.saveComponent(component)
             }.launchIn(viewModelScope)
@@ -90,8 +89,10 @@ class NoteViewModel @Inject constructor(
     }
 
     fun onComponentChange(component: Component) {
-        pendingUpdates[component.id] = component
-        saveFlow.tryEmit(component)
+        viewModelScope.launch {
+            pendingUpdates[component.id] = component
+            saveFlow.emit(component)
+        }
     }
 
     fun addNewCheckBox(position: Int) {
@@ -135,7 +136,7 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun addCoverImage(uri: String) {
+    fun updateCoverImage(uri: String) {
         viewModelScope.launch {
             val noteId = _noteState.value.note.id
             val component = Component().apply {
@@ -145,14 +146,6 @@ class NoteViewModel @Inject constructor(
             }
 
             noteRepository.updateNoteCoverImage(noteId, component)
-        }
-    }
-
-    fun onTitleChange(text: String) {
-        viewModelScope.launch {
-            val titleComponent = Component(_noteState.value.note, text)
-
-            noteRepository.updateNoteTitle(titleComponent.noteId, titleComponent)
         }
     }
 

@@ -127,6 +127,14 @@ open class Component(): RealmObject {
             this.type = type
         }
     }
+
+    companion object {
+        fun emptyText() : Component {
+            return Component().apply {
+                this.type = ComponentType.Text
+            }
+        }
+    }
 }
 
 enum class ComponentType(val value: String) {

@@ -25,7 +25,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -46,7 +45,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
@@ -89,8 +87,7 @@ fun NoteScreen(
     noteState: StateFlow<NoteState>,
     toggleHistoryMode: () -> Unit,
     toggleTopBarDropdownVisibility: () -> Unit,
-    addCoverImage: (String) -> Unit,
-    onTitleChange: (String) -> Unit,
+    updateCoverImage: (String) -> Unit,
     showHashtagBar: (Boolean) -> Unit,
     addNewTag: (String) -> Unit,
     deleteTag: (String) -> Unit,
@@ -124,7 +121,7 @@ fun NoteScreen(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             Log.i("NoteScreen", "image received: $uri")
-            addCoverImage(uri.toString())
+            updateCoverImage(uri.toString())
         }
     )
 
@@ -331,7 +328,7 @@ fun NoteScreen(
                 item {
                     val title = note.title?.newest()
 
-                    if (note.cover!= null && note.cover!!.isNotEmpty()) {
+                    if (note.cover != null && note.cover!!.isNotEmpty()) {
                         val image = note.cover!!.newest()
 
                         Column(
@@ -346,32 +343,15 @@ fun NoteScreen(
                                 )
                             }
 
-                            title?.let {
-                                BasicTextField(
-                                    value = title.title,
-                                    onValueChange = onTitleChange,
-                                    textStyle = MaterialTheme.typography.h1.copy(color = MaterialTheme.colors.light),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(bottom = dimensionResource(id = R.dimen.screen_padding_big)),
-                                    cursorBrush = SolidColor(MaterialTheme.colors.light),
-                                    decorationBox = { innerTextField ->
-                                        Box(
-                                            modifier = Modifier.fillMaxSize(),
-                                            contentAlignment = Alignment.CenterStart
-                                        ) {
-                                            if (title.title.isEmpty()) {
-                                                Text(
-                                                    text = stringResource(id = R.string.type_title),
-                                                    style = MaterialTheme.typography.body1,
-                                                    color = MaterialTheme.colors.light
-                                                )
-                                            }
-                                            innerTextField()
-                                        }
-                                    },
-                                )
-                            }
+                            NoteText(
+                                component = title ?: Component.emptyText(),
+                                onValueChange = onComponentChange,
+                                typography = MaterialTheme.typography.h1,
+                                placeholderResource = R.string.type_title,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = dimensionResource(id = R.dimen.screen_padding_big))
+                            )
                         }
                     } else {
                         val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
@@ -398,30 +378,14 @@ fun NoteScreen(
                                 )
                             }
 
-                            val text = title?.title ?: ""
-                            BasicTextField(
-                                value = text,
-                                onValueChange = onTitleChange,
-                                textStyle = MaterialTheme.typography.h1.copy(color = MaterialTheme.colors.light),
+                            NoteText(
+                                component = title ?: Component.emptyText(),
+                                onValueChange = onComponentChange,
+                                typography = MaterialTheme.typography.h1,
+                                placeholderResource = R.string.type_title,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(start = padding),
-                                cursorBrush = SolidColor(MaterialTheme.colors.light),
-                                decorationBox = { innerTextField ->
-                                    Box(
-                                        modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.CenterStart
-                                    ) {
-                                        if (title?.title == null || title.title.isEmpty()) {
-                                            Text(
-                                                text = stringResource(id = R.string.type_title),
-                                                style = MaterialTheme.typography.body1,
-                                                color = MaterialTheme.colors.light
-                                            )
-                                        }
-                                        innerTextField()
-                                    }
-                                }
+                                    .padding(start = padding)
                             )
                         }
                     }
@@ -710,7 +674,7 @@ fun NoteScreenPreview() {
     val state = MutableStateFlow(noteState)
 
     WriterMeTheme {
-        NoteScreen(noteState = state, {}, {}, {}, {}, {}, {}, {},
+        NoteScreen(noteState = state, {}, {}, {}, {}, {}, {},
             { _, _ ->}, {}, {}, { _ ->}, {}, { _ ->}, {}, {}, {}, {}, {})
     }
 }

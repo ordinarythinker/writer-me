@@ -25,10 +25,13 @@ class NoteRepository: Closeable {
             val id = System.currentTimeMillis()
 
             val titleHistory = copyToRealm(History().apply { this.id = id + 1})
-            val coverHistory = copyToRealm(History().apply { this.id = id + 2 })
+            val titleComponent = Component(note, "").apply { this.id = id + 2 }
+            titleHistory.push(copyToRealm(titleComponent))
 
-            val textHistory = copyToRealm(History().apply { this.id = id + 3 })
-            val textComponent = Component(note, "").apply { this.id = id + 4 }
+            val coverHistory = copyToRealm(History().apply { this.id = id + 3 })
+
+            val textHistory = copyToRealm(History().apply { this.id = id + 4 })
+            val textComponent = Component(note, "").apply { this.id = id + 5 }
             textHistory.push(copyToRealm(textComponent))
 
             note.title = titleHistory
@@ -62,22 +65,9 @@ class NoteRepository: Closeable {
 
                 val toDelete = it.push(saved)
                 toDelete?.let { obj -> delete(obj) }
+
+                copyToRealm(it)
                 saved
-            }
-        }
-    }
-
-    suspend fun updateNoteTitle(noteId: Long, title: Component) {
-        realm.write {
-            val note = this.query(Note::class, "id == $0", noteId).first().find()
-
-            note?.let {
-
-                if (note.title == null) {
-                    note.title = copyToRealm(History(), UpdatePolicy.ALL)
-                }
-
-                note.title!!.push(copyToRealm(title, UpdatePolicy.ALL))
             }
         }
     }

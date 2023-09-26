@@ -91,7 +91,7 @@
     <string name="hi">Hi and welcome!\nMy name is Writer.Me and I\'m ready to become your personal bank of ideas!</string>
     <string name="introduce">Would you mind telling me your name?</string>
     <string name="saving">Thanks!\nJust a moment, I\'m saving the data</string>
-    <string name="type_title">Type the title here...</string>
+    <string name="type_title">Title...</string>
     <string name="type_your_note_here">Type your note here...</string>
     <string name="sorry_pending">Sorry, this feature is pending</string>
 </resources>
