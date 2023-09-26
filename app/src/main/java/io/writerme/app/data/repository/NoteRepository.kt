@@ -1,5 +1,6 @@
 package io.writerme.app.data.repository
 
+import android.util.Log
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.asFlow
@@ -72,16 +73,24 @@ class NoteRepository: Closeable {
         }
     }
 
-    suspend fun updateNoteCoverImage(noteId: Long, cover: Component) {
+    suspend fun updateNoteCoverImage(noteId: Long, uri: String) {
         realm.write {
+            Log.i("NoteRepository", "updateNoteCoverImage")
             val note = this.query(Note::class, "id == $0", noteId).first().find()
+
+            val component = Component().apply {
+                this.noteId = noteId
+                this.imageUrl = uri
+                this.type = ComponentType.Image
+            }
+            val image = copyToRealm(component, UpdatePolicy.ALL)
 
             note?.let {
                 if (note.cover == null) {
                     note.cover = copyToRealm(History(), UpdatePolicy.ALL)
                 }
 
-                note.cover!!.push(copyToRealm(cover, UpdatePolicy.ALL))
+                note.cover!!.push(image)
             }
         }
     }

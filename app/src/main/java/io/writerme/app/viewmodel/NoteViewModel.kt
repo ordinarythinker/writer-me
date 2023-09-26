@@ -62,9 +62,9 @@ class NoteViewModel @Inject constructor(
             } else noteRepository.createNewNote()
 
             _noteSource.mapLatest {
-                it.obj?.let { note ->
+                it.obj?.let { updatedNote ->
                     Log.i("NoteScreen", "note's updated")
-                    _noteState.emit(_noteState.value.copy(note = note))
+                    _noteState.emit(_noteState.value.copy(note = updatedNote))
                 }
             }.stateIn(viewModelScope)
         }
@@ -141,13 +141,8 @@ class NoteViewModel @Inject constructor(
     fun updateCoverImage(uri: String) {
         viewModelScope.launch {
             val noteId = _noteState.value.note.id
-            val component = Component().apply {
-                this.noteId = noteId
-                this.imageUrl = uri
-                this.type = ComponentType.Image
-            }
 
-            noteRepository.updateNoteCoverImage(noteId, component)
+            noteRepository.updateNoteCoverImage(noteId, uri)
         }
     }
 

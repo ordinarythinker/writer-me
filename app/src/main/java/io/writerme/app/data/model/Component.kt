@@ -101,7 +101,7 @@ open class Component(): RealmObject {
     }
 
     fun copy(
-        id: Long = System.currentTimeMillis(),
+        id: Long = this.id,
         noteId: Long = this.noteId,
         content: String = this.content,
         isChecked: Boolean = this.isChecked,
