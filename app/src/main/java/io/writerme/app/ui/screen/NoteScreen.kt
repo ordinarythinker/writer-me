@@ -1,6 +1,7 @@
 package io.writerme.app.ui.screen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -122,6 +123,7 @@ fun NoteScreen(
     val addCoverImagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
+            Log.i("NoteScreen", "image received: $uri")
             addCoverImage(uri.toString())
         }
     )

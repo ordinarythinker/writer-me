@@ -34,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import io.realm.kotlin.ext.realmListOf
 import io.writerme.app.R
 import io.writerme.app.data.model.Component
@@ -70,60 +71,58 @@ fun Note(
                     .wrapContentHeight()
                     .background(Color.Transparent)
             ) {
-                androidx.compose.foundation.Image(
-                    painter = painterResource(id = R.drawable.travel),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    contentScale = ContentScale.Crop
-                )
-
-                /*AsyncImage(
+                AsyncImage(
                     model = note.cover!!.newest()!!.imageUrl,
                     contentDescription = note.cover!!.newest()!!.content,
                     modifier = Modifier
                         .fillMaxWidth(),
                     contentScale = ContentScale.Crop
-                )*/
+                )
 
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomStart)
-                    .padding(12.dp, 0.dp, 12.dp, 12.dp)
-                    .clip(RoundedCornerShape(dimensionResource(id = R.dimen.big_radius)))
+                if (
+                    note.title != null
+                        && note.title!!.newest() != null
+                        && note.title!!.newest()!!.title.isNotEmpty()
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .matchParentSize()
-                            .background(MaterialTheme.colors.lightGrey)
-                            .blur(60.dp)
-                    )
-
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(padding, 4.dp)
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomStart)
+                        .padding(12.dp, 0.dp, 12.dp, 12.dp)
+                        .clip(RoundedCornerShape(dimensionResource(id = R.dimen.big_radius)))
                     ) {
-                        note.title?.newest()?.let { component ->
-                            Text(
-                                text = component.content,
-                                style = MaterialTheme.typography.h5,
-                                modifier = Modifier.fillMaxWidth(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
+                        Box(
+                            modifier = Modifier
+                                .matchParentSize()
+                                .background(MaterialTheme.colors.lightGrey)
+                                .blur(60.dp)
+                        )
 
-                        if (note.content.isNotEmpty() && note.content[0].isNotEmpty()
-                            && note.content[0].newest()!!.type == ComponentType.Text) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(padding, 4.dp)
+                        ) {
+                            note.title?.newest()?.let { component ->
+                                Text(
+                                    text = component.content,
+                                    style = MaterialTheme.typography.h5,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
 
-                            Text(
-                                text = note.content[0].newest()!!.content,
-                                style = MaterialTheme.typography.body2,
-                                modifier = Modifier.fillMaxWidth(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
+                            if (note.content.isNotEmpty() && note.content[0].isNotEmpty()
+                                && note.content[0].newest()!!.type == ComponentType.Text) {
+
+                                Text(
+                                    text = note.content[0].newest()!!.content,
+                                    style = MaterialTheme.typography.body2,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
                         }
                     }
                 }

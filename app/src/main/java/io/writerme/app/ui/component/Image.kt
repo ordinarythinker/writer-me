@@ -30,15 +30,8 @@ fun Image(component: Component, modifier: Modifier = Modifier) {
                 .shadow(dimensionResource(id = R.dimen.shadow), shape),
             backgroundColor = Color.White
         ) {
-            /*androidx.compose.foundation.Image(
-                painter = painterResource(id = R.drawable.travel),
-                contentDescription = "",
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.Crop
-            )*/
-
             AsyncImage(
-                model = component.url,
+                model = component.imageUrl,
                 contentDescription = component.content,
                 modifier = Modifier.fillMaxWidth(),
                 contentScale = ContentScale.Crop
