@@ -35,7 +35,9 @@ fun NoteText(
         mutableStateOf("")
     }
 
-    localText = component.content
+    if (component.content.isNotEmpty()) {
+        localText = component.content
+    }
 
     Log.d("NoteText", localText)
 

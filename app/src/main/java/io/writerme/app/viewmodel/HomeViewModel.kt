@@ -110,6 +110,12 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun deleteNote(noteId: Long) {
+        viewModelScope.launch {
+            notesRepository.deleteNote(noteId)
+        }
+    }
+
     fun onTabChosen(tab: HomeFilterTab) {
         viewModelScope.launch {
             _homeStateFlow.emit(

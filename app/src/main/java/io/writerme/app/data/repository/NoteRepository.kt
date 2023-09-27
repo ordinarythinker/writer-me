@@ -73,9 +73,9 @@ class NoteRepository: Closeable {
         }
     }
 
-    suspend fun updateNoteCoverImage(noteId: Long, uri: String) {
-        realm.write {
-            Log.i("NoteRepository", "updateNoteCoverImage")
+    fun updateNoteCoverImage(noteId: Long, uri: String) {
+        realm.writeBlocking {
+            Log.d("NoteRepository", "updateNoteCoverImage")
             val note = this.query(Note::class, "id == $0", noteId).first().find()
 
             val component = Component().apply {
@@ -87,7 +87,10 @@ class NoteRepository: Closeable {
 
             note?.let {
                 if (note.cover == null) {
-                    note.cover = copyToRealm(History(), UpdatePolicy.ALL)
+                    note.cover = copyToRealm(
+                        History().apply { this.id = component.id+1 },
+                        UpdatePolicy.ALL
+                    )
                 }
 
                 note.cover!!.push(image)
@@ -197,6 +200,13 @@ class NoteRepository: Closeable {
                     it.isImportant = !it.isImportant
                 }
             }
+        }
+    }
+
+    suspend fun deleteNote(noteId: Long) {
+        realm.write {
+            val note = this.query(Note::class, "id == $0", noteId).first().find()
+            note?.let { delete(it) }
         }
     }
 

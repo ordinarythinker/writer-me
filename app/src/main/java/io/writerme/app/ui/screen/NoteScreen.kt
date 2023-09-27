@@ -340,6 +340,9 @@ fun NoteScreen(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(bottom = padding)
+                                        .clickable {
+                                            addCoverImagePicker.launch("image/*")
+                                        }
                                 )
                             }
 

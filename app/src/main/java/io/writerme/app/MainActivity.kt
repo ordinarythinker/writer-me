@@ -120,7 +120,8 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onTabChosen = homeViewModel::onTabChosen,
                                 toggleNoteDropdown = homeViewModel::toggleNoteDropdown,
-                                toggleImportance = homeViewModel::toggleImportance
+                                toggleImportance = homeViewModel::toggleImportance,
+                                deleteNote = homeViewModel::deleteNote
                             )
                         }
                         composable(

@@ -38,6 +38,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -84,7 +86,8 @@ fun HomeScreen(
     createNote: () -> Unit,
     onTabChosen: (HomeFilterTab) -> Unit,
     toggleNoteDropdown: (Int) -> Unit,
-    toggleImportance: (Long) -> Unit
+    toggleImportance: (Long) -> Unit,
+    deleteNote: (Long) -> Unit
 ) {
     val state = stateFlow.collectAsStateWithLifecycle()
 
@@ -348,6 +351,29 @@ fun HomeScreen(
                                                 )
                                             }
                                         }
+
+                                        DropdownMenuItem(onClick = {
+                                            deleteNote(item.id)
+                                            toggleNoteDropdown(index)
+                                        }) {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Text(
+                                                    text = stringResource(id = R.string.delete),
+                                                    style  = MaterialTheme.typography.body1
+                                                )
+
+                                                Icon(
+                                                    imageVector = Icons.Default.Delete,
+                                                    contentDescription = stringResource(id = R.string.delete),
+                                                    modifier = Modifier.size(20.dp),
+                                                    tint = Color.DarkGray
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -455,6 +481,6 @@ fun HomeScreenPreview() {
     val flow = MutableStateFlow(main)
 
     WriterMeTheme {
-        HomeScreen(stateFlow = flow, {}, {}, {}, {}, {}, {}, {}, {}, {})
+        HomeScreen(stateFlow = flow, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})
     }
 }

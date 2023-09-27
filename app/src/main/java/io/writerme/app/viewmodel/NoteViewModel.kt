@@ -63,8 +63,6 @@ class NoteViewModel @Inject constructor(
                 noteRepository.getNote(noteId)
             } else noteRepository.createNewNote()
 
-
-
             _noteSource.mapLatest {
                 Log.d(TAG, "change is mapped")
                 it.obj?.let { updatedNote ->
@@ -76,7 +74,7 @@ class NoteViewModel @Inject constructor(
 
         saveFlow.debounce(300)
             .onEach { component ->
-                Log.d(TAG, "text's updated")
+                Log.d(TAG, "text is mapped")
                 pendingUpdates.remove(component.id)
                 noteRepository.saveComponent(component)
             }.launchIn(viewModelScope)
