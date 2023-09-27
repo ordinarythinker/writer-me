@@ -94,9 +94,11 @@ class NoteViewModel @Inject constructor(
     }
 
     fun onComponentChange(component: Component) {
-        viewModelScope.launch {
-            pendingUpdates[component.id] = component
-            saveFlow.emit(component)
+        if (component.noteId > 0) {
+            viewModelScope.launch {
+                pendingUpdates[component.id] = component
+                saveFlow.emit(component)
+            }
         }
     }
 
