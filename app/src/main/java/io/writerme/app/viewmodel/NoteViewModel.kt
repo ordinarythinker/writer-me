@@ -55,15 +55,20 @@ class NoteViewModel @Inject constructor(
         viewModelScope.launch {
             val id: String? = savedState[NoteScreen.NOTE_PARAM]
 
+            Log.d(TAG, "id saved state: $id")
+
             val noteId = id?.toLongOrNull()
 
             _noteSource = if (noteId != null) {
                 noteRepository.getNote(noteId)
             } else noteRepository.createNewNote()
 
+
+
             _noteSource.mapLatest {
+                Log.d(TAG, "change is mapped")
                 it.obj?.let { updatedNote ->
-                    Log.i("NoteScreen", "note's updated")
+                    Log.d(TAG, "note's updated")
                     _noteState.emit(_noteState.value.copy(note = updatedNote))
                 }
             }.stateIn(viewModelScope)
@@ -71,7 +76,7 @@ class NoteViewModel @Inject constructor(
 
         saveFlow.debounce(300)
             .onEach { component ->
-                Log.i("NoteScreen", "text's updated")
+                Log.d(TAG, "text's updated")
                 pendingUpdates.remove(component.id)
                 noteRepository.saveComponent(component)
             }.launchIn(viewModelScope)
