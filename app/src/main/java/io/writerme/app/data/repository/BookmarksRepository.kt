@@ -7,7 +7,7 @@ import io.writerme.app.data.model.ComponentType
 import io.writerme.app.utils.getDefaultInstance
 import java.io.Closeable
 
-class BookmarksRepository: Closeable {
+class BookmarksRepository: Repository(), Closeable {
 
     private val realm: Realm = Realm.getDefaultInstance()
 

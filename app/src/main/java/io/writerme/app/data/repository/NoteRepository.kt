@@ -17,7 +17,7 @@ import io.writerme.app.utils.getLast
 import kotlinx.coroutines.flow.Flow
 import java.io.Closeable
 
-class NoteRepository: Closeable {
+class NoteRepository: Repository(), Closeable {
     private val realm: Realm = Realm.getDefaultInstance()
 
     suspend fun createNewNote() : Flow<ObjectChange<Note>> {

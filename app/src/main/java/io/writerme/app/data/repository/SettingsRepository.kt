@@ -6,7 +6,7 @@ import io.writerme.app.utils.Const
 import io.writerme.app.utils.getDefaultInstance
 import java.io.Closeable
 
-class SettingsRepository : Closeable {
+class SettingsRepository : Repository(), Closeable {
     private val realm: Realm = Realm.getDefaultInstance()
 
     suspend fun getSettings(): Settings {

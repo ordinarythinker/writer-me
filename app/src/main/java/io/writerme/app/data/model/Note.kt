@@ -31,10 +31,4 @@ open class Note: RealmObject {
     var changeTime: Long = System.currentTimeMillis()
 
     var tags: RealmList<String> = realmListOf()
-
-    fun setCover(imageComponent: Component): Component? {
-        changeTime = imageComponent.changeTime
-
-        return cover?.push(imageComponent)
-    }
 }
