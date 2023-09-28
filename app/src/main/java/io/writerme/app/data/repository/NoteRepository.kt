@@ -12,6 +12,7 @@ import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
+import io.writerme.app.utils.deleteNote
 import io.writerme.app.utils.getDefaultInstance
 import io.writerme.app.utils.getLast
 import kotlinx.coroutines.flow.Flow
@@ -208,7 +209,9 @@ class NoteRepository: Repository(), Closeable {
     suspend fun deleteNote(noteId: Long) {
         realm.write {
             val note = this.query(Note::class, "id == $0", noteId).first().find()
-            note?.let { delete(it) }
+            note?.let {
+                deleteNote(it)
+            }
         }
     }
 
