@@ -44,7 +44,7 @@ class ImageLoadingWorker(
 
                         if (uri != null) {
                             realm.write {
-                                findLatest(component)?.imageUrl = uri.toString()
+                                findLatest(component)?.mediaUrl = uri.toString()
                             }
                         }
                     }

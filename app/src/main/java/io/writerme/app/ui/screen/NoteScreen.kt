@@ -638,7 +638,7 @@ fun NoteScreenPreview() {
 
     val image = Component().apply {
         type = ComponentType.Image
-        imageUrl = ""
+        mediaUrl = ""
     }
 
     val link = Component().apply {

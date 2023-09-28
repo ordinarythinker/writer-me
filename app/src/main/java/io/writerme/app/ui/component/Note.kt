@@ -72,7 +72,7 @@ fun Note(
                     .background(Color.Transparent)
             ) {
                 AsyncImage(
-                    model = note.cover!!.newest()!!.imageUrl,
+                    model = note.cover!!.newest()!!.mediaUrl,
                     contentDescription = note.cover!!.newest()!!.content,
                     modifier = Modifier
                         .fillMaxWidth(),

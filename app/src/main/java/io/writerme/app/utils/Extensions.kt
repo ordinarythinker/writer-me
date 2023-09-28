@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,6 +20,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
@@ -26,6 +28,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import io.realm.kotlin.MutableRealm
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.types.RealmList
@@ -206,12 +209,49 @@ fun HomeFilterTab.displayName() : String {
 
 @Composable
 fun Modifier.textFieldBackground() =
-    this.clip(RoundedCornerShape(dimensionResource(id = R.dimen.big_radius)))
-    .border(
-        dimensionResource(id = R.dimen.field_border_width),
-        MaterialTheme.colors.strokeLight,
-        RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
-    )
-    .background(MaterialTheme.colors.fieldDark)
-    .padding(dimensionResource(id = R.dimen.screen_padding), 0.dp)
-    .height(40.dp)
+    this
+        .clip(RoundedCornerShape(dimensionResource(id = R.dimen.big_radius)))
+        .border(
+            dimensionResource(id = R.dimen.field_border_width),
+            MaterialTheme.colors.strokeLight,
+            RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
+        )
+        .background(MaterialTheme.colors.fieldDark)
+        .padding(dimensionResource(id = R.dimen.screen_padding), 0.dp)
+        .height(40.dp)
+
+fun MutableRealm.deleteComponent(component: Component) {
+    when (component.type) {
+        ComponentType.Voice,
+        ComponentType.Link,
+        ComponentType.Video, ComponentType.Image -> {
+            component.mediaUrl?.let { url ->
+                if (url.isNotEmpty()) {
+                    try {
+                        val uri = Uri.parse(url)
+                        val file = uri.toFile()
+
+                        if (file.exists()) file.delete()
+                    } catch (e: Exception) {
+                        Log.e("deleteComponent", "Component deletion is failed", e)
+                    }
+                }
+            }
+        }
+        else -> {}
+    }
+}
+
+fun MutableRealm.deleteHistory(h: History?) {
+    h?.let { history ->
+        history.changes.forEach { deleteComponent(it) }
+        delete(history)
+    }
+}
+
+fun MutableRealm.deleteNote(note: Note) {
+    deleteHistory(note.title)
+    deleteHistory(note.cover)
+    note.content.forEach { deleteHistory(it) }
+    delete(note)
+}

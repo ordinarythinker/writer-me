@@ -28,7 +28,7 @@ open class Component(): RealmObject {
 
     var title: String = ""
 
-    var imageUrl: String? = null
+    var mediaUrl: String? = null
 
     private var _time: Long = 0
     var time: Date
@@ -96,7 +96,7 @@ open class Component(): RealmObject {
         this.url = url
         this.title = title
         description?.let { this.content = it }
-        this.imageUrl = imageUrl
+        this.mediaUrl = imageUrl
         this.type = ComponentType.Link
     }
 
@@ -107,7 +107,7 @@ open class Component(): RealmObject {
         isChecked: Boolean = this.isChecked,
         url: String = this.url,
         title: String = this.title,
-        imageUrl: String? = this.imageUrl,
+        mediaUrl: String? = this.mediaUrl,
         time: Date = this.time,
         isImage: Boolean = this.isImage,
         changeTime: Long = this.changeTime,
@@ -120,7 +120,7 @@ open class Component(): RealmObject {
             this.isChecked = isChecked
             this.url = url
             this.title = title
-            this.imageUrl = imageUrl
+            this.mediaUrl = mediaUrl
             this.time = time
             this.isImage = isImage
             this.changeTime = changeTime

@@ -54,7 +54,7 @@ fun Link(link: Component, onClick: (Component) -> Unit, modifier: Modifier = Mod
                 )*/
 
                 AsyncImage(
-                    model = link.imageUrl,
+                    model = link.mediaUrl,
                     contentDescription = link.content,
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -96,7 +96,7 @@ fun LinkPreview() {
         type = ComponentType.Link
         title = "Top Travel Guide Top Travel Guide Top Travel Guide Top Travel Guide"
         url = "https://writerme.io"
-        imageUrl = "file:///android_asset/tropical_1.jpg"
+        mediaUrl = "file:///android_asset/tropical_1.jpg"
     }
 
     val modifier = Modifier

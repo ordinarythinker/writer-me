@@ -121,7 +121,7 @@ class NoteViewModel @Inject constructor(
         viewModelScope.launch {
             val component = Component().apply {
                 this.noteId = _noteState.value.note.id
-                this.imageUrl = url
+                this.mediaUrl = url
                 this.type = ComponentType.Image
             }
 

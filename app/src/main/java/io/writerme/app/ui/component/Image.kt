@@ -31,7 +31,7 @@ fun Image(component: Component, modifier: Modifier = Modifier) {
             backgroundColor = Color.White
         ) {
             AsyncImage(
-                model = component.imageUrl,
+                model = component.mediaUrl,
                 contentDescription = component.content,
                 modifier = Modifier.fillMaxWidth(),
                 contentScale = ContentScale.Crop

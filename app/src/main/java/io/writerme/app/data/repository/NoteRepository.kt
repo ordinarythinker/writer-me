@@ -80,7 +80,7 @@ class NoteRepository: Repository(), Closeable {
 
             val component = Component().apply {
                 this.noteId = noteId
-                this.imageUrl = uri
+                this.mediaUrl = uri
                 this.type = ComponentType.Image
             }
             val image = copyToRealm(component, UpdatePolicy.ALL)
@@ -137,10 +137,12 @@ class NoteRepository: Repository(), Closeable {
 
                         if (type == null) {
                             lastHistory.push(text)
-                        } else if (type != ComponentType.Text) {
+                        } else {
                             var history = History()
                             history = copyToRealm(history, UpdatePolicy.ALL)
                             history.push(textComponent)
+
+                            note.content.add(history)
                         }
                     }
                 }
