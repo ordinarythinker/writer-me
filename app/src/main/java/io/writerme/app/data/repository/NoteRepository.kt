@@ -24,16 +24,15 @@ class NoteRepository: Repository(), Closeable {
     suspend fun createNewNote() : Flow<ObjectChange<Note>> {
         return realm.write {
             val note = copyToRealm(Note(), UpdatePolicy.ALL)
-            val id = System.currentTimeMillis()
 
-            val titleHistory = copyToRealm(History().apply { this.id = id + 1})
-            val titleComponent = Component(note, "").apply { this.id = id + 2 }
+            val titleHistory = copyToRealm(History().apply { this.id = nextId()})
+            val titleComponent = Component(note, "").apply { this.id = nextId() }
             titleHistory.push(copyToRealm(titleComponent))
 
-            val coverHistory = copyToRealm(History().apply { this.id = id + 3 })
+            val coverHistory = copyToRealm(History().apply { this.id = nextId() })
 
-            val textHistory = copyToRealm(History().apply { this.id = id + 4 })
-            val textComponent = Component(note, "").apply { this.id = id + 5 }
+            val textHistory = copyToRealm(History().apply { this.id = nextId() })
+            val textComponent = Component(note, "").apply { this.id = nextId() }
             textHistory.push(copyToRealm(textComponent))
 
             note.title = titleHistory
