@@ -68,6 +68,10 @@ class NoteRepository: Repository(), Closeable {
                 toDelete?.let { obj -> delete(obj) }
 
                 copyToRealm(it)
+
+                val note = this.query(Note::class, "id == $0", saved.noteId).first().find()
+                note?.changeTime = System.currentTimeMillis()
+
                 saved
             }
         }
@@ -86,14 +90,15 @@ class NoteRepository: Repository(), Closeable {
             val image = copyToRealm(component, UpdatePolicy.ALL)
 
             note?.let {
-                if (note.cover == null) {
-                    note.cover = copyToRealm(
-                        History().apply { this.id = component.id+1 },
+                if (it.cover == null) {
+                    it.cover = copyToRealm(
+                        History().apply { this.id = nextId() },
                         UpdatePolicy.ALL
                     )
                 }
 
-                note.cover!!.push(image)
+                it.cover!!.push(image)
+                it.changeTime = System.currentTimeMillis()
             }
         }
     }
@@ -106,6 +111,7 @@ class NoteRepository: Repository(), Closeable {
                 if (!note.tags.contains(tag)) {
                     note.tags.add(tag)
                 }
+                it.changeTime = System.currentTimeMillis()
             }
         }
     }
@@ -113,8 +119,8 @@ class NoteRepository: Repository(), Closeable {
     suspend fun deleteTag(noteId: Long, tag: String) {
         realm.write {
             val note = this.query(Note::class, "id = $0", noteId).first().find()
-
             note?.tags?.remove(tag)
+            note?.changeTime = System.currentTimeMillis()
         }
     }
 
@@ -146,6 +152,7 @@ class NoteRepository: Repository(), Closeable {
                         }
                     }
                 }
+                it.changeTime = System.currentTimeMillis()
             }
         }
     }
@@ -173,6 +180,7 @@ class NoteRepository: Repository(), Closeable {
                         it.content.add(currentPosition + 1, history)
                     }
                 }
+                note?.changeTime = System.currentTimeMillis()
             }
 
             addTextIfNecessary(noteId)
@@ -188,6 +196,7 @@ class NoteRepository: Repository(), Closeable {
 
                 val note = this.query(Note::class, "id == $0", noteId).first().find()
                 note?.content?.add(history)
+                note?.changeTime = System.currentTimeMillis()
             }
 
             addTextIfNecessary(noteId)
@@ -200,6 +209,7 @@ class NoteRepository: Repository(), Closeable {
                 val note = this.query(Note::class, "id == $0", noteId).first().find()
                 note?.let {
                     it.isImportant = !it.isImportant
+                    it.changeTime = System.currentTimeMillis()
                 }
             }
         }

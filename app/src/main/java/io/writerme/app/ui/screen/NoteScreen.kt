@@ -121,14 +121,15 @@ fun NoteScreen(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             Log.i("NoteScreen", "image received: $uri")
-            updateCoverImage(uri.toString())
+            uri?.let { updateCoverImage(it.toString()) }
         }
     )
 
     val addImageComponentPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
-            addImageSection(uri.toString())
+            Log.i("NoteScreen", "image received: $uri")
+            uri?.let { addImageSection(it.toString()) }
         }
     )
 
