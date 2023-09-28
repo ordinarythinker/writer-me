@@ -232,6 +232,7 @@ fun MutableRealm.deleteComponent(component: Component) {
                         val file = uri.toFile()
 
                         if (file.exists()) file.delete()
+                        Log.d("deleteComponent", "file is deleted successfully")
                     } catch (e: Exception) {
                         Log.e("deleteComponent", "Component deletion is failed", e)
                     }
@@ -240,6 +241,7 @@ fun MutableRealm.deleteComponent(component: Component) {
         }
         else -> {}
     }
+    delete(component)
 }
 
 fun MutableRealm.deleteHistory(h: History?) {

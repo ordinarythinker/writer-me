@@ -1,5 +1,6 @@
 package io.writerme.app.ui.state
 
+import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
 
 data class NoteState(
@@ -12,6 +13,13 @@ data class NoteState(
     val isHistoryMode: Boolean = false
 ) {
     companion object {
-        fun empty(): NoteState = NoteState(Note())
+        fun empty(): NoteState {
+            val note = Note().apply {
+                this.title = History()
+                this.cover = History()
+            }
+
+            return NoteState(note)
+        }
     }
 }
