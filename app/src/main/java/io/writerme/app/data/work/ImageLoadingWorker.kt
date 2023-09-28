@@ -1,16 +1,13 @@
 package io.writerme.app.data.work
 
 import android.content.Context
-import androidx.core.graphics.drawable.toBitmap
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import coil.ImageLoader
-import coil.request.ImageRequest
 import io.realm.kotlin.Realm
 import io.writerme.app.data.model.Component
 import io.writerme.app.net.MetaTagScraper
+import io.writerme.app.utils.FilesUtil
 import io.writerme.app.utils.getDefaultInstance
-import io.writerme.app.utils.toFile
 
 class ImageLoadingWorker(
     private val context: Context,
@@ -32,20 +29,11 @@ class ImageLoadingWorker(
                 val imageUrl = metaTags.ogImage ?: metaTags.twitterImage
 
                 imageUrl?.let { url ->
-                    val imageLoader = ImageLoader(context)
-                    val request = ImageRequest.Builder(context)
-                        .data(url)
-                        .build()
-                    val result = imageLoader.execute(request).drawable
+                    val uri = FilesUtil(context).writeImageToFile(url)
 
-                    result?.let { drawable ->
-                        val bitmap = drawable.toBitmap()
-                        val uri = bitmap.toFile(context.filesDir)
-
-                        if (uri != null) {
-                            realm.write {
-                                findLatest(component)?.mediaUrl = uri.toString()
-                            }
+                    uri?.let {
+                        realm.write {
+                            findLatest(component)?.mediaUrl = it
                         }
                     }
                 }

@@ -77,7 +77,7 @@ class NoteRepository: Repository(), Closeable {
         }
     }
 
-    suspend fun updateNoteCoverImage(noteId: Long, uri: String) {
+    suspend fun updateNoteCoverImage(noteId: Long, uri: String?) {
         realm.write {
             Log.d("NoteRepository", "updateNoteCoverImage")
             val note = this.query(Note::class, "id == $0", noteId).first().find()

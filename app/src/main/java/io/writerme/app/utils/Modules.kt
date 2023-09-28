@@ -16,4 +16,9 @@ object ProviderModule {
     @Singleton
     fun provideWorkManager(@ApplicationContext appContext: Context): WorkManager =
         WorkManager.getInstance(appContext)
+
+    @Provides
+    @Singleton
+    fun provideFilesUtil(@ApplicationContext appContext: Context) : FilesUtil =
+        FilesUtil(context = appContext)
 }

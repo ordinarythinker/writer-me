@@ -14,6 +14,7 @@ import io.writerme.app.data.model.Note
 import io.writerme.app.data.repository.NoteRepository
 import io.writerme.app.ui.navigation.NoteScreen
 import io.writerme.app.ui.state.NoteState
+import io.writerme.app.utils.FilesUtil
 import io.writerme.app.utils.scheduleImageLoading
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -33,9 +34,9 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteViewModel @Inject constructor(
     private val savedState: SavedStateHandle,
-    private val workManager: WorkManager
+    private val workManager: WorkManager,
+    private val filesUtil: FilesUtil
 ): ViewModel() {
-
     private val noteRepository: NoteRepository = NoteRepository()
     private val changes : HashMap<Long, Int> = hashMapOf()
 
@@ -46,8 +47,6 @@ class NoteViewModel @Inject constructor(
 
     private val _noteState: MutableStateFlow<NoteState> = MutableStateFlow(NoteState.empty())
     val noteState: StateFlow<NoteState> = _noteState
-
-    // TODO: NOTHING IS UPDATED ON USER SCREEN!!!!!!!!!!
 
     init {
         addCloseable(noteRepository)
@@ -119,9 +118,11 @@ class NoteViewModel @Inject constructor(
 
     fun addImageSection(url: String) {
         viewModelScope.launch {
+            val uri = filesUtil.writeImageToFile(url)
+
             val component = Component().apply {
                 this.noteId = _noteState.value.note.id
-                this.mediaUrl = url
+                this.mediaUrl = uri
                 this.type = ComponentType.Image
             }
 
@@ -143,10 +144,11 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun updateCoverImage(uri: String) {
+    fun updateCoverImage(url: String) {
         viewModelScope.launch {
             val noteId = _noteState.value.note.id
 
+            val uri = filesUtil.writeImageToFile(url)
             noteRepository.updateNoteCoverImage(noteId, uri)
         }
     }
