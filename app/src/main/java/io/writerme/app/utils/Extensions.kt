@@ -246,7 +246,12 @@ fun MutableRealm.deleteComponent(component: Component) {
 
 fun MutableRealm.deleteHistory(h: History?) {
     h?.let { history ->
-        history.changes.forEach { deleteComponent(it) }
+        if (history.changes.isNotEmpty()) {
+            while (history.changes.isNotEmpty()) {
+                val component = history.changes.removeAt(0)
+                deleteComponent(component)
+            }
+        }
         delete(history)
     }
 }
@@ -254,6 +259,13 @@ fun MutableRealm.deleteHistory(h: History?) {
 fun MutableRealm.deleteNote(note: Note) {
     deleteHistory(note.title)
     deleteHistory(note.cover)
-    note.content.forEach { deleteHistory(it) }
+
+    if (note.content.isNotEmpty()) {
+        while (note.content.isNotEmpty()) {
+            val component = note.content.removeAt(0)
+            deleteHistory(component)
+        }
+    }
+
     delete(note)
 }
