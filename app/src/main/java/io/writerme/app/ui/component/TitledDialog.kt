@@ -57,7 +57,9 @@ fun TitledDialog(
                         .blur(dimensionResource(id = R.dimen.blur_radius))
                 )
 
-                Column {
+                Column(
+                    modifier = Modifier.padding(padding)
+                ) {
                     Text(
                         modifier = Modifier.padding(0.dp, 8.dp, 0.dp, padding),
                         text = title,
