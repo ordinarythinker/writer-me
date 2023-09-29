@@ -101,7 +101,7 @@ fun NoteScreen(
     dismissDropDown: () -> Unit,
     toggleDropDownHistoryMode: () -> Unit,
     addLinkSection: (String) -> Unit,
-    toggleAddLinkDialogVisibility: () -> Unit
+    toggleAddLinkDialogVisibility: () -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -291,8 +291,7 @@ fun NoteScreen(
                         }
 
                         IconButton(onClick = {
-                            // pending: add task
-                            Toast.makeText(context, context.resources.getString(R.string.pending), Toast.LENGTH_SHORT).show()
+                            addNewCheckBox(-1)
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_checked),
