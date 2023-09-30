@@ -62,8 +62,7 @@ fun Checkbox(
                 value = localText,
                 onValueChange = {
                     localText = it
-                    component.content = it
-                    onValueChange(component)
+                    onValueChange(component.copy(content = it))
                 },
                 modifier = Modifier
                     .padding(16.dp, 0.dp, 0.dp, 0.dp)
