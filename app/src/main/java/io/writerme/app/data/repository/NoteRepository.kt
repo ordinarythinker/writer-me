@@ -4,6 +4,7 @@ import android.util.Log
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.asFlow
+import io.realm.kotlin.ext.isManaged
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ObjectChange
 import io.realm.kotlin.notifications.ResultsChange
@@ -190,7 +191,7 @@ class NoteRepository: Repository(), Closeable {
     suspend fun addSection(noteId: Long, comp: Component) {
         if (noteId >= 0) {
             realm.write {
-                val component = copyToRealm(comp, UpdatePolicy.ALL)
+                val component = if (comp.isManaged()) findLatest(comp)!! else copyToRealm(comp, UpdatePolicy.ALL)
                 val history = copyToRealm(History(), UpdatePolicy.ALL)
                 history.push(component)
 

@@ -95,4 +95,5 @@
     <string name="type_your_note_here">Type your note here...</string>
     <string name="sorry_pending">Sorry, this feature is pending</string>
     <string name="delete">Delete</string>
+    <string name="set_link">Set Link</string>
 </resources>

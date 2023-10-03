@@ -601,7 +601,7 @@ fun NoteScreen(
 
         if (state.value.isAddLinkDialogDisplayed) {
             TitledDialog(
-                title = stringResource(id = R.string.create_folder),
+                title = stringResource(id = R.string.set_link),
                 onDismiss = toggleAddLinkDialogVisibility,
                 content = {
                     AddLinkDialogBody(
