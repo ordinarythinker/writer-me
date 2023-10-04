@@ -9,6 +9,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import io.realm.kotlin.Realm
 import io.writerme.app.data.model.Component
+import io.writerme.app.data.model.Note
 import io.writerme.app.net.MetaTagScraper
 import io.writerme.app.utils.FilesUtil
 import io.writerme.app.utils.getDefaultInstance
@@ -44,6 +45,9 @@ class ImageLoadingWorker(
                     uri?.let {
                         realm.write {
                             findLatest(component)?.mediaUrl = it
+
+                            val note = this.query(Note::class, "id == $0", component.noteId).first().find()
+                            note?.changeTime = System.currentTimeMillis()
                         }
                     }
                 }

@@ -49,7 +49,7 @@ fun Link(link: Component, onClick: (Component) -> Unit, modifier: Modifier = Mod
             modifier = modifier
                 .wrapContentHeight()
                 .shadow(15.dp, shape),
-            backgroundColor = Color.White,
+            backgroundColor = Color.Transparent,
             onClick = {
                 onClick(link)
             }
@@ -88,7 +88,7 @@ fun Link(link: Component, onClick: (Component) -> Unit, modifier: Modifier = Mod
                     )
 
                     Text(
-                        text = link.title,
+                        text = link.title.ifEmpty { link.url },
                         style = MaterialTheme.typography.body1,
                         modifier = Modifier
                             .align(Alignment.CenterStart)
