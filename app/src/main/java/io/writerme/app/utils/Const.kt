@@ -18,7 +18,7 @@ object Const {
 
     const val BOOKMARK_ID: String = "bkm_id"
 
-    const val DB_NAME: String = "writer.db"
+    const val DB_NAME: String = "writer.realm"
 
     const val TERMS_LINK = "https://writerme.io/terms"
 

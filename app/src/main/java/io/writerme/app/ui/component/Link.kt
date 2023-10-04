@@ -1,5 +1,6 @@
 package io.writerme.app.ui.component
 
+import android.Manifest
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,21 +31,32 @@ import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.ui.theme.lightGrey
+import io.writerme.app.utils.checkAndRequestPermission
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Link(link: Component, onClick: (Component) -> Unit, modifier: Modifier = Modifier) {
     if (link.type == ComponentType.Link) {
         val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
+
+        checkAndRequestPermission(
+            permission = Manifest.permission.INTERNET,
+            onSuccess = {},
+            onNotGrantedMessage = R.string.we_wont_load_images)
+
         Card(
             shape = shape,
-            modifier = modifier.wrapContentHeight().shadow(15.dp, shape),
+            modifier = modifier
+                .wrapContentHeight()
+                .shadow(15.dp, shape),
             backgroundColor = Color.White,
             onClick = {
                 onClick(link)
             }
         ) {
-            Box(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()) {
                 /*Image(
                     painter = painterResource(id = R.drawable.travel),
                     contentDescription = "",
@@ -78,7 +90,8 @@ fun Link(link: Component, onClick: (Component) -> Unit, modifier: Modifier = Mod
                     Text(
                         text = link.title,
                         style = MaterialTheme.typography.body1,
-                        modifier = Modifier.align(Alignment.CenterStart)
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
                             .padding(8.dp, 0.dp),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
