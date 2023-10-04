@@ -8,9 +8,11 @@ import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import io.realm.kotlin.Realm
+import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.Note
 import io.writerme.app.net.MetaTagScraper
+import io.writerme.app.utils.Const
 import io.writerme.app.utils.FilesUtil
 import io.writerme.app.utils.getDefaultInstance
 
@@ -46,8 +48,16 @@ class ImageLoadingWorker(
                         realm.write {
                             findLatest(component)?.mediaUrl = it
 
-                            val note = this.query(Note::class, "id == $0", component.noteId).first().find()
-                            note?.changeTime = System.currentTimeMillis()
+                            if (component.noteId > 0) {
+                                val note = this.query(Note::class, "id == $0", component.noteId).first().find()
+                                note?.changeTime = System.currentTimeMillis()
+                            } else {
+                                val bookmarkId = inputData.getLong(Const.BOOKMARK_FOLDER_ID, -1)
+                                if (bookmarkId >= 0) {
+                                    val bookmark = this.query(BookmarksFolder::class, "id == $0", bookmarkId).first().find()
+                                    bookmark?.changeTime = System.currentTimeMillis()
+                                }
+                            }
                         }
                     }
                 }

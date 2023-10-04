@@ -19,6 +19,8 @@ open class BookmarksFolder : RealmObject {
 
     var parent: BookmarksFolder? = null
 
+    var changeTime: Long = System.currentTimeMillis()
+
     @Ignore
     val hasParentFolder: Boolean = parent != null
 
