@@ -40,19 +40,25 @@ class BookmarksViewModel @Inject constructor(
         viewModelScope.launch {
             bookmarksFlow = bookmarksRepository.getMainFolder().asFlow()
 
-            bookmarksFlow.mapLatest {
-                it.obj?.let { fdr ->
-                    _bookmarksStateFlow.emit(_bookmarksStateFlow.value.copy(currentFolder = fdr))
-                }
-            }.stateIn(viewModelScope)
+            subscribeToCurrentFlow()
         }
+    }
+
+    private suspend fun subscribeToCurrentFlow() {
+        bookmarksFlow.mapLatest {
+            it.obj?.let { fdr ->
+                _bookmarksStateFlow.emit(_bookmarksStateFlow.value.copy(currentFolder = fdr))
+            }
+        }.stateIn(viewModelScope)
     }
 
     fun onFolderClicked(folder: BookmarksFolder) {
         viewModelScope.launch {
-            _bookmarksStateFlow.emit(
-                _bookmarksStateFlow.value.copy(currentFolder = folder)
-            )
+            bookmarksRepository.getLatest(folder)?.let {
+                bookmarksFlow = it.asFlow()
+
+                subscribeToCurrentFlow()
+            }
         }
     }
 

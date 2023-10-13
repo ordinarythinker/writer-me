@@ -23,6 +23,10 @@ class BookmarksRepository: Repository(), Closeable {
             }
     }
 
+    suspend fun getLatest(folder: BookmarksFolder): BookmarksFolder? {
+        return realm.write { findLatest(folder) }
+    }
+
     suspend fun createFolder(name: String, parent: BookmarksFolder? = null) {
 
         realm.write {
