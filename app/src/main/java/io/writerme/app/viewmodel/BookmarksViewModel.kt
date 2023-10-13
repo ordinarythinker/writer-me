@@ -113,9 +113,11 @@ class BookmarksViewModel @Inject constructor(
         viewModelScope.launch {
             val value = _bookmarksStateFlow.value
             value.currentFolder.parent?.let { folder ->
-                _bookmarksStateFlow.emit(
-                    value.copy(currentFolder = folder)
-                )
+                bookmarksRepository.getLatest(folder)?.let {
+                    bookmarksFlow = it.asFlow()
+
+                    subscribeToCurrentFlow()
+                }
             }
         }
     }

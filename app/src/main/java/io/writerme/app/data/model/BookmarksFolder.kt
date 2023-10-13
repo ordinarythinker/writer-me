@@ -21,8 +21,7 @@ open class BookmarksFolder : RealmObject {
 
     var changeTime: Long = System.currentTimeMillis()
 
-    @Ignore
-    val hasParentFolder: Boolean = parent != null
+    fun hasParentFolder(): Boolean = parent != null
 
     //@delegate:Ignore
     @Ignore
@@ -34,7 +33,7 @@ open class BookmarksFolder : RealmObject {
                 fullPath = "/${folder.name}$fullPath"
             }
             folder = folder.parent
-        } while (folder != null && folder.hasParentFolder)
+        } while (folder != null && folder.hasParentFolder())
 
         fullPath
     }

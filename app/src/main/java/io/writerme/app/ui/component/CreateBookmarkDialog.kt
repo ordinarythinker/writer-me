@@ -255,7 +255,7 @@ fun CreateBookmarkDialog(
                                     .padding(16.dp, 8.dp)
                                     .fillMaxWidth()
                             ) {
-                                if (folder.hasParentFolder) {
+                                if (folder.hasParentFolder()) {
                                     item {
                                         FolderPickerRow(
                                             folder = BookmarksFolder().apply {

@@ -109,14 +109,12 @@ fun BookmarksScreen(
                 dismissCreateFolderDialog()
             } else if (state.value.isFloatingDialogShown) {
                 dismissFloatingDialog()
-            } else if (state.value.currentFolder.hasParentFolder) {
+            } else if (state.value.currentFolder.hasParentFolder()) {
                 navigateToParentFolder()
             }
         },
-        enabled = state.value.isBookmarkDialogDisplayed
-                    || state.value.isFloatingDialogShown
-                    || state.value.isFolderDialogDisplayed
-                    || state.value.currentFolder.hasParentFolder
+        enabled = state.value.currentFolder.hasParentFolder() || state.value.isBookmarkDialogDisplayed
+                    || state.value.isFloatingDialogShown || state.value.isFolderDialogDisplayed
     )
 
     Box(
@@ -148,7 +146,7 @@ fun BookmarksScreen(
                     },
                     navigationIcon = {
                         IconButton(onClick = {
-                            if (state.value.currentFolder.hasParentFolder) {
+                            if (state.value.currentFolder.hasParentFolder()) {
                                 navigateToParentFolder()
                             } else {
                                 dismissScreen()
