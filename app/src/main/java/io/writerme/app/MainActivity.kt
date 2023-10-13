@@ -185,7 +185,8 @@ class MainActivity : ComponentActivity() {
                                 onDarkModeChange = settingsViewModel::onDarkModeChange,
                                 onTermsClick = { onLinkClicked(Const.TERMS_LINK) },
                                 onCounterChange = settingsViewModel::onCounterChange,
-                                updateProfileImage = settingsViewModel::updateProfileImage
+                                updateProfileImage = settingsViewModel::updateProfileImage,
+                                dismissScreen = { navController.popBackStack() }
                             )
                         }
                     }

@@ -32,7 +32,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
@@ -76,7 +75,8 @@ fun SettingsScreen(
     onDarkModeChange: (Boolean) -> Unit,
     onTermsClick: () -> Unit,
     onCounterChange: (String, Boolean) -> Unit,
-    updateProfileImage: (String) -> Unit
+    updateProfileImage: (String) -> Unit,
+    dismissScreen: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val scaffoldState = rememberScaffoldState()
@@ -115,7 +115,7 @@ fun SettingsScreen(
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = dismissScreen) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_back),
                                 contentDescription = stringResource(id = R.string.back_button),
@@ -356,7 +356,7 @@ fun SettingsScreen(
                             }
 
 
-                            Row(
+                            /*Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(screenPadding, 8.dp)
@@ -376,8 +376,7 @@ fun SettingsScreen(
                                     checked = state.value.isDarkMode,
                                     onCheckedChange = { onDarkModeChange(it) }
                                 )
-                            }
-
+                            }*/
                         }
                     }
                 }
@@ -455,7 +454,7 @@ fun SettingsScreenPreview() {
     WriterMeTheme {
         SettingsScreen(
             MutableStateFlow(state),
-            {}, {}, {}, {_, _, ->}, {}
+            {}, {}, {}, {_, _, ->}, {}, {}
         )
     }
 }
