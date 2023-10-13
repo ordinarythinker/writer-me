@@ -26,14 +26,24 @@ class BookmarksRepository: Repository(), Closeable {
     suspend fun createFolder(name: String, parent: BookmarksFolder? = null) {
 
         realm.write {
-            val _parent = parent ?: realm.query(BookmarksFolder::class, "id == $0", 0).first().find()
+            val _parent = if (parent != null) {
+                findLatest(parent)
+            } else realm.query(BookmarksFolder::class, "id == $0", 0).first().find()
 
-            val folder = BookmarksFolder().apply {
+            var folder = BookmarksFolder().apply {
+                this.id = nextId()
                 this.name = name
-                this.parent = _parent
             }
 
-            copyToRealm(folder)
+            val latest = if (_parent != null) {
+                findLatest(_parent)
+            } else null
+
+            folder = copyToRealm(folder)
+            folder.parent = latest
+            latest?.folders?.add(folder)
+
+            folder
         }
     }
 
