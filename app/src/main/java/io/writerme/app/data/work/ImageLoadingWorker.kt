@@ -46,7 +46,9 @@ class ImageLoadingWorker(
 
                     uri?.let {
                         realm.write {
-                            findLatest(component)?.mediaUrl = it
+                            val found = findLatest(component)
+                            found?.mediaUrl = it
+                            title?.let { found?.title = it }
 
                             if (component.noteId > 0) {
                                 val note = this.query(Note::class, "id == $0", component.noteId).first().find()

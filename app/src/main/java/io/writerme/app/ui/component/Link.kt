@@ -24,6 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import io.writerme.app.R
@@ -35,7 +36,12 @@ import io.writerme.app.utils.checkAndRequestPermission
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Link(link: Component, onClick: (Component) -> Unit, modifier: Modifier = Modifier) {
+fun Link(
+    link: Component,
+    onClick: (Component) -> Unit,
+    modifier: Modifier = Modifier,
+    height: Dp = 0.dp
+) {
     if (link.type == ComponentType.Link) {
         val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
 
@@ -65,11 +71,16 @@ fun Link(link: Component, onClick: (Component) -> Unit, modifier: Modifier = Mod
                     contentScale = ContentScale.Crop
                 )*/
 
+                val imageModifier = if (height > 0.dp) {
+                    Modifier
+                        .height(height)
+                        .fillMaxWidth()
+                } else Modifier.fillMaxWidth()
+
                 AsyncImage(
                     model = link.mediaUrl,
                     contentDescription = link.content,
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = imageModifier,
                     contentScale = ContentScale.Crop
                 )
 

@@ -279,31 +279,35 @@ fun BookmarksScreen(
                         )
                     }
 
-                    Row {
-                        LazyVerticalGrid(
-                            columns = GridCells.Adaptive(120.dp),
-                            contentPadding = PaddingValues(padding),
-                            content = {
+                    AnimatedVisibility(
+                        visible = state.value.currentFolder.folders.isNotEmpty()
+                    ) {
+                        Row {
+                            LazyVerticalGrid(
+                                columns = GridCells.Adaptive(120.dp),
+                                contentPadding = PaddingValues(padding),
+                                content = {
 
-                                items(
-                                    items = state.value.currentFolder.folders,
-                                    itemContent = { item ->
-                                        Surface(
-                                            onClick = { onFolderClicked(item) },
-                                            color = Color.Transparent
-                                        ) {
-                                            Folder(
-                                                folder = item,
-                                                modifier = Modifier
-                                                    .width(110.dp)
-                                                    .padding(8.dp)
-                                            )
+                                    items(
+                                        items = state.value.currentFolder.folders,
+                                        itemContent = { item ->
+                                            Surface(
+                                                onClick = { onFolderClicked(item) },
+                                                color = Color.Transparent
+                                            ) {
+                                                Folder(
+                                                    folder = item,
+                                                    modifier = Modifier
+                                                        .width(110.dp)
+                                                        .padding(8.dp)
+                                                )
+                                            }
                                         }
-                                    }
-                                )
+                                    )
 
-                            }
-                        )
+                                }
+                            )
+                        }
                     }
 
                     Row {
@@ -319,7 +323,8 @@ fun BookmarksScreen(
                                         Link(
                                             link = item,
                                             modifier = Modifier.padding(8.dp),
-                                            onClick = onLinkClicked
+                                            onClick = onLinkClicked,
+                                            height = 130.dp
                                         )
                                     }
                                 )
@@ -381,7 +386,7 @@ fun BookmarksScreenPreview() {
         )
     }
 
-    val state = BookmarksState(job, false)
+    val state = BookmarksState(mainFolder, false)
 
     WriterMeTheme {
         BookmarksScreen(
