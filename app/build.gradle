@@ -21,6 +21,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        resConfigs("en", "uk", "de", "es", "fr", "ru")
     }
 
     buildTypes {
@@ -74,7 +76,7 @@ dependencies {
 
     // Saved state module for ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0-alpha01'
     implementation 'junit:junit:4.13.2'
 
     // Annotation processor

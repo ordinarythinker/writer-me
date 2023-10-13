@@ -5,8 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -28,6 +28,7 @@ import io.writerme.app.ui.screen.RegistrationScreen
 import io.writerme.app.ui.screen.SettingsScreen
 import io.writerme.app.ui.theme.WriterMeTheme
 import io.writerme.app.utils.Const
+import io.writerme.app.utils.LocaleUtils
 import io.writerme.app.viewmodel.BookmarksViewModel
 import io.writerme.app.viewmodel.HomeViewModel
 import io.writerme.app.viewmodel.NoteViewModel
@@ -38,7 +39,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     private val tag = "MainActivity"
 
     private fun onLinkClicked(url: String) {
@@ -181,7 +182,10 @@ class MainActivity : ComponentActivity() {
 
                             SettingsScreen(
                                 uiState = settingsViewModel.settingsState,
-                                onLanguageChange = settingsViewModel::onLanguageChange,
+                                onLanguageChange = {
+                                    LocaleUtils.setLocale(it)
+                                    settingsViewModel.onLanguageChange(it)
+                                },
                                 onDarkModeChange = settingsViewModel::onDarkModeChange,
                                 onTermsClick = { onLinkClicked(Const.TERMS_LINK) },
                                 onCounterChange = settingsViewModel::onCounterChange,
