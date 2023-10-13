@@ -183,7 +183,8 @@ class MainActivity : ComponentActivity() {
                                 onLanguageChange = settingsViewModel::onLanguageChange,
                                 onDarkModeChange = settingsViewModel::onDarkModeChange,
                                 onTermsClick = { onLinkClicked(Const.TERMS_LINK) },
-                                onCounterChange = settingsViewModel::onCounterChange
+                                onCounterChange = settingsViewModel::onCounterChange,
+                                updateProfileImage = settingsViewModel::updateProfileImage
                             )
                         }
                     }

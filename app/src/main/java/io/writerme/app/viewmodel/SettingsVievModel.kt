@@ -9,6 +9,7 @@ import io.writerme.app.data.model.Settings
 import io.writerme.app.data.repository.SettingsRepository
 import io.writerme.app.ui.state.SettingsState
 import io.writerme.app.utils.Const
+import io.writerme.app.utils.FilesUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -21,7 +22,9 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class SettingsViewModel @Inject constructor() : ViewModel() {
+class SettingsViewModel @Inject constructor(
+    private val filesUtil: FilesUtil
+) : ViewModel() {
 
     private val settingsRepository = SettingsRepository()
 
@@ -67,6 +70,13 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
     fun onDarkModeChange(isDarkMode: Boolean) {
         viewModelScope.launch {
             settingsRepository.setDarkMode(isDarkMode)
+        }
+    }
+
+    fun updateProfileImage(url: String) {
+        viewModelScope.launch {
+            val uri = filesUtil.writeImageToFile(url)
+            uri?.let { settingsRepository.updateProfileImage(it) }
         }
     }
 

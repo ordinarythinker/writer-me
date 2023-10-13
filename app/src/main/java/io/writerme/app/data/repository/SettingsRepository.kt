@@ -28,6 +28,13 @@ class SettingsRepository : Repository(), Closeable {
         }
     }
 
+    suspend fun updateProfileImage(url: String) {
+        realm.write {
+            val settings = this.query(Settings::class, "id == $0", 0).first().find()
+            settings?.profilePictureUrl = url
+        }
+    }
+
     suspend fun setCounter(key: String, value: Int) {
 
         realm.write {
