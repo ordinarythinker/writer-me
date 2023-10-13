@@ -82,7 +82,7 @@ fun SettingsScreen(
     val scaffoldState = rememberScaffoldState()
     val state = uiState.collectAsStateWithLifecycle()
 
-    val addProfileImagePicker = rememberLauncherForActivityResult(
+    val updateProfileImagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             uri?.let { updateProfileImage(it.toString()) }
@@ -143,7 +143,10 @@ fun SettingsScreen(
                 ) {
                     AnimatedVisibility(visible = true) {
                         if (state.value.profilePictureUrl.isNotEmpty()) {
-                            ProfileImage(url = state.value.profilePictureUrl)
+                            ProfileImage(
+                                url = state.value.profilePictureUrl,
+                                onClick = { updateProfileImagePicker.launch("image/*") }
+                            )
                         } else {
                             IconButton(
                                 modifier = Modifier
@@ -152,7 +155,7 @@ fun SettingsScreen(
                                     .padding(4.dp, 12.dp)
                                     .shadow(dimensionResource(id = R.dimen.shadow), shape),
                                 onClick = {
-                                    addProfileImagePicker.launch("image/*")
+                                    updateProfileImagePicker.launch("image/*")
                                 }
                             ) {
                                 Icon(

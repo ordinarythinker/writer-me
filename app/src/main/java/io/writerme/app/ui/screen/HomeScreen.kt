@@ -230,7 +230,12 @@ fun HomeScreen(
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    ProfileImage(url = state.value.profilePhotoUrl)
+                    if (state.value.profilePhotoUrl.isNotEmpty()) {
+                        ProfileImage(
+                            url = state.value.profilePhotoUrl,
+                            onClick = openSettingsScreen
+                        )
+                    }
 
                     Column(
                         modifier = Modifier
