@@ -126,7 +126,7 @@ class BookmarksViewModel @Inject constructor(
                 return@withContext bookmarksRepository.createBookmark(url, title, parent)
             }
 
-            workManager.scheduleImageLoading(bookmark.id)
+            workManager.scheduleImageLoading(bookmark.id, parent.id)
         }
     }
 }

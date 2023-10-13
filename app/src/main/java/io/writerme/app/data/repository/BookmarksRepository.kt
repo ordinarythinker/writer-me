@@ -48,7 +48,10 @@ class BookmarksRepository: Repository(), Closeable {
 
             val realmObj = copyToRealm(bookmark)
 
-            _parent?.bookmarks?.add(realmObj)
+            _parent?.let {
+                findLatest(it)?.bookmarks?.add(realmObj)
+            }
+
             bookmark
         }
     }

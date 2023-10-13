@@ -16,8 +16,6 @@ object Const {
     const val TASK_CHANGES_HISTORY_KEY = "task_changes"
     const val LINK_CHANGES_HISTORY_KEY = "link_changes"
 
-    const val BOOKMARK_FOLDER_ID: String = "bkm_id"
-
     const val DB_NAME: String = "writer.realm"
 
     const val TERMS_LINK = "https://writerme.io/terms"

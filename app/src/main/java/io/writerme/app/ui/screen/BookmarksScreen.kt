@@ -1,5 +1,6 @@
 package io.writerme.app.ui.screen
 
+import android.Manifest
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -69,6 +70,7 @@ import io.writerme.app.ui.theme.dialogBackground
 import io.writerme.app.ui.theme.fieldDark
 import io.writerme.app.ui.theme.light
 import io.writerme.app.ui.theme.strokeLight
+import io.writerme.app.utils.checkAndRequestPermission
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -87,11 +89,17 @@ fun BookmarksScreen(
     dismissFloatingDialog: () -> Unit,
     navigateToParentFolder: () -> Unit,
     createBookmark: (String, String, BookmarksFolder) -> Unit,
-    createFolder: (String) -> Unit
+    createFolder: (String) -> Unit,
+    dismissScreen: () -> Unit
 ) {
     val state = bookmarksState.collectAsStateWithLifecycle()
     val scaffoldState = rememberScaffoldState()
     val padding = dimensionResource(id = R.dimen.screen_padding)
+
+    checkAndRequestPermission(
+        permission = Manifest.permission.INTERNET,
+        onSuccess = {},
+        onNotGrantedMessage = R.string.we_wont_load_images)
 
     BackHandler(
         onBack = {
@@ -143,7 +151,7 @@ fun BookmarksScreen(
                             if (state.value.currentFolder.hasParentFolder) {
                                 navigateToParentFolder()
                             } else {
-                                // TODO: get navController instance and step back
+                                dismissScreen()
                             }
                         }) {
                             Icon(
@@ -155,7 +163,7 @@ fun BookmarksScreen(
                     },
                     actions = {
                         IconButton(onClick = {
-                            // TODO
+                            // implement in the future
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_more),
@@ -383,7 +391,8 @@ fun BookmarksScreenPreview() {
             dismissFloatingDialog = {},
             navigateToParentFolder = {},
             createBookmark = { _, _, _ ->},
-            createFolder = {}
+            createFolder = {},
+            dismissScreen = {}
         )
     }
 }

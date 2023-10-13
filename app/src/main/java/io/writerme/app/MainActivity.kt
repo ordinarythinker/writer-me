@@ -171,7 +171,8 @@ class MainActivity : ComponentActivity() {
                                 dismissFloatingDialog = bookmarksViewModel::dismissFloatingDialog,
                                 navigateToParentFolder = bookmarksViewModel::navigateToParentFolder,
                                 createBookmark = bookmarksViewModel::createBookmark,
-                                createFolder = bookmarksViewModel::createFolder
+                                createFolder = bookmarksViewModel::createFolder,
+                                dismissScreen = { navController.popBackStack() }
                             )
                         }
 

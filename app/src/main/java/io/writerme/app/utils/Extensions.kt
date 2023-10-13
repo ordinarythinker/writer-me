@@ -176,14 +176,19 @@ fun Bitmap.toFile(
     }
 }
 
-fun WorkManager.scheduleImageLoading(componentId: Long) {
+fun WorkManager.scheduleImageLoading(componentId: Long, bookmarkId: Long = -1) {
     val constraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .setRequiresBatteryNotLow(true)
         .build()
 
     val scheduledNetRequest = OneTimeWorkRequestBuilder<ImageLoadingWorker>()
-        .setInputData(workDataOf(ImageLoadingWorker.IMAGE_COMPONENT_ID to componentId))
+        .setInputData(
+            workDataOf(
+                ImageLoadingWorker.IMAGE_COMPONENT_ID to componentId,
+                ImageLoadingWorker.BOOKMARK_FOLDER_ID to bookmarkId
+            )
+        )
         .setConstraints(constraints).build()
 
     this.enqueueUniqueWork(

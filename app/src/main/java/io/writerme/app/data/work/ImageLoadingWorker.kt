@@ -12,7 +12,6 @@ import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.Note
 import io.writerme.app.net.MetaTagScraper
-import io.writerme.app.utils.Const
 import io.writerme.app.utils.FilesUtil
 import io.writerme.app.utils.getDefaultInstance
 
@@ -40,6 +39,7 @@ class ImageLoadingWorker(
                 Log.d("ImageLoadingWorker", "tags: $metaTags")
 
                 val imageUrl = metaTags.ogImage ?: metaTags.twitterImage
+                val title = metaTags.ogTitle ?: metaTags.twitterTitle
 
                 imageUrl?.let { url ->
                     val uri = FilesUtil(context).writeImageToFile(url)
@@ -52,10 +52,11 @@ class ImageLoadingWorker(
                                 val note = this.query(Note::class, "id == $0", component.noteId).first().find()
                                 note?.changeTime = System.currentTimeMillis()
                             } else {
-                                val bookmarkId = inputData.getLong(Const.BOOKMARK_FOLDER_ID, -1)
+                                val bookmarkId = inputData.getLong(BOOKMARK_FOLDER_ID, -1)
                                 if (bookmarkId >= 0) {
-                                    val bookmark = this.query(BookmarksFolder::class, "id == $0", bookmarkId).first().find()
-                                    bookmark?.changeTime = System.currentTimeMillis()
+                                    val folder = this.query(BookmarksFolder::class, "id == $0", bookmarkId).first().find()
+
+                                    folder?.changeTime = System.currentTimeMillis()
                                 }
                             }
                         }
@@ -73,5 +74,6 @@ class ImageLoadingWorker(
 
     companion object {
         const val IMAGE_COMPONENT_ID = "ici"
+        const val BOOKMARK_FOLDER_ID = "bkm_id"
     }
 }
