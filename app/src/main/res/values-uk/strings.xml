@@ -74,7 +74,7 @@
     <string name="all">Всі</string>
     <string name="important">Важливі</string>
     <string name="welcome">Ласкаво просимо!</string>
-    <string name="no_notes">Ваш список нотаток наразі порожній.\\nЩоб створити нову нотатку, скористайтеся кнопкою нижче</string>
+    <string name="no_notes">Ваш список нотаток наразі порожній.\nЩоб створити нову нотатку, скористайтеся кнопкою нижче</string>
     <string name="not_important">Не важлива</string>
     <string name="image">Зображення</string>
     <string name="proceed">Продовжити</string>
@@ -83,9 +83,9 @@
     <string name="full_name">Повне ім\'я</string>
     <string name="typing">Пише</string>
     <string name="send_button">Кнопка відправки</string>
-    <string name="hi">Привіт і ласкаво прошу!\\nМене звуть WriterMe, і я готовий стати вашим особистим банком ідей!</string>
+    <string name="hi">Привіт і ласкаво прошу!\nМене звуть WriterMe, і я готовий стати вашим особистим банком ідей!</string>
     <string name="introduce">Чи не могли б ви сказати мені своє ім\'я?</string>
-    <string name="saving">Дякую!\\nХвилинку, я зберігаю дані</string>
+    <string name="saving">Дякую!\nХвилинку, я зберігаю дані</string>
     <string name="type_title">Назва...</string>
     <string name="type_your_note_here">Введіть свою нотатку тут...</string>
     <string name="sorry_pending">Вибачте, ця функція очікується</string>

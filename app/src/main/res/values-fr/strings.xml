@@ -74,7 +74,7 @@
     <string name="all">Tout</string>
     <string name="important">Important</string>
     <string name="welcome">Bienvenu!</string>
-    <string name="no_notes">Votre liste de notes est vide pour l\'instant.\\nPour créer une nouvelle note utilisez le bouton ci-dessous</string>
+    <string name="no_notes">Votre liste de notes est vide pour l\'instant.\nPour créer une nouvelle note utilisez le bouton ci-dessous</string>
     <string name="not_important">Pas important</string>
     <string name="image">Image</string>
     <string name="proceed">Procéder</string>
@@ -83,9 +83,9 @@
     <string name="full_name">Nom et prénom</string>
     <string name="typing">Tape</string>
     <string name="send_button">Bouton d\'envoi</string>
-    <string name="hi">Salut et bienvenue!\\nJe m\'appelle WriterMe et je suis prêt à devenir votre banque d\'idées personnelle!</string>
+    <string name="hi">Salut et bienvenue!\nJe m\'appelle WriterMe et je suis prêt à devenir votre banque d\'idées personnelle!</string>
     <string name="introduce">Pourriez-vous me dire votre nom?</string>
-    <string name="saving">Merci!\\nJuste un instant, je sauvegarde les données</string>
+    <string name="saving">Merci!\nJuste un instant, je sauvegarde les données</string>
     <string name="type_title">Titre...</string>
     <string name="type_your_note_here">Tapez votre note ici...</string>
     <string name="sorry_pending">Désolé, cette fonctionnalité est toujours en attente</string>

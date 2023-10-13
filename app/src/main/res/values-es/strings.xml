@@ -74,7 +74,7 @@
     <string name="all">Todo</string>
     <string name="important">Importante</string>
     <string name="welcome">¡Bienvenido!</string>
-    <string name="no_notes">Su lista de notas está vacía hasta ahora.\\nPara crear una nueva nota use el botón de abajo</string>
+    <string name="no_notes">Su lista de notas está vacía hasta ahora.\nPara crear una nueva nota use el botón de abajo</string>
     <string name="not_important">No importante</string>
     <string name="image">Imagen</string>
     <string name="proceed">Para proceder</string>
@@ -83,9 +83,9 @@
     <string name="full_name">Nombre completo</string>
     <string name="typing">Escribiendo</string>
     <string name="send_button">Botón de enviar</string>
-    <string name="hi">¡Hola y bienvenido!\\n¡Soy WriterMe y estoy listo para convertirme en tu banco personal de ideas!</string>
+    <string name="hi">¡Hola y bienvenido!\n¡Soy WriterMe y estoy listo para convertirme en tu banco personal de ideas!</string>
     <string name="introduce">¿Le importaría decirme su nombre?</string>
-    <string name="saving">¡Gracias!\\nUn momento, estoy guardando los datos.</string>
+    <string name="saving">¡Gracias!\nUn momento, estoy guardando los datos.</string>
     <string name="type_title">Título...</string>
     <string name="type_your_note_here">Escribe tu nota aquí...</string>
     <string name="sorry_pending">Lo sentimos, esta característica está pendiente</string>

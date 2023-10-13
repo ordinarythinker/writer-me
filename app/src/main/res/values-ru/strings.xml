@@ -74,7 +74,7 @@
     <string name="all">Все</string>
     <string name="important">Важные</string>
     <string name="welcome">Добро пожаловать!</string>
-    <string name="no_notes">Ваш список заметок пока пуст.\\nДля создания новой заметки используйте кнопку ниже</string>
+    <string name="no_notes">Ваш список заметок пока пуст.\nДля создания новой заметки используйте кнопку ниже</string>
     <string name="not_important">Не важная</string>
     <string name="image">Изображение</string>
     <string name="proceed">Продолжить</string>
@@ -83,9 +83,9 @@
     <string name="full_name">Полное имя</string>
     <string name="typing">Печатает</string>
     <string name="send_button">Кнопка «Отправить»</string>
-    <string name="hi">Привет и добро пожаловать!\\nМеня зовут WriterMe и я готов стать вашим личным банком идей!</string>
+    <string name="hi">Привет и добро пожаловать!\nМеня зовут WriterMe и я готов стать вашим личным банком идей!</string>
     <string name="introduce">Не могли бы вы сказать мне свое имя?</string>
-    <string name="saving">Спасибо!\\nМинуточку, я сохраняю данные</string>
+    <string name="saving">Спасибо!\nМинуточку, я сохраняю данные</string>
     <string name="type_title">Заголовок...</string>
     <string name="type_your_note_here">Введите заметку здесь...</string>
     <string name="sorry_pending">Извините, эта функция ожидается</string>

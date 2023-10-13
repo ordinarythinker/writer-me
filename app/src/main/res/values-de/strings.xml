@@ -74,7 +74,7 @@
     <string name="all">Alle</string>
     <string name="important">Wichtig</string>
     <string name="welcome">Willkommen!</string>
-    <string name="no_notes">Ihre Notizenliste ist bisher leer.\\nUm eine neue Notiz zu erstellen, verwenden Sie die Schaltfläche unten</string>
+    <string name="no_notes">Ihre Notizenliste ist bisher leer.\nUm eine neue Notiz zu erstellen, verwenden Sie die Schaltfläche unten</string>
     <string name="not_important">Nicht wichtig</string>
     <string name="image">Bild</string>
     <string name="proceed">Fortfahren</string>
@@ -83,9 +83,9 @@
     <string name="full_name">Vollständiger Name</string>
     <string name="typing">Tippt</string>
     <string name="send_button">Schaltfläche „Senden“</string>
-    <string name="hi">Hallo und herzlich willkommen!\\nMein Name ist WriterMe und ich bin bereit, Ihre persönliche Ideenbank zu werden!</string>
+    <string name="hi">Hallo und herzlich willkommen!\nMein Name ist WriterMe und ich bin bereit, Ihre persönliche Ideenbank zu werden!</string>
     <string name="introduce">Würde es Ihnen etwas ausmachen, mir Ihren Namen zu sagen?</string>
-    <string name="saving">Danke!\\nEinen Moment, ich speichere die Daten</string>
+    <string name="saving">Danke!\nEinen Moment, ich speichere die Daten</string>
     <string name="type_title">Titel...</string>
     <string name="type_your_note_here">Geben Sie hier Ihre Notiz ein...</string>
     <string name="sorry_pending">Leider steht diese Funktion noch aus</string>
