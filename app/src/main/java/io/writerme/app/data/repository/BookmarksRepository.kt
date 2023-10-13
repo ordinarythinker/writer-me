@@ -16,7 +16,9 @@ class BookmarksRepository: Repository(), Closeable {
 
         return result
             ?: realm.write {
-                val s = BookmarksFolder()
+                val s = BookmarksFolder().apply {
+                    this.id = 0
+                }
                 copyToRealm(s)
             }
     }

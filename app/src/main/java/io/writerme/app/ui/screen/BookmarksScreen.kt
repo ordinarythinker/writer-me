@@ -222,6 +222,7 @@ fun BookmarksScreen(
                                             )
                                             .clickable {
                                                 showCreateBookmarkDialog()
+                                                dismissFloatingDialog()
                                             }
                                             .padding(padding, 12.dp)
                                             .height(40.dp),
@@ -243,6 +244,7 @@ fun BookmarksScreen(
                                             )
                                             .clickable {
                                                 showCreateFolderDialog()
+                                                dismissFloatingDialog()
                                             }
                                             .padding(padding, 12.dp)
                                             .height(40.dp),
@@ -334,7 +336,10 @@ fun BookmarksScreen(
                 onDismiss = dismissCreateFolderDialog,
                 content = {
                     CreateFolderDialogBody(
-                        createFolder = createFolder,
+                        createFolder = {
+                            createFolder(it)
+                            dismissCreateFolderDialog()
+                        },
                         onDismiss = dismissCreateFolderDialog
                     )
                 }

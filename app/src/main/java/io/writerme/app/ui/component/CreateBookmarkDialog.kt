@@ -233,6 +233,7 @@ fun CreateBookmarkDialog(
                                     .align(Alignment.CenterHorizontally)
                                     .clickable {
                                         createBookmark(url, title, folder)
+                                        onDismiss()
                                     },
                                 color = MaterialTheme.colors.light
                             )
