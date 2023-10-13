@@ -45,20 +45,6 @@ fun CreateFolderDialogBody(
     Column(
         modifier = Modifier.padding(padding)
     ) {
-        Text(
-            modifier = Modifier.padding(0.dp, 8.dp, 0.dp, padding),
-            text = stringResource(id = R.string.create_folder),
-            style = MaterialTheme.typography.h4,
-            color = MaterialTheme.colors.light
-        )
-
-        Divider(
-            thickness = 1.dp,
-            color = MaterialTheme.colors.strokeLight
-        )
-
-        Spacer(modifier = Modifier.height(padding))
-
         BasicTextField(
             value = name,
             maxLines = 1,
