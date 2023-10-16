@@ -454,7 +454,7 @@ fun NoteScreen(
                                                 modifier = Modifier.padding(start = padding),
                                                 onValueChange = onComponentChange,
                                                 onCheckedChange = {
-
+                                                    toggleCheckbox(component)
                                                 },
                                                 onAddNewCheckbox = {
                                                     addNewCheckBox(currentIndex)

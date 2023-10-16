@@ -2,6 +2,7 @@ package io.writerme.app.ui.component
 
 import android.view.KeyEvent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,7 +53,8 @@ fun Checkbox(
                 modifier = Modifier
                     .width(20.dp)
                     .height(20.dp)
-                    .padding(0.dp, 3.dp, 0.dp, 0.dp),
+                    .padding(0.dp, 3.dp, 0.dp, 0.dp)
+                    .clickable(onClick = onCheckedChange),
                 painter = if (component.isChecked) painterResource(id = R.drawable.ic_checked)
                             else painterResource(id = R.drawable.ic_unchecked),
                 contentDescription = stringResource(id = R.string.checkbox_name),
@@ -70,8 +72,7 @@ fun Checkbox(
                         if (it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                             onAddNewCheckbox()
                             true
-                        }
-                        false
+                        } else false
                     },
                 textStyle = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.light),
                 cursorBrush = SolidColor(MaterialTheme.colors.light)
