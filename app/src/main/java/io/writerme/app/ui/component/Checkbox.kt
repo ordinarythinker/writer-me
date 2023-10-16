@@ -1,5 +1,6 @@
 package io.writerme.app.ui.component
 
+import android.view.KeyEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -19,9 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -67,10 +66,11 @@ fun Checkbox(
                 modifier = Modifier
                     .padding(16.dp, 0.dp, 0.dp, 0.dp)
                     .onKeyEvent {
-                        if (it.type == KeyEventType.KeyDown) {
+                        if (it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                             onAddNewCheckbox()
                             true
-                        } else false
+                        }
+                        false
                     },
                 textStyle = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.light),
                 cursorBrush = SolidColor(MaterialTheme.colors.light)
