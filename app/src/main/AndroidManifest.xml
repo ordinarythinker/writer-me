@@ -14,7 +14,7 @@
         android:name=".WriterMe"
         android:theme="@style/Theme.WriterMe"
         android:localeConfig="@xml/locales_config"
-        tools:targetApi="33">
+        tools:targetApi="34">
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"

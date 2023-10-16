@@ -3,7 +3,6 @@ package io.writerme.app.data.work
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -35,8 +34,6 @@ class ImageLoadingWorker(
                     == PackageManager.PERMISSION_GRANTED
             ) {
                 val metaTags = MetaTagScraper().scrape(component.url)
-
-                Log.d("ImageLoadingWorker", "tags: $metaTags")
 
                 val imageUrl = metaTags.ogImage ?: metaTags.twitterImage
                 val title = metaTags.ogTitle ?: metaTags.twitterTitle

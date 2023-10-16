@@ -6,13 +6,11 @@ import io.writerme.app.ui.theme.WriterMeTheme
 
 @Composable
 fun TaskScreen() {
-    // TODO
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TaskScreenPreview() {
-
     WriterMeTheme {
         TaskScreen()
     }

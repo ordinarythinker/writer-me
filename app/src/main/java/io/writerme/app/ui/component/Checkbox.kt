@@ -1,6 +1,5 @@
 package io.writerme.app.ui.component
 
-import android.util.Log
 import android.view.KeyEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -83,14 +82,6 @@ fun Checkbox(
                     .focusRequester(requester)
                     .focusable()
                     .onKeyEvent {
-                        Log.d("Checkbox", "onKeyEvent -----------------")
-                        /*when (it.key) {
-                            Key.Enter, Key.NumPadEnter -> {
-                                onAddNewCheckbox()
-                                true
-                            }
-                            else -> false
-                        }*/
                         when (it.nativeKeyEvent.keyCode) {
                             KeyEvent.KEYCODE_ENTER,
                             KeyEvent.ACTION_DOWN,

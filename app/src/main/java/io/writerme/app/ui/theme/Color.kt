@@ -8,8 +8,6 @@ val Purple500 = Color(0xFF0A162C)
 val Purple700 = Color(0xFF0A162C)
 val Teal200 = Color(0xFF4E688D)
 
-// TODO: insert all the required colors
-
 val DarkGrey = Color(0xA6292D32)
 val TextLight = Color(0xFFF5F5F5)
 val LightGrey50 = Color(0x808C8989)
