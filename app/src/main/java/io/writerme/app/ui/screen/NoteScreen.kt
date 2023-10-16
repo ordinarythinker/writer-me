@@ -101,6 +101,7 @@ fun NoteScreen(
     dismissDropDown: () -> Unit,
     toggleDropDownHistoryMode: () -> Unit,
     addLinkSection: (String) -> Unit,
+    toggleCheckbox: (Component) -> Unit,
     toggleAddLinkDialogVisibility: () -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -452,6 +453,9 @@ fun NoteScreen(
                                                 component = component,
                                                 modifier = Modifier.padding(start = padding),
                                                 onValueChange = onComponentChange,
+                                                onCheckedChange = {
+
+                                                },
                                                 onAddNewCheckbox = {
                                                     addNewCheckBox(currentIndex)
                                                 }
@@ -678,6 +682,6 @@ fun NoteScreenPreview() {
 
     WriterMeTheme {
         NoteScreen(noteState = state, {}, {}, {}, {}, {}, {},
-            { _, _ ->}, {}, {}, { _ ->}, {}, { _ ->}, {}, {}, {}, {}, {})
+            { _, _ ->}, {}, {}, { _ ->}, {}, { _ ->}, {}, {}, {}, {}, {}, {})
     }
 }

@@ -153,7 +153,8 @@ class MainActivity : AppCompatActivity() {
                                 dismissDropDown = noteViewModel::dismissDropDown,
                                 toggleDropDownHistoryMode = noteViewModel::toggleDropDownHistoryMode,
                                 addLinkSection = noteViewModel::addLinkSection,
-                                toggleAddLinkDialogVisibility = noteViewModel::toggleAddLinkDialogVisibility
+                                toggleAddLinkDialogVisibility = noteViewModel::toggleAddLinkDialogVisibility,
+                                toggleCheckbox = noteViewModel::toggleCheckbox
                             )
                         }
 

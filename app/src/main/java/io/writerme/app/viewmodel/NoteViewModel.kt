@@ -220,6 +220,12 @@ class NoteViewModel @Inject constructor(
         }
     }
 
+    fun toggleCheckbox(checkbox: Component) {
+        viewModelScope.launch {
+            noteRepository.toggleCheckbox(checkbox)
+        }
+    }
+
     override fun onCleared() {
         saveChanges()
         super.onCleared()

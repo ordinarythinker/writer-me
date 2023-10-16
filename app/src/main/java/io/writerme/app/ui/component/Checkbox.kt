@@ -36,6 +36,7 @@ import io.writerme.app.ui.theme.light
 fun Checkbox(
     component: Component,
     onValueChange: (Component) -> Unit,
+    onCheckedChange: () -> Unit,
     onAddNewCheckbox: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -92,7 +93,7 @@ fun CheckboxPreview() {
 
     WriterMeTheme {
         Box(modifier = Modifier.fillMaxSize().background(Color.DarkGray)) {
-            Checkbox(component = component, {}, {}, modifier = modifier)
+            Checkbox(component = component, {}, {}, {}, modifier = modifier)
         }
     }
 }

@@ -228,4 +228,15 @@ class NoteRepository: Repository(), Closeable {
     override fun close() {
         realm.close()
     }
+
+    suspend fun toggleCheckbox(component: Component) {
+        realm.write {
+            findLatest(component)?.let { checkbox ->
+                checkbox.isChecked = !checkbox.isChecked
+
+                val note = this.query(Note::class, "id == $0", checkbox.noteId).first().find()
+                note?.changeTime = System.currentTimeMillis()
+            }
+        }
+    }
 }
