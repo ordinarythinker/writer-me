@@ -1,6 +1,7 @@
 package io.writerme.app.data.repository
 
 import android.util.Log
+import io.realm.kotlin.MutableRealm
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.asFlow
@@ -13,6 +14,7 @@ import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
 import io.writerme.app.data.model.History
 import io.writerme.app.data.model.Note
+import io.writerme.app.utils.deleteHistory
 import io.writerme.app.utils.deleteNote
 import io.writerme.app.utils.getDefaultInstance
 import io.writerme.app.utils.getLast
@@ -171,6 +173,8 @@ class NoteRepository: Repository(), Closeable {
 
                 val note = this.query(Note::class, "id == $0", noteId).first().find()
 
+                deleteTextIfNecessary(this, note)
+
                 val history = this.copyToRealm(History(), UpdatePolicy.ALL)
                 history.changes.add(checkBox)
 
@@ -191,11 +195,14 @@ class NoteRepository: Repository(), Closeable {
     suspend fun addSection(noteId: Long, comp: Component) {
         if (noteId >= 0) {
             realm.write {
+                val note = this.query(Note::class, "id == $0", noteId).first().find()
+
+                deleteTextIfNecessary(this, note)
+
                 val component = if (comp.isManaged()) findLatest(comp)!! else copyToRealm(comp, UpdatePolicy.ALL)
                 val history = copyToRealm(History(), UpdatePolicy.ALL)
                 history.push(component)
 
-                val note = this.query(Note::class, "id == $0", noteId).first().find()
                 note?.content?.add(history)
                 note?.changeTime = System.currentTimeMillis()
             }
@@ -236,6 +243,17 @@ class NoteRepository: Repository(), Closeable {
 
                 val note = this.query(Note::class, "id == $0", checkbox.noteId).first().find()
                 note?.changeTime = System.currentTimeMillis()
+            }
+        }
+    }
+
+    private fun deleteTextIfNecessary(realm: MutableRealm, note: Note?) {
+        val lastHistory = note?.content?.getLast()
+        lastHistory?.let { history ->
+            history.newest()?.let { last ->
+                if (last.type == ComponentType.Text && last.content.isEmpty()) {
+                    realm.deleteHistory(history)
+                }
             }
         }
     }

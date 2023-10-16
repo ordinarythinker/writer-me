@@ -1,6 +1,5 @@
 package io.writerme.app.ui.component
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.BasicTextField
@@ -38,8 +37,6 @@ fun NoteText(
     if (localText.isEmpty()) {
         localText = component.content
     }
-
-    Log.d("NoteText", localText)
 
     if (component.type == ComponentType.Text) {
         BasicTextField(
