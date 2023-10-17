@@ -92,4 +92,14 @@
     <string name="delete">Supprimer</string>
     <string name="set_link">Définir le lien</string>
     <string name="we_wont_load_images">Nous ne pourrons pas charger d\'images</string>
+    <string name="increase_number_of_text_changes">Augmenter le nombre de modifications de texte</string>
+    <string name="decrease_number_of_text_changes">Diminuer le nombre de modifications de texte</string>
+    <string name="increase_number_of_voice_changes">Augmenter le nombre de modifications audio</string>
+    <string name="decrease_number_of_voice_changes">Diminuer le nombre de modifications audio</string>
+    <string name="increase_number_of_tasks_changes">Augmenter le nombre de changements de tâches</string>
+    <string name="decrease_number_of_tasks_changes">Diminuer le nombre de modifications de tâches</string>
+    <string name="increase_number_of_media_changes">Augmenter le nombre de changements de médias</string>
+    <string name="decrease_number_of_media_changes">Diminuer le nombre de changements de médias</string>
+    <string name="increase_number_of_link_changes">Augmenter le nombre de changements de liens</string>
+    <string name="decrease_number_of_link_changes">Diminuer le nombre de changements de liens</string>
 </resources>

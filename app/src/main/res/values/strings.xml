@@ -97,4 +97,14 @@
     <string name="set_link">Set Link</string>
     <string name="we_wont_load_images">We will not be able to load images</string>
     <string name="add_voice_note_button">Add voice note</string>
+    <string name="increase_number_of_text_changes">Increase number of text changes</string>
+    <string name="decrease_number_of_text_changes">Decrease number of text changes</string>
+    <string name="increase_number_of_voice_changes">Increase number of audio changes</string>
+    <string name="decrease_number_of_voice_changes">Decrease number of audio changes</string>
+    <string name="increase_number_of_tasks_changes">Increase number of tasks changes</string>
+    <string name="decrease_number_of_tasks_changes">Decrease number of tasks changes</string>
+    <string name="increase_number_of_media_changes">Increase number of media changes</string>
+    <string name="decrease_number_of_media_changes">Decrease number of media changes</string>
+    <string name="increase_number_of_link_changes">Increase number of link changes</string>
+    <string name="decrease_number_of_link_changes">Decrease number of link changes</string>
 </resources>

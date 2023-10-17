@@ -21,6 +21,8 @@ import io.writerme.app.ui.theme.light
 fun SettingsCounterRow(
     stringId: Int,
     value: Int,
+    increaseValueId: Int,
+    decreaseValueId: Int,
     onChange: (increase: Boolean) -> Unit
 ) {
     Row(
@@ -38,7 +40,9 @@ fun SettingsCounterRow(
 
         Counter(
             value = value,
-            onChange = onChange
+            onChange = onChange,
+            increaseValueId = increaseValueId,
+            decreaseValueId = decreaseValueId
         )
     }
 }
@@ -50,6 +54,8 @@ fun SettingsCounterRowPreview() {
         SettingsCounterRow(
             stringId = R.string.number_of_text_changes,
             value = 5,
+            increaseValueId = 0,
+            decreaseValueId = 0,
             onChange = {}
         )
     }

@@ -24,7 +24,12 @@ import io.writerme.app.R
 import io.writerme.app.ui.theme.WriterMeTheme
 
 @Composable
-fun Counter(value: Int, onChange: (increase: Boolean) -> Unit) {
+fun Counter(
+    value: Int,
+    increaseValueId: Int,
+    decreaseValueId: Int,
+    onChange: (increase: Boolean) -> Unit
+) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -38,7 +43,7 @@ fun Counter(value: Int, onChange: (increase: Boolean) -> Unit) {
     ) {
         Icon(
             imageVector = Icons.Default.ArrowLeft,
-            contentDescription = stringResource(id = R.string.increase),
+            contentDescription = stringResource(id = increaseValueId),
             modifier = Modifier
                 .padding(start = 4.dp, top = 4.dp, bottom = 4.dp)
                 .clickable {
@@ -54,7 +59,7 @@ fun Counter(value: Int, onChange: (increase: Boolean) -> Unit) {
 
         Icon(
             imageVector = Icons.Default.ArrowRight,
-            contentDescription = stringResource(id = R.string.decrease),
+            contentDescription = stringResource(id = decreaseValueId),
             modifier = Modifier
                 .padding(top = 4.dp, bottom = 4.dp, end = 4.dp)
                 .clickable {
@@ -68,6 +73,6 @@ fun Counter(value: Int, onChange: (increase: Boolean) -> Unit) {
 @Composable
 fun CounterPreview() {
     WriterMeTheme {
-        Counter(1) { _: Boolean -> }
+        Counter(1, 0, 0) { _: Boolean -> }
     }
 }

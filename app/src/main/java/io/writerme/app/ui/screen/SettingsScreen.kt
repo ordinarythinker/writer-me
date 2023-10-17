@@ -219,6 +219,8 @@ fun SettingsScreen(
                         SettingsCounterRow(
                             stringId = R.string.number_of_text_changes,
                             value = state.value.textChanges,
+                            increaseValueId = R.string.increase_number_of_text_changes,
+                            decreaseValueId = R.string.decrease_number_of_text_changes,
                             onChange = {
                                 onCounterChange(Const.TEXT_CHANGES_HISTORY_KEY, it)
                             })
@@ -226,6 +228,8 @@ fun SettingsScreen(
                         SettingsCounterRow(
                             stringId = R.string.number_of_voice_changes,
                             value = state.value.voiceChanges,
+                            increaseValueId = R.string.increase_number_of_voice_changes,
+                            decreaseValueId = R.string.decrease_number_of_voice_changes,
                             onChange = {
                                 onCounterChange(Const.VOICE_CHANGES_HISTORY_KEY, it)
                             })
@@ -233,6 +237,8 @@ fun SettingsScreen(
                         SettingsCounterRow(
                             stringId = R.string.number_of_tasks_changes,
                             value = state.value.taskChanges,
+                            increaseValueId = R.string.increase_number_of_tasks_changes,
+                            decreaseValueId = R.string.decrease_number_of_tasks_changes,
                             onChange = {
                                 onCounterChange(Const.TASK_CHANGES_HISTORY_KEY, it)
                             })
@@ -240,6 +246,8 @@ fun SettingsScreen(
                         SettingsCounterRow(
                             stringId = R.string.number_of_media_changes,
                             value = state.value.mediaChanges,
+                            increaseValueId = R.string.increase_number_of_media_changes,
+                            decreaseValueId = R.string.decrease_number_of_media_changes,
                             onChange = {
                                 onCounterChange(Const.MEDIA_CHANGES_HISTORY_KEY, it)
                             })
@@ -247,6 +255,8 @@ fun SettingsScreen(
                         SettingsCounterRow(
                             stringId = R.string.number_of_link_changes,
                             value = state.value.linkChanges,
+                            increaseValueId = R.string.increase_number_of_link_changes,
+                            decreaseValueId = R.string.decrease_number_of_link_changes,
                             onChange = {
                                 onCounterChange(Const.LINK_CHANGES_HISTORY_KEY, it)
                             })

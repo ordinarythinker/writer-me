@@ -92,4 +92,14 @@
     <string name="delete">Видалити</string>
     <string name="set_link">Встановити посилання</string>
     <string name="we_wont_load_images">Ми не зможемо завантажити зображення</string>
+    <string name="increase_number_of_text_changes">Збільшити кількість змін тексту</string>
+    <string name="decrease_number_of_text_changes">Зменшити кількість змін тексту</string>
+    <string name="increase_number_of_voice_changes">Збільшити кількість змін аудіо</string>
+    <string name="decrease_number_of_voice_changes">Зменшити кількість змін аудіо</string>
+    <string name="increase_number_of_tasks_changes">Збільшити кількість змін завдань</string>
+    <string name="decrease_number_of_tasks_changes">Зменшити кількість змін завдань</string>
+    <string name="increase_number_of_media_changes">Збільшити кількість змін медіа</string>
+    <string name="decrease_number_of_media_changes">Зменшити кількість змін носіїв</string>
+    <string name="increase_number_of_link_changes">Збільшити кількість змін посилань</string>
+    <string name="decrease_number_of_link_changes">Зменшити кількість змін посилань</string>
 </resources>
