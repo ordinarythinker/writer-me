@@ -398,7 +398,8 @@ fun NoteScreen(
                             TagsBar(
                                 tags = state.value.note.tags,
                                 addNewTag = addNewTag,
-                                deleteTag = deleteTag
+                                deleteTag = deleteTag,
+                                focusRequester = focusRequester
                             )
 
                             Spacer(modifier = Modifier.height(padding))

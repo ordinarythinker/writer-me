@@ -1,6 +1,7 @@
 package io.writerme.app.ui.component
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -42,6 +45,7 @@ fun TagsBar(
     tags: List<String>,
     addNewTag: (String) -> Unit,
     deleteTag: (String) -> Unit,
+    focusRequester: FocusRequester,
     modifier: Modifier = Modifier
 ) {
     val initialText = stringResource(id = R.string.add_hashtags)
@@ -77,7 +81,7 @@ fun TagsBar(
             )
 
             BasicChipTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.focusable().focusRequester(focusRequester).fillMaxWidth(),
                 state = state,
                 value = text,
                 onValueChange = { text = it },
@@ -126,6 +130,6 @@ fun TagsBar(
 @Composable
 fun TagsBarPreview() {
     WriterMeTheme {
-        TagsBar(listOf("traveling", "unstoppable", "dreamer"), {}, {})
+        TagsBar(listOf("traveling", "unstoppable", "dreamer"), {}, {}, FocusRequester())
     }
 }
