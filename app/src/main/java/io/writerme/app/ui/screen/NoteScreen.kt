@@ -260,7 +260,7 @@ fun NoteScreen(
                             if (!state.value.isTagsBarVisible) {
                                 showHashtagBar(true)
                             }
-                            focusRequester.requestFocus()
+                            //focusRequester.requestFocus()
                         }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_hashtag),
