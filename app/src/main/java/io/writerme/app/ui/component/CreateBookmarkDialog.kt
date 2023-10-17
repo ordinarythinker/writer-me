@@ -183,7 +183,7 @@ fun CreateBookmarkDialog(
                                         modifier = Modifier.fillMaxSize(),
                                         contentAlignment = Alignment.CenterStart
                                     ) {
-                                        if (url.isEmpty()) {
+                                        if (title.isEmpty()) {
                                             Text(
                                                 text = stringResource(id = R.string.title),
                                                 style = MaterialTheme.typography.body1,
