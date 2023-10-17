@@ -24,9 +24,9 @@
     <string name="folder_icon">Folder icon</string>
     <string name="create">Сreate</string>
     <string name="create_bookmark_title">Create Bookmark</string>
-    <string name="add_folder_button">Add folder button</string>
+    <string name="add_folder_button">Add folder</string>
     <string name="bookmarks">Bookmarks</string>
-    <string name="back_button">Back button</string>
+    <string name="back_button">Back</string>
     <string name="more">Additional menu</string>
     <string name="background_image">Background image</string>
     <string name="settings">Settings</string>
@@ -42,12 +42,11 @@
     <string name="bold_icon">Set text bold icon</string>
     <string name="italic_icon">Set the text italic icon</string>
     <string name="underline_icon">Set the text underlined icon</string>
-    <string name="spacing_icon">Add spacing button</string>
-    <string name="add_hashtag_button">Add hashtag button</string>
-    <string name="add_link_button">Add link button</string>
-    <string name="add_voice_note_button">Add voice note button</string>
-    <string name="add_tast_button">Add task button</string>
-    <string name="add_media_button">Button to add image or video from the gallery</string>
+    <string name="spacing_icon">Add spacing</string>
+    <string name="add_hashtag_button">Add hashtag</string>
+    <string name="add_link_button">Add link</string>
+    <string name="add_tast_button">Add task</string>
+    <string name="add_media_button">Add image or video from the gallery</string>
     <string name="add_cover_image_button">Add cover image</string>
     <string name="create_folder">Create Folder</string>
     <string name="folder_name">Folder name</string>
@@ -55,8 +54,8 @@
     <string name="bookmark">Bookmark</string>
     <string name="add_hashtags">Type your hashtags...</string>
     <string name="tags">Tags:</string>
-    <string name="play_button">Play button</string>
-    <string name="pause_button">Pause button</string>
+    <string name="play_button">Play</string>
+    <string name="pause_button">Pause</string>
     <string name="number_of_link_changes">Number of link changes</string>
     <string name="home_screen">Home screen</string>
     <string name="tasks_screen">Tasks screen</string>
@@ -97,4 +96,5 @@
     <string name="delete">Delete</string>
     <string name="set_link">Set Link</string>
     <string name="we_wont_load_images">We will not be able to load images</string>
+    <string name="add_voice_note_button">Add voice note</string>
 </resources>
