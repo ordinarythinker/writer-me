@@ -69,7 +69,9 @@ class NoteViewModel @Inject constructor(
         saveFlow.debounce(300)
             .onEach { component ->
                 pendingUpdates.remove(component.id)
-                noteRepository.saveComponent(component)
+                noteRepository.saveComponent(component.copy(
+                    content = component.content.trimEnd { it.isWhitespace() || it == '\n' }
+                ))
             }.launchIn(viewModelScope)
     }
 
