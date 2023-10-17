@@ -68,7 +68,7 @@ fun Checkbox(
                     .clickable(onClick = onCheckedChange),
                 painter = if (component.isChecked) painterResource(id = R.drawable.ic_checked)
                             else painterResource(id = R.drawable.ic_unchecked),
-                contentDescription = stringResource(id = R.string.checkbox_name),
+                contentDescription = component.content,
                 tint = MaterialTheme.colors.light
             )
             BasicTextField(
