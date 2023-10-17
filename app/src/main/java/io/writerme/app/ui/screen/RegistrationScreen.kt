@@ -144,7 +144,7 @@ fun RegistrationScreen(
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background_main),
-            contentDescription = "",
+            contentDescription = stringResource(id = R.string.background_image),
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
