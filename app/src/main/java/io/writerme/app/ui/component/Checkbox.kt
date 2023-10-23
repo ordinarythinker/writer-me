@@ -1,12 +1,10 @@
 package io.writerme.app.ui.component
 
-import android.view.KeyEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,10 +24,14 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.writerme.app.R
@@ -44,6 +46,7 @@ fun Checkbox(
     onValueChange: (Component) -> Unit,
     onCheckedChange: () -> Unit,
     onAddNewCheckbox: () -> Unit,
+    onDeleteCheckBox: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (component.type == ComponentType.Checkbox) {
@@ -62,8 +65,8 @@ fun Checkbox(
         ) {
             Icon(
                 modifier = Modifier
-                    .width(20.dp)
-                    .height(20.dp)
+                    .width(22.dp)
+                    .height(22.dp)
                     .padding(0.dp, 3.dp, 0.dp, 0.dp)
                     .clickable(onClick = onCheckedChange),
                 painter = if (component.isChecked) painterResource(id = R.drawable.ic_checked)
@@ -77,24 +80,31 @@ fun Checkbox(
                     localText = it
                     onValueChange(component.copy(content = it))
                 },
+                // .defaultMinSize(minHeight = 48.dp)
                 modifier = Modifier
                     .padding(16.dp, 0.dp, 0.dp, 0.dp)
                     .fillMaxWidth()
-                    .defaultMinSize(minHeight = 48.dp)
-                    .focusRequester(requester)
-                    .focusable()
-                    .onKeyEvent {
-                        when (it.nativeKeyEvent.keyCode) {
-                            KeyEvent.KEYCODE_ENTER,
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_NUMPAD_ENTER -> {
-                                onAddNewCheckbox()
-                                true
-                            }
-                            else -> false
+                    .onKeyEvent { event ->
+                        if (event.type == KeyEventType.KeyUp &&
+                            event.key == Key.Backspace &&
+                            localText.isEmpty()
+                        ) {
+                            onDeleteCheckBox()
+                            return@onKeyEvent true
+                        } else if (
+                            event.type == KeyEventType.KeyDown &&
+                            event.key == Key.Enter
+                        ) {
+                            onAddNewCheckbox()
+                            return@onKeyEvent true
                         }
-                    },
-                textStyle = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.light),
+
+                        false
+                    }
+                    .focusRequester(requester)
+                    .focusable(),
+                textStyle = MaterialTheme.typography.subtitle1.copy(color = MaterialTheme.colors.light,
+                    textDecoration = if (component.isChecked) TextDecoration.LineThrough else TextDecoration.None),
                 cursorBrush = SolidColor(MaterialTheme.colors.light)
             )
         }
@@ -114,7 +124,7 @@ fun CheckboxPreview() {
 
     WriterMeTheme {
         Box(modifier = Modifier.fillMaxSize().background(Color.DarkGray)) {
-            Checkbox(component = component, {}, {}, {}, modifier = modifier)
+            Checkbox(component = component, {}, {}, {}, {}, modifier = modifier)
         }
     }
 }

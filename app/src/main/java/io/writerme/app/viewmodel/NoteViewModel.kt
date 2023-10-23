@@ -222,6 +222,12 @@ class NoteViewModel @Inject constructor(
         }
     }
 
+    fun deleteSection(history: History) {
+        viewModelScope.launch {
+            noteRepository.deleteSection(history)
+        }
+    }
+
     override fun onCleared() {
         saveChanges()
         super.onCleared()

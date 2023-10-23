@@ -255,4 +255,21 @@ class NoteRepository: Repository(), Closeable {
             }
         }
     }
+
+    suspend fun deleteSection(hist: History) {
+        realm.write {
+            val h = findLatest(hist)
+
+            h?.let { history ->
+                val noteId = history.newest()?.noteId
+
+                this.deleteHistory(history)
+
+                noteId?.let {
+                    val note = this.query(Note::class, "id == $0", it).first().find()
+                    note?.changeTime = System.currentTimeMillis()
+                }
+            }
+        }
+    }
 }

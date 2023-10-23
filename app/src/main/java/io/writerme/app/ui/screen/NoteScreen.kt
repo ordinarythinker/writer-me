@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -79,7 +80,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Date
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NoteScreen(
@@ -101,6 +102,7 @@ fun NoteScreen(
     toggleDropDownHistoryMode: () -> Unit,
     addLinkSection: (String) -> Unit,
     toggleCheckbox: (Component) -> Unit,
+    deleteSection: (History) -> Unit,
     toggleAddLinkDialogVisibility: () -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -449,14 +451,17 @@ fun NoteScreen(
                                         ComponentType.Checkbox -> {
                                             Checkbox(
                                                 component = component,
-                                                modifier = Modifier.padding(start = padding),
+                                                modifier = Modifier.animateItemPlacement().padding(start = padding),
                                                 onValueChange = onComponentChange,
                                                 onCheckedChange = {
                                                     toggleCheckbox(component)
                                                 },
                                                 onAddNewCheckbox = {
                                                     addNewCheckBox(currentIndex)
-                                                }
+                                                },
+                                                onDeleteCheckBox = {
+                                                    deleteSection(item)
+                                                },
                                             )
                                         }
                                         ComponentType.Voice -> {}
@@ -632,6 +637,18 @@ fun NoteScreenPreview() {
         isChecked = true
     }
 
+    val checkbox1 = Component().apply {
+        type = ComponentType.Checkbox
+        content = "Complete writing post for Instagram"
+        isChecked = true
+    }
+
+    val checkbox2 = Component().apply {
+        type = ComponentType.Checkbox
+        content = "Complete writing post for Instagram"
+        isChecked = true
+    }
+
     val task = Component().apply {
         content = "Meeting with Anna"
         time = Date()
@@ -668,7 +685,7 @@ fun NoteScreenPreview() {
         content.addAll(
             listOf(
                 History(text),
-                //History(checkbox), History(task), History(image), History(image)
+                History(checkbox), History(checkbox1), History(checkbox2)
             )
         )
 
@@ -680,6 +697,6 @@ fun NoteScreenPreview() {
 
     WriterMeTheme {
         NoteScreen(noteState = state, {}, {}, {}, {}, {}, {},
-            { _, _ ->}, {}, {}, { _ ->}, {}, { _ ->}, {}, {}, {}, {}, {}, {})
+            { _, _ ->}, {}, {}, { _ ->}, {}, { _ ->}, {}, {}, {}, {}, {}, {}, {})
     }
 }

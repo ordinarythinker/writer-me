@@ -257,7 +257,7 @@ fun MutableRealm.deleteHistory(h: History?) {
     h?.let { history ->
         if (history.changes.isNotEmpty()) {
             while (history.changes.isNotEmpty()) {
-                val component = history.changes.removeAt(0)
+                val component = history.changes[0]
                 deleteComponent(component)
             }
         }
