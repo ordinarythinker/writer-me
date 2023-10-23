@@ -1,5 +1,9 @@
 Writer.Me is an extended notes app and bookmarks manager developed using [Jetpack Compose](https://developer.android.com/jetpack/compose), [Material Design](https://m2.material.io/) and [Realm Kotlin](https://github.com/realm/realm-kotlin)
 
+You can download the app on Google Play:
+
+<a href='https://play.google.com/store/apps/details?id=io.writerme.app&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' style="width:250px; height: auto;"/></a>
+
 The note is developed in the Jupiter Notebook style, where each block can be edited separately. 
 It allows to keep the history of changes made to each block of the note.
 
