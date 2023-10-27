@@ -306,14 +306,14 @@ fun HomeScreen(
                                     note = item,
                                     modifier = Modifier
                                         .combinedClickable(
-                                            onClick = {
-                                                onNoteClick(item.id)
-                                            },
                                             onLongClick = {
                                                 toggleNoteDropdown(index)
                                             },
                                             onDoubleClick = {
                                                 toggleImportance(item.id)
+                                            },
+                                            onClick = {
+                                                onNoteClick(item.id)
                                             }
                                         )
                                 )

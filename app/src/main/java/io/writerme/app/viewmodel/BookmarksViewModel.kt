@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.asFlow
 import io.realm.kotlin.notifications.ObjectChange
 import io.writerme.app.data.model.BookmarksFolder
+import io.writerme.app.data.model.Component
 import io.writerme.app.data.repository.BookmarksRepository
 import io.writerme.app.ui.state.BookmarksState
 import io.writerme.app.utils.scheduleImageLoading
@@ -135,6 +136,18 @@ class BookmarksViewModel @Inject constructor(
             }
 
             workManager.scheduleImageLoading(bookmark.id, parent.id)
+        }
+    }
+
+    fun deleteFolder(folder: BookmarksFolder) {
+        viewModelScope.launch {
+            bookmarksRepository.deleteFolder(folder)
+        }
+    }
+
+    fun deleteBookmark(bookmark: Component) {
+        viewModelScope.launch {
+            bookmarksRepository.deleteBookmark(bookmark)
         }
     }
 }

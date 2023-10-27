@@ -90,6 +90,8 @@ fun BookmarksScreen(
     navigateToParentFolder: () -> Unit,
     createBookmark: (String, String, BookmarksFolder) -> Unit,
     createFolder: (String) -> Unit,
+    deleteFolder: (BookmarksFolder) -> Unit,
+    deleteBookmark: (Component) -> Unit,
     dismissScreen: () -> Unit
 ) {
     val state = bookmarksState.collectAsStateWithLifecycle()
@@ -401,6 +403,8 @@ fun BookmarksScreenPreview() {
             navigateToParentFolder = {},
             createBookmark = { _, _, _ ->},
             createFolder = {},
+            deleteFolder = {},
+            deleteBookmark = {},
             dismissScreen = {}
         )
     }

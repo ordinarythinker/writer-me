@@ -72,6 +72,14 @@ class BookmarksRepository: Repository(), Closeable {
         }
     }
 
+    fun deleteFolder(folder: BookmarksFolder) {
+        // TODO:
+    }
+
+    fun deleteBookmark(component: Component) {
+        // TODO
+    }
+
     override fun close() {
         realm.close()
     }
