@@ -1,9 +1,10 @@
 package io.writerme.app.ui.component
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,18 +26,22 @@ fun SettingsCounterRow(
     decreaseValueId: Int,
     onChange: (increase: Boolean) -> Unit
 ) {
+    val padding = dimensionResource(id = R.dimen.screen_padding)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(dimensionResource(id = R.dimen.screen_padding), 8.dp),
+            .padding(padding, 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = stringResource(id = stringId),
             style = MaterialTheme.typography.body1,
-            color = MaterialTheme.colors.light
+            color = MaterialTheme.colors.light,
+            modifier = Modifier.weight(1f)
         )
+        
+        Spacer(modifier = Modifier.width(padding))
 
         Counter(
             value = value,
