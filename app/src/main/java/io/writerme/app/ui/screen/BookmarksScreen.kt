@@ -99,7 +99,8 @@ fun BookmarksScreen(
     checkAndRequestPermission(
         permission = Manifest.permission.INTERNET,
         onSuccess = {},
-        onNotGrantedMessage = R.string.we_wont_load_images)
+        onNotGrantedMessage = R.string.we_wont_load_images
+    )
 
     BackHandler(
         onBack = {

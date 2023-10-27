@@ -122,9 +122,9 @@ class BookmarksViewModel @Inject constructor(
         }
     }
 
-    fun createFolder(name: String, parent: BookmarksFolder? = null) {
+    fun createFolder(name: String) {
         viewModelScope.launch {
-            bookmarksRepository.createFolder(name, parent)
+            bookmarksRepository.createFolder(name, bookmarksStateFlow.value.currentFolder)
         }
     }
 
