@@ -271,12 +271,22 @@ fun MutableRealm.deleteNote(note: Note) {
 
     if (note.content.isNotEmpty()) {
         while (note.content.isNotEmpty()) {
-            val component = note.content.removeAt(0)
+            val component = note.content[0]
             deleteHistory(component)
         }
     }
 
     delete(note)
+}
+
+fun MutableRealm.deleteBookmarkFolder(folder: BookmarksFolder) {
+    while (folder.folders.isNotEmpty()) {
+        this.deleteBookmarkFolder(folder.folders[0])
+    }
+
+    while (folder.bookmarks.isNotEmpty()) {
+        this.deleteComponent(folder.bookmarks[0])
+    }
 }
 
 @Composable

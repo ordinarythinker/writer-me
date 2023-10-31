@@ -4,6 +4,8 @@ import io.realm.kotlin.Realm
 import io.writerme.app.data.model.BookmarksFolder
 import io.writerme.app.data.model.Component
 import io.writerme.app.data.model.ComponentType
+import io.writerme.app.utils.deleteBookmarkFolder
+import io.writerme.app.utils.deleteComponent
 import io.writerme.app.utils.getDefaultInstance
 import java.io.Closeable
 
@@ -72,12 +74,24 @@ class BookmarksRepository: Repository(), Closeable {
         }
     }
 
-    fun deleteFolder(folder: BookmarksFolder) {
-        // TODO:
+    suspend fun deleteFolder(bookmarksFolder: BookmarksFolder) {
+        realm.write {
+            val latest = findLatest(bookmarksFolder)
+
+            latest?.let { folder ->
+                this.deleteBookmarkFolder(folder)
+            }
+        }
     }
 
-    fun deleteBookmark(component: Component) {
-        // TODO
+    suspend fun deleteBookmark(component: Component) {
+        realm.write {
+            val latest = findLatest(component)
+
+            latest?.let { bookmark ->
+                this.deleteComponent(bookmark)
+            }
+        }
     }
 
     override fun close() {

@@ -18,8 +18,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -324,6 +326,7 @@ fun NoteScreen(
                         start = padding, top = padding, end = padding,
                         bottom = paddingValues.calculateBottomPadding() + padding
                     )
+                    .systemBarsPadding().imePadding()
             ) {
                 item {
                     val title = note.title?.newest()
@@ -445,7 +448,7 @@ fun NoteScreen(
                                         ComponentType.Text -> {
                                             NoteText(
                                                 component = component,
-                                                onValueChange = onComponentChange,
+                                                onValueChange = onComponentChange
                                             )
                                         }
                                         ComponentType.Checkbox -> {

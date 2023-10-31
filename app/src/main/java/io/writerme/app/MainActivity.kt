@@ -175,6 +175,8 @@ class MainActivity : AppCompatActivity() {
                                 navigateToParentFolder = bookmarksViewModel::navigateToParentFolder,
                                 createBookmark = bookmarksViewModel::createBookmark,
                                 createFolder = bookmarksViewModel::createFolder,
+                                deleteFolder = bookmarksViewModel::deleteFolder,
+                                deleteBookmark = bookmarksViewModel::deleteBookmark,
                                 dismissScreen = { navController.popBackStack() }
                             )
                         }
