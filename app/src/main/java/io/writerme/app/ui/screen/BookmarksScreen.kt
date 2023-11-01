@@ -8,10 +8,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,23 +24,28 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -74,7 +81,7 @@ import io.writerme.app.utils.checkAndRequestPermission
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun BookmarksScreen(
@@ -92,6 +99,8 @@ fun BookmarksScreen(
     createFolder: (String) -> Unit,
     deleteFolder: (BookmarksFolder) -> Unit,
     deleteBookmark: (Component) -> Unit,
+    toggleFolderDropdown: (Int) -> Unit,
+    toggleBookmarkDropdown: (Int) -> Unit,
     dismissScreen: () -> Unit
 ) {
     val state = bookmarksState.collectAsStateWithLifecycle()
@@ -289,23 +298,68 @@ fun BookmarksScreen(
                                 contentPadding = PaddingValues(padding),
                                 content = {
 
-                                    items(
-                                        items = state.value.currentFolder.folders,
-                                        itemContent = { item ->
-                                            Surface(
-                                                onClick = { onFolderClicked(item) },
-                                                color = Color.Transparent
+                                    itemsIndexed(items = state.value.currentFolder.folders) { index, item ->
+                                        val isExpanded = state.value.folderDropdownIndex == index
+
+                                        ExposedDropdownMenuBox(
+                                            expanded = isExpanded,
+                                            onExpandedChange = { toggleFolderDropdown(index) }
+                                        ) {
+                                            Folder(
+                                                folder = item,
+                                                modifier = Modifier
+                                                    .combinedClickable(
+                                                        onLongClick = {
+                                                            toggleFolderDropdown(index)
+                                                        },
+                                                        onClick = { onFolderClicked(item) }
+                                                    )
+                                                    .width(110.dp)
+                                                    .padding(8.dp)
+                                            )
+
+
+                                            MaterialTheme(
+                                                colors = MaterialTheme.colors.copy(
+                                                    surface = MaterialTheme.colors.light,
+                                                    background = Color.Blue
+                                                ),
+                                                shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(
+                                                    dimensionResource(id = R.dimen.small_radius)
+                                                ))
                                             ) {
-                                                Folder(
-                                                    folder = item,
-                                                    modifier = Modifier
-                                                        .width(110.dp)
-                                                        .padding(8.dp)
-                                                )
+                                                ExposedDropdownMenu(
+                                                    expanded = isExpanded,
+                                                    onDismissRequest = { toggleFolderDropdown(index) },
+                                                    scrollState = rememberScrollState()
+                                                ) {
+
+                                                    DropdownMenuItem(onClick = {
+                                                        deleteFolder(item)
+                                                        toggleFolderDropdown(index)
+                                                    }) {
+                                                        Row(
+                                                            modifier = Modifier.fillMaxWidth(),
+                                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                                            verticalAlignment = Alignment.CenterVertically
+                                                        ) {
+                                                            Text(
+                                                                text = stringResource(id = R.string.delete),
+                                                                style  = MaterialTheme.typography.body1
+                                                            )
+
+                                                            Icon(
+                                                                imageVector = Icons.Default.Delete,
+                                                                contentDescription = stringResource(id = R.string.delete),
+                                                                modifier = Modifier.size(20.dp),
+                                                                tint = Color.DarkGray
+                                                            )
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
-                                    )
-
+                                    }
                                 }
                             )
                         }
@@ -318,17 +372,69 @@ fun BookmarksScreen(
                             content = {
                                 val links = state.value.currentFolder.bookmarks
 
-                                items(
-                                    items = links,
-                                    itemContent = {item ->
+                                itemsIndexed(items = links) { index, item ->
+                                    val isExpanded = state.value.folderDropdownIndex == index
+
+                                    ExposedDropdownMenuBox(
+                                        expanded = isExpanded,
+                                        onExpandedChange = { toggleBookmarkDropdown(index) }
+                                    ) {
                                         Link(
                                             link = item,
-                                            modifier = Modifier.padding(8.dp),
-                                            onClick = onLinkClicked,
+                                            modifier = Modifier
+                                                .padding(8.dp)
+                                                .combinedClickable(
+                                                    onLongClick = {
+                                                        toggleBookmarkDropdown(index)
+                                                    },
+                                                    onClick = {
+                                                        onLinkClicked(item)
+                                                    }
+                                                ),
                                             height = 130.dp
                                         )
+
+                                        MaterialTheme(
+                                            colors = MaterialTheme.colors.copy(
+                                                surface = MaterialTheme.colors.light,
+                                                background = Color.Blue
+                                            ),
+                                            shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(
+                                                dimensionResource(id = R.dimen.small_radius)
+                                            ))
+                                        ) {
+                                            ExposedDropdownMenu(
+                                                expanded = isExpanded,
+                                                onDismissRequest = { toggleBookmarkDropdown(index) },
+                                                scrollState = rememberScrollState()
+                                            ) {
+
+                                                DropdownMenuItem(onClick = {
+                                                    deleteBookmark(item)
+                                                    toggleBookmarkDropdown(index)
+                                                }) {
+                                                    Row(
+                                                        modifier = Modifier.fillMaxWidth(),
+                                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                                        verticalAlignment = Alignment.CenterVertically
+                                                    ) {
+                                                        Text(
+                                                            text = stringResource(id = R.string.delete),
+                                                            style  = MaterialTheme.typography.body1
+                                                        )
+
+                                                        Icon(
+                                                            imageVector = Icons.Default.Delete,
+                                                            contentDescription = stringResource(id = R.string.delete),
+                                                            modifier = Modifier.size(20.dp),
+                                                            tint = Color.DarkGray
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
-                                )
+                                }
                             }
                         )
                     }
@@ -405,6 +511,8 @@ fun BookmarksScreenPreview() {
             createFolder = {},
             deleteFolder = {},
             deleteBookmark = {},
+            toggleFolderDropdown = {},
+            toggleBookmarkDropdown = {},
             dismissScreen = {}
         )
     }

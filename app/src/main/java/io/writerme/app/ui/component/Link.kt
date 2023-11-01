@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -37,11 +36,9 @@ import io.writerme.app.ui.theme.dialogBackground
 import io.writerme.app.ui.theme.lightGrey
 import io.writerme.app.utils.checkAndRequestPermission
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Link(
     link: Component,
-    onClick: (Component) -> Unit,
     modifier: Modifier = Modifier,
     height: Dp = 0.dp
 ) {
@@ -59,9 +56,6 @@ fun Link(
                 .wrapContentHeight()
                 .shadow(15.dp, shape),
             backgroundColor = MaterialTheme.colors.dialogBackground,
-            onClick = {
-                onClick(link)
-            }
         ) {
             Box(modifier = Modifier
                 .fillMaxWidth()
@@ -136,6 +130,6 @@ fun LinkPreview() {
         .padding(dimensionResource(id = R.dimen.screen_padding))
 
     WriterMeTheme {
-        Link(link = link, {}, modifier = modifier)
+        Link(link = link, modifier = modifier)
     }
 }

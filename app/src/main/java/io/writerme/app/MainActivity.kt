@@ -177,6 +177,8 @@ class MainActivity : AppCompatActivity() {
                                 createFolder = bookmarksViewModel::createFolder,
                                 deleteFolder = bookmarksViewModel::deleteFolder,
                                 deleteBookmark = bookmarksViewModel::deleteBookmark,
+                                toggleFolderDropdown = bookmarksViewModel::toggleFolderDropdown,
+                                toggleBookmarkDropdown = bookmarksViewModel::toggleBookmarkDropdown,
                                 dismissScreen = { navController.popBackStack() }
                             )
                         }

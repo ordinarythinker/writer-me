@@ -150,4 +150,28 @@ class BookmarksViewModel @Inject constructor(
             bookmarksRepository.deleteBookmark(bookmark)
         }
     }
+
+    fun toggleFolderDropdown(index: Int) {
+        viewModelScope.launch {
+            val state = _bookmarksStateFlow.value
+
+            val newValue = if (state.folderDropdownIndex != index) {
+                index
+            } else -1
+
+            _bookmarksStateFlow.emit(state.copy(folderDropdownIndex = newValue))
+        }
+    }
+
+    fun toggleBookmarkDropdown(index: Int) {
+        viewModelScope.launch {
+            val state = _bookmarksStateFlow.value
+
+            val newValue = if (state.bookmarkDropdownIndex != index) {
+                index
+            } else -1
+
+            _bookmarksStateFlow.emit(state.copy(bookmarkDropdownIndex = newValue))
+        }
+    }
 }
