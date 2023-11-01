@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.WriterMe" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">#061327</item>
+        <item name="android:windowDisablePreview">false</item>
+        <item name="android:windowSplashScreenBackground">#061327</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_writer_me</item>
+    </style>
+</resources>
