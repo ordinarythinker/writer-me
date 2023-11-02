@@ -25,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
@@ -238,8 +237,7 @@ fun MutableRealm.deleteComponent(component: Component) {
             component.mediaUrl?.let { url ->
                 if (url.isNotEmpty()) {
                     try {
-                        val uri = Uri.parse(url)
-                        val file = uri.toFile()
+                        val file = File(url)
 
                         if (file.exists()) file.delete()
                     } catch (e: Exception) {
