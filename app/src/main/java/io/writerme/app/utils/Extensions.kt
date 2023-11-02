@@ -287,6 +287,8 @@ fun MutableRealm.deleteBookmarkFolder(folder: BookmarksFolder) {
     while (folder.bookmarks.isNotEmpty()) {
         this.deleteComponent(folder.bookmarks[0])
     }
+
+    delete(folder)
 }
 
 @Composable

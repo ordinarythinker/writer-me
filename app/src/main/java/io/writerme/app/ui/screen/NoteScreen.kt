@@ -478,6 +478,8 @@ fun NoteScreen(
                                         ComponentType.Link -> {
                                             Link(
                                                 link = component,
+                                                onClick = {},
+                                                onLongClick = {}
                                             )
                                             // TODO: link is not editable, though it should be
                                         }

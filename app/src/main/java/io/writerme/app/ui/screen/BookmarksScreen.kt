@@ -373,7 +373,7 @@ fun BookmarksScreen(
                                 val links = state.value.currentFolder.bookmarks
 
                                 itemsIndexed(items = links) { index, item ->
-                                    val isExpanded = state.value.folderDropdownIndex == index
+                                    val isExpanded = state.value.bookmarkDropdownIndex == index
 
                                     ExposedDropdownMenuBox(
                                         expanded = isExpanded,
@@ -381,16 +381,11 @@ fun BookmarksScreen(
                                     ) {
                                         Link(
                                             link = item,
+                                            onClick = { onLinkClicked(item) },
+                                            onLongClick = { toggleBookmarkDropdown(index) },
                                             modifier = Modifier
                                                 .padding(8.dp)
-                                                .combinedClickable(
-                                                    onLongClick = {
-                                                        toggleBookmarkDropdown(index)
-                                                    },
-                                                    onClick = {
-                                                        onLinkClicked(item)
-                                                    }
-                                                ),
+                                                .clickable(enabled = false, onClick = {}),
                                             height = 130.dp
                                         )
 

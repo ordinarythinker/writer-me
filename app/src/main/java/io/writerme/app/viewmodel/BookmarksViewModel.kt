@@ -155,7 +155,7 @@ class BookmarksViewModel @Inject constructor(
         viewModelScope.launch {
             val state = _bookmarksStateFlow.value
 
-            val newValue = if (state.folderDropdownIndex != index) {
+            val newValue = if (index >= 0 && state.folderDropdownIndex != index) {
                 index
             } else -1
 
@@ -167,7 +167,7 @@ class BookmarksViewModel @Inject constructor(
         viewModelScope.launch {
             val state = _bookmarksStateFlow.value
 
-            val newValue = if (state.bookmarkDropdownIndex != index) {
+            val newValue = if (index >= 0 && state.bookmarkDropdownIndex != index) {
                 index
             } else -1
 

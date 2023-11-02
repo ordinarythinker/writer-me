@@ -2,8 +2,10 @@ package io.writerme.app.ui.component
 
 import android.Manifest
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -36,11 +39,14 @@ import io.writerme.app.ui.theme.dialogBackground
 import io.writerme.app.ui.theme.lightGrey
 import io.writerme.app.utils.checkAndRequestPermission
 
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun Link(
     link: Component,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
-    height: Dp = 0.dp
+    height: Dp = 0.dp,
 ) {
     if (link.type == ComponentType.Link) {
         val shape = RoundedCornerShape(dimensionResource(id = R.dimen.big_radius))
@@ -54,6 +60,10 @@ fun Link(
             shape = shape,
             modifier = modifier
                 .wrapContentHeight()
+                .combinedClickable(
+                    onLongClick = onLongClick,
+                    onClick = onClick
+                )
                 .shadow(15.dp, shape),
             backgroundColor = MaterialTheme.colors.dialogBackground,
         ) {
@@ -130,6 +140,6 @@ fun LinkPreview() {
         .padding(dimensionResource(id = R.dimen.screen_padding))
 
     WriterMeTheme {
-        Link(link = link, modifier = modifier)
+        Link(link = link, {}, {}, modifier = modifier)
     }
 }
