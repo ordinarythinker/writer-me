@@ -177,7 +177,7 @@ fun GreetingScreen(proceedToNextScreen: () -> Unit) {
                 }
 
                 Canvas(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.size(height = 400.dp, width = 400.dp)
                 ) {
                     drawArc(
                         color = color,
