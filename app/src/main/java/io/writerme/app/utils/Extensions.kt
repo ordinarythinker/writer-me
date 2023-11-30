@@ -166,7 +166,7 @@ fun Bitmap.toFile(
         val file = File("${parentFolder.absolutePath}/image_${System.currentTimeMillis()}.jpg")
 
         FileOutputStream(file).use { fos ->
-            this.compress(Bitmap.CompressFormat.JPEG, 1, fos)
+            this.compress(Bitmap.CompressFormat.JPEG, 100, fos)
         }
 
         file.toUri()
