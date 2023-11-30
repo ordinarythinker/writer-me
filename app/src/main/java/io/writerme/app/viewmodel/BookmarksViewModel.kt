@@ -95,17 +95,11 @@ class BookmarksViewModel @Inject constructor(
         }
     }
 
-    fun showFloatingDialog() {
+    fun toggleFloatingDialog() {
         viewModelScope.launch {
-            _bookmarksStateFlow.emit(_bookmarksStateFlow.value.copy(
-                isFloatingDialogShown = true
-            ))
-        }
-    }
-    fun dismissFloatingDialog() {
-        viewModelScope.launch {
-            _bookmarksStateFlow.emit(_bookmarksStateFlow.value.copy(
-                isFloatingDialogShown = false
+            val value = _bookmarksStateFlow.value
+            _bookmarksStateFlow.emit(value.copy(
+                isFloatingDialogShown = !value.isFloatingDialogShown
             ))
         }
     }

@@ -92,8 +92,7 @@ fun BookmarksScreen(
     dismissCreateFolderDialog: () -> Unit,
     showCreateBookmarkDialog: () -> Unit,
     dismissCreateBookmarkDialog: () -> Unit,
-    showFloatingDialog: () -> Unit,
-    dismissFloatingDialog: () -> Unit,
+    toggleFloatingDialog: () -> Unit,
     navigateToParentFolder: () -> Unit,
     createBookmark: (String, String, BookmarksFolder) -> Unit,
     createFolder: (String) -> Unit,
@@ -120,7 +119,7 @@ fun BookmarksScreen(
             } else if (state.value.isFolderDialogDisplayed) {
                 dismissCreateFolderDialog()
             } else if (state.value.isFloatingDialogShown) {
-                dismissFloatingDialog()
+                toggleFloatingDialog()
             } else if (state.value.currentFolder.hasParentFolder()) {
                 navigateToParentFolder()
             }
@@ -232,7 +231,7 @@ fun BookmarksScreen(
                                             )
                                             .clickable {
                                                 showCreateBookmarkDialog()
-                                                dismissFloatingDialog()
+                                                toggleFloatingDialog()
                                             }
                                             .padding(padding, 12.dp)
                                             .height(40.dp),
@@ -254,7 +253,7 @@ fun BookmarksScreen(
                                             )
                                             .clickable {
                                                 showCreateFolderDialog()
-                                                dismissFloatingDialog()
+                                                toggleFloatingDialog()
                                             }
                                             .padding(padding, 12.dp)
                                             .height(40.dp),
@@ -269,7 +268,7 @@ fun BookmarksScreen(
                     FloatingActionButton(
                         modifier = Modifier.align(Alignment.CenterEnd),
                         onClick = {
-                            showFloatingDialog()
+                            toggleFloatingDialog()
                         }
                     ) {
                         Icon(
@@ -499,8 +498,7 @@ fun BookmarksScreenPreview() {
             dismissCreateFolderDialog = {},
             showCreateBookmarkDialog = {},
             dismissCreateBookmarkDialog = {},
-            showFloatingDialog = {},
-            dismissFloatingDialog = {},
+            toggleFloatingDialog = {},
             navigateToParentFolder = {},
             createBookmark = { _, _, _ ->},
             createFolder = {},
