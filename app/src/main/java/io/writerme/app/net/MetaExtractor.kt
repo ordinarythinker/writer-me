@@ -29,9 +29,11 @@ class MetaTagScraper {
     )
 
     suspend fun scrape(givenUrl: String): MetaTags {
+
         val tags = skrape(AsyncFetcher) {
             request {
                 url = givenUrl
+                timeout = 120000
             }
             extractIt<TempMetaTags> {
                 htmlDocument {
