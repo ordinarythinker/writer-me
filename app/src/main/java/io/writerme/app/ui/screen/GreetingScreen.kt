@@ -30,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -140,13 +141,13 @@ fun GreetingScreen(proceedToNextScreen: () -> Unit) {
             modifier = Modifier.fillMaxSize()
         ) {
             val shape = RoundedCornerShape(
-                topStart = 230.dp, topEnd = 230.dp, bottomEnd = 236.dp, bottomStart = 230.dp
+                topStart = 230.dp, topEnd = 230.dp, bottomEnd = 230.dp, bottomStart = 230.dp
             )
 
             Box(
                 modifier = Modifier
-                    .size(height = 400.dp, width = 400.dp)
                     .offset(x = (-80).dp, y = 55.dp)
+                    .size(height = 400.dp, width = 400.dp)
             ) {
                 val color = MaterialTheme.colors.strokeLight
 
@@ -157,11 +158,11 @@ fun GreetingScreen(proceedToNextScreen: () -> Unit) {
                     ) + scaleIn(
                         animationSpec = tween(durationMillis = 1000, easing = LinearEasing)
                     ),
-                    exit = slideOutHorizontally() + scaleOut()
+                    exit = slideOutHorizontally() + scaleOut(),
+                    modifier = Modifier.align(Alignment.Center)
                 ) {
                     Card(
                         modifier = Modifier
-                            .offset(x = 18.dp, y = 20.dp)
                             .wrapContentHeight()
                             .shadow(20.dp, shape),
                         shape = shape
@@ -170,7 +171,7 @@ fun GreetingScreen(proceedToNextScreen: () -> Unit) {
                             painter = painterResource(id = R.drawable.greeting),
                             contentDescription = stringResource(id = R.string.image),
                             modifier = Modifier
-                                .size(width = 360.dp, height = 360.dp),
+                                .size(width = 355.dp, height = 355.dp),
                             contentScale = ContentScale.Crop
                         )
                     }
