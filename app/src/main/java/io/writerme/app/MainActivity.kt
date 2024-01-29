@@ -134,7 +134,6 @@ class MainActivity : AppCompatActivity() {
                                         navController.navigate(NoteScreen.navigationRoute)
                                     },
                                     onTabChosen = homeViewModel::onTabChosen,
-                                    toggleNoteDropdown = homeViewModel::toggleNoteDropdown,
                                     toggleImportance = homeViewModel::toggleImportance,
                                     deleteNote = homeViewModel::deleteNote
                                 )
@@ -157,7 +156,6 @@ class MainActivity : AppCompatActivity() {
                                     showHashtagBar = noteViewModel::showHashtagBar,
                                     addNewTag = noteViewModel::addNewTag,
                                     deleteTag = noteViewModel::deleteTag,
-                                    modifyHistory = noteViewModel::modifyHistory,
                                     saveChanges = noteViewModel::saveChanges,
                                     onComponentChange = noteViewModel::onComponentChange,
                                     addNewCheckBox = noteViewModel::addNewCheckBox,

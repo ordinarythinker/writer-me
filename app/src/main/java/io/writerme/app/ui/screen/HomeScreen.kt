@@ -42,6 +42,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -85,7 +89,6 @@ fun HomeScreen(
     onNoteClick: (Long) -> Unit,
     createNote: () -> Unit,
     onTabChosen: (HomeFilterTab) -> Unit,
-    toggleNoteDropdown: (Int) -> Unit,
     toggleImportance: (Long) -> Unit,
     deleteNote: (Long) -> Unit
 ) {
@@ -296,18 +299,20 @@ fun HomeScreen(
                             .height(900.dp)
                     ) {
                         itemsIndexed(items = state.value.notes) { index, item ->
-                            val isExpanded = index == state.value.expandedDropdownId
+                            var isExpanded by remember {
+                                mutableStateOf(false)
+                            }
 
                             ExposedDropdownMenuBox(
                                 expanded = isExpanded,
-                                onExpandedChange = { toggleNoteDropdown(index) }
+                                onExpandedChange = {}
                             ) {
                                 Note(
                                     note = item,
                                     modifier = Modifier
                                         .combinedClickable(
                                             onLongClick = {
-                                                toggleNoteDropdown(index)
+                                                isExpanded = true
                                             },
                                             onDoubleClick = {
                                                 toggleImportance(item.id)
@@ -329,12 +334,12 @@ fun HomeScreen(
                                 ) {
                                     ExposedDropdownMenu(
                                         expanded = isExpanded,
-                                        onDismissRequest = { toggleNoteDropdown(index) },
+                                        onDismissRequest = { isExpanded = false },
                                         scrollState = rememberScrollState()
                                     ) {
                                         DropdownMenuItem(onClick = {
                                             toggleImportance(item.id)
-                                            toggleNoteDropdown(index)
+                                            isExpanded = !isExpanded
                                         }) {
                                             Row(
                                                 modifier = Modifier.fillMaxWidth(),
@@ -359,7 +364,7 @@ fun HomeScreen(
 
                                         DropdownMenuItem(onClick = {
                                             deleteNote(item.id)
-                                            toggleNoteDropdown(index)
+                                            isExpanded = !isExpanded
                                         }) {
                                             Row(
                                                 modifier = Modifier.fillMaxWidth(),
@@ -486,6 +491,6 @@ fun HomeScreenPreview() {
     val flow = MutableStateFlow(main)
 
     WriterMeTheme {
-        HomeScreen(stateFlow = flow, {}, {}, {}, {}, {}, {}, {}, {}, {}, {})
+        HomeScreen(stateFlow = flow, {}, {}, {}, {}, {}, {}, {}, {}, {})
     }
 }
